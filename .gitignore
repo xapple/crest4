@@ -1,0 +1,24 @@
+# Temporary files #
+.DS_Store
+*.pyc
+*.swp
+*.swo
+*~
+\#*
+.#*
+._*
+
+# IDE files #
+/.idea
+
+# Distribution #
+/build/
+/dist/
+/crest4.egg-info/
+
+# Testing #
+/.pytest_cache/
+
+# The results of the tests #
+*.hits
+assignments.txt

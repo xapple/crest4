@@ -1,0 +1,1 @@
+This test contains a homopolymer as the second entry of the fasta file, which should result in no hits found for that sequence.
