@@ -2,9 +2,7 @@
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
 
-<p style="text-align:center">
-    <img height="143" src="docs/logo.png?raw=true" alt="CREST Logo">
-</p>
+<img align="center" height="143" src="docs/logo.png?raw=true" alt="CREST Logo">
 
 More specifically, the acronym CREST stands for "Classification Resources for Environmental Sequence Tags" and is a collection of software and databases for taxonomic classification of environmental marker genes obtained from community sequencing studies. Such studies are also known as "meta-genomics", "meta-transcriptomics", "meta-barcoding", "taxonomic profiling" or "phylogenetic profiling".
 
@@ -187,7 +185,7 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 
 ### Custom databases
 
-It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentations are available in this other git repository:  
+It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentations are available in this other git repository:
 
 <https://github.com/xapple/crest4_utils>
 
