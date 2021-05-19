@@ -20,7 +20,7 @@ with open(readme_path, encoding='utf-8') as handle: readme = handle.read()
 # Call setup #
 setup(
     name             = 'crest4',
-    version          = '4.0.7',
+    version          = '4.0.8',
     description      = 'The `crest4` python package can automatically assign '
                        'taxonomic names to DNA sequences obtained from '
                        'environmental sequencing.',
