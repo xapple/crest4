@@ -12,6 +12,8 @@ Created in May 2021.
 import os, json
 
 # Internal modules #
+from seqsearch.search.vsearch import VSEARCHdb
+
 import crest4
 
 # First party modules #
@@ -150,13 +152,27 @@ class CrestDatabase:
         """
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
-        # TODO: create the database with mkblastdb if it's not made already #
+        # Create the database object #
+        db = BLASTdb(self.prefix, seq_type='nucl')
+        # Create the database with `mkblastdb` if it's not made already #
+        db.create_if_not_exists(verbose=True)
         # Return #
-        return BLASTdb(self.prefix, seq_type='nucl')
+        return db
 
     @property_cached
     def vsearch_db(self):
-        pass
+        """
+        Return a `VSEARCHdb` object that can be used for the sequence
+        similarity search.
+        """
+        # Download the database if it has not been done already #
+        if not self.downloaded: self.download()
+        # Create the database object #
+        db = VSEARCHdb(self.prefix)
+        # Create the database with `vsearch` if it's not made already #
+        db.create_if_not_exists(verbose=True)
+        # Return #
+        return db
 
     #--------------------------- Loading the tree ----------------------------#
     @property_cached
@@ -220,6 +236,12 @@ class GreenGenes(CrestDatabase):
     """
 
     short_name = 'greengenes'
+
+    def download(self):
+        msg = "The greengenes database is included only as a placeholder," \
+              "it will not be present in the final version and cannot be" \
+              "used."
+        raise NotImplementedError(msg)
 
 ###############################################################################
 # As our databases should only be stored on disk once, we have singletons #
