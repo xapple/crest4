@@ -42,6 +42,9 @@ Since `crest4` is written in python it is compatible with all operating systems:
 
 Once the installation completes you are ready to use the `crest4` executable command from the shell. The reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
 
+### Troubleshooting
+
+* If you can't run the `crest4` command, make sure that the python bin directory is in your path. This is usually `$HOME/.local/bin/crest4` for Ubuntu.
 * If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#obtaining-pip3).
 * If you do not have `python3` on your system you can refer to [this other section](docs/installing_tips.md#obtaining-python3).
 * If none the above has enabled you to install `crest4`, please open an issue on [the bug tracker](https://github.com/xapple/crest4/issues) and we will get back to you shortly.

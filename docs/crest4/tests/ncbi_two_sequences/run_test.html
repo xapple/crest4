@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.9.2" />
-<title>crest4 API documentation</title>
-<meta name="description" content="The `crest4` python package can automatically assign taxonomic names to
-DNA sequences obtained from environmental sequencing." />
+<title>crest4.tests.ncbi_two_sequences.run_test API documentation</title>
+<meta name="description" content="Script to run the `ncbi_two_sequences` integration test." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -20,11 +19,10 @@ DNA sequences obtained from environmental sequencing." />
 <main>
 <article id="content">
 <header>
-<h1 class="title">Package <code>crest4</code></h1>
+<h1 class="title">Module <code>crest4.tests.ncbi_two_sequences.run_test</code></h1>
 </header>
 <section id="section-intro">
-<p>The <code><a title="crest4" href="#crest4">crest4</a></code> python package can automatically assign taxonomic names to
-DNA sequences obtained from environmental sequencing.</p>
+<p>Script to run the <code>ncbi_two_sequences</code> integration test.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -33,53 +31,84 @@ DNA sequences obtained from environmental sequencing.</p>
 # -*- coding: utf-8 -*-
 
 &#34;&#34;&#34;
-The `crest4` python package can automatically assign taxonomic names to
-DNA sequences obtained from environmental sequencing.
+Script to run the `ncbi_two_sequences` integration test.
 &#34;&#34;&#34;
 
-# Special variables #
-__version__ = &#39;4.0.9&#39;
+# Built-in modules #
+import inspect
 
-# Constants #
-project_url = &#39;https://github.com/xapple/crest4&#39;
+# First party modules #
+from autopaths import Path
 
-# Expose our main object at the module level #
-from crest4.classify import Classify</code></pre>
+# Third party modules #
+
+# Internal modules #
+from crest4 import Classify
+
+# Get the current directory of this python script #
+this_file = Path((inspect.stack()[0])[1])
+this_dir  = this_file.directory
+
+###############################################################################
+def test_ncbi_two_seqs():
+    # The input fasta #
+    fasta = this_dir.find(&#39;*.fasta&#39;)
+    # The output directory #
+    output_dir = this_dir + &#39;results/&#39;
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 num_threads = True)
+    # Run it #
+    c()
+    # Check that the results are good #
+    assert c.queries[0].taxonomy[0] == &#34;Micrococcaceae&#34;
+    assert c.queries[1].taxonomy[0] == &#34;Nocardioidaceae&#34;
+    # Return #
+    return c
+
+###############################################################################
+if __name__ == &#39;__main__&#39;:
+    c = test_ncbi_two_seqs()</code></pre>
 </details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="crest4.classify" href="classify.html">crest4.classify</a></code></dt>
-<dd>
-<div class="desc"><p>Written by Lucas Sinclair.
-GNUv3 Licensed.
-Contact at www.sinclair.bio
-Created in May 2021.</p></div>
-</dd>
-<dt><code class="name"><a title="crest4.databases" href="databases.html">crest4.databases</a></code></dt>
-<dd>
-<div class="desc"><p>Written by Lucas Sinclair.
-GNUv3 Licensed.
-Contact at www.sinclair.bio
-Created in May 2021.</p></div>
-</dd>
-<dt><code class="name"><a title="crest4.query" href="query.html">crest4.query</a></code></dt>
-<dd>
-<div class="desc"><p>Written by Lucas Sinclair.
-GNUv3 Licensed.
-Contact at www.sinclair.bio
-Created in May 2021.</p></div>
-</dd>
-<dt><code class="name"><a title="crest4.tests" href="tests/index.html">crest4.tests</a></code></dt>
+<dt id="crest4.tests.ncbi_two_sequences.run_test.test_ncbi_two_seqs"><code class="name flex">
+<span>def <span class="ident">test_ncbi_two_seqs</span></span>(<span>)</span>
+</code></dt>
 <dd>
 <div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_ncbi_two_seqs():
+    # The input fasta #
+    fasta = this_dir.find(&#39;*.fasta&#39;)
+    # The output directory #
+    output_dir = this_dir + &#39;results/&#39;
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 num_threads = True)
+    # Run it #
+    c()
+    # Check that the results are good #
+    assert c.queries[0].taxonomy[0] == &#34;Micrococcaceae&#34;
+    assert c.queries[1].taxonomy[0] == &#34;Nocardioidaceae&#34;
+    # Return #
+    return c</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -90,12 +119,14 @@ Created in May 2021.</p></div>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3>Super-module</h3>
 <ul>
-<li><code><a title="crest4.classify" href="classify.html">crest4.classify</a></code></li>
-<li><code><a title="crest4.databases" href="databases.html">crest4.databases</a></code></li>
-<li><code><a title="crest4.query" href="query.html">crest4.query</a></code></li>
-<li><code><a title="crest4.tests" href="tests/index.html">crest4.tests</a></code></li>
+<li><code><a title="crest4.tests.ncbi_two_sequences" href="index.html">crest4.tests.ncbi_two_sequences</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="crest4.tests.ncbi_two_sequences.run_test.test_ncbi_two_seqs" href="#crest4.tests.ncbi_two_sequences.run_test.test_ncbi_two_seqs">test_ncbi_two_seqs</a></code></li>
 </ul>
 </li>
 </ul>

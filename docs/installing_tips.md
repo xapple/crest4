@@ -22,8 +22,8 @@ Then these lines go into your ``.bash_profile``:
 
 Finally, relaunch your shell for changes to take effect and type these commands to get the right version of python:
 
-    $ pyenv install 3.9.4
-    $ pyenv global 3.9.4
+    $ pyenv install 3.9.5
+    $ pyenv global 3.9.5
     $ pyenv rehash
 
 ## Obtaining `pip3`
