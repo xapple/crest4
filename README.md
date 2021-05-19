@@ -2,7 +2,9 @@
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
 
-<img align="center" height="143" src="docs/logo.png?raw=true" alt="CREST Logo">
+<p align="center">
+<img height="143" src="docs/logo.png?raw=true" alt="CREST Logo">
+</p>
 
 More specifically, the acronym CREST stands for "Classification Resources for Environmental Sequence Tags" and is a collection of software and databases for taxonomic classification of environmental marker genes obtained from community sequencing studies. Such studies are also known as "meta-genomics", "meta-transcriptomics", "meta-barcoding", "taxonomic profiling" or "phylogenetic profiling".
 
