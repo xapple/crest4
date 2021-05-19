@@ -7,7 +7,7 @@ DNA sequences obtained from environmental sequencing.
 """
 
 # Special variables #
-__version__ = '4.0.3'
+__version__ = '4.0.4'
 
 # Constants #
 project_url = 'https://github.com/xapple/crest4'
