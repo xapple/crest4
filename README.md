@@ -61,15 +61,15 @@ Simply specifying a FASTA file is sufficient, and `crest4` will choose default v
 
 To change the output directory, specify the following option:
 
-    crest4 -f sequences.fasta --out_dir=~/data/results/crest_test/
+    crest4 -f sequences.fasta -o ~/data/results/crest_test/
 
 To parallelize the sequence similarity search with 32 processes use this option:
 
-    crest4 -f sequences.fasta --threads=32
+    crest4 -f sequences.fasta --num_threads 32
 
 Silvamod is the default reference database. To use another database, e.g. Greengenes, the `database` option must be specified followed by the database name:
 
-    crest4 -f sequences.fasta --database=greengenes
+    crest4 -f sequences.fasta --search_db greengenes
 
 ### All options
 
