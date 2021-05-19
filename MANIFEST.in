@@ -1,4 +1,3 @@
 global-include README.md
-global-include LICENSE.txt
 global-include pytest.ini
 global-include *.fasta
