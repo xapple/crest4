@@ -47,6 +47,8 @@ Created in May 2021.
 import os, json
 
 # Internal modules #
+from seqsearch.search.vsearch import VSEARCHdb
+
 import crest4
 
 # First party modules #
@@ -185,13 +187,27 @@ class CrestDatabase:
         &#34;&#34;&#34;
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
-        # TODO: create the database with mkblastdb if it&#39;s not made already #
+        # Create the database object #
+        db = BLASTdb(self.prefix, seq_type=&#39;nucl&#39;)
+        # Create the database with `mkblastdb` if it&#39;s not made already #
+        db.create_if_not_exists(verbose=True)
         # Return #
-        return BLASTdb(self.prefix, seq_type=&#39;nucl&#39;)
+        return db
 
     @property_cached
     def vsearch_db(self):
-        pass
+        &#34;&#34;&#34;
+        Return a `VSEARCHdb` object that can be used for the sequence
+        similarity search.
+        &#34;&#34;&#34;
+        # Download the database if it has not been done already #
+        if not self.downloaded: self.download()
+        # Create the database object #
+        db = VSEARCHdb(self.prefix)
+        # Create the database with `vsearch` if it&#39;s not made already #
+        db.create_if_not_exists(verbose=True)
+        # Return #
+        return db
 
     #--------------------------- Loading the tree ----------------------------#
     @property_cached
@@ -255,6 +271,12 @@ class GreenGenes(CrestDatabase):
     &#34;&#34;&#34;
 
     short_name = &#39;greengenes&#39;
+
+    def download(self):
+        msg = &#34;The greengenes database is included only as a placeholder,&#34; \
+              &#34;it will not be present in the final version and cannot be&#34; \
+              &#34;used.&#34;
+        raise NotImplementedError(msg)
 
 ###############################################################################
 # As our databases should only be stored on disk once, we have singletons #
@@ -369,13 +391,27 @@ It comes with a FASTA file, as well as a tree.</p></div>
         &#34;&#34;&#34;
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
-        # TODO: create the database with mkblastdb if it&#39;s not made already #
+        # Create the database object #
+        db = BLASTdb(self.prefix, seq_type=&#39;nucl&#39;)
+        # Create the database with `mkblastdb` if it&#39;s not made already #
+        db.create_if_not_exists(verbose=True)
         # Return #
-        return BLASTdb(self.prefix, seq_type=&#39;nucl&#39;)
+        return db
 
     @property_cached
     def vsearch_db(self):
-        pass
+        &#34;&#34;&#34;
+        Return a `VSEARCHdb` object that can be used for the sequence
+        similarity search.
+        &#34;&#34;&#34;
+        # Download the database if it has not been done already #
+        if not self.downloaded: self.download()
+        # Create the database object #
+        db = VSEARCHdb(self.prefix)
+        # Create the database with `vsearch` if it&#39;s not made already #
+        db.create_if_not_exists(verbose=True)
+        # Return #
+        return db
 
     #--------------------------- Loading the tree ----------------------------#
     @property_cached
@@ -723,9 +759,8 @@ a metadata file (see the <code>Metadata</code> class above).</p></div>
 </dd>
 <dt id="crest4.databases.CrestDatabase.vsearch_db"><code class="name">var <span class="ident">vsearch_db</span></code></dt>
 <dd>
-<div class="desc"><p>If you see the current source code in a seemingly unrelated part of
-an auto-generated documentation, it means the program making the
-documentation was unable to correctly traverse a decorated property.</p></div>
+<div class="desc"><p>Return a <code>VSEARCHdb</code> object that can be used for the sequence
+similarity search.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -914,7 +949,13 @@ to download. A good read on this subject is the following:</p>
     Represents the greengenes database.
     &#34;&#34;&#34;
 
-    short_name = &#39;greengenes&#39;</code></pre>
+    short_name = &#39;greengenes&#39;
+
+    def download(self):
+        msg = &#34;The greengenes database is included only as a placeholder,&#34; \
+              &#34;it will not be present in the final version and cannot be&#34; \
+              &#34;used.&#34;
+        raise NotImplementedError(msg)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
