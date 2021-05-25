@@ -2,9 +2,13 @@
 
 Most modern operating systems, with exception to Windows, come with `python3` pre-installed.
 
-If you are using Windows, you can try [this method](https://lmgtfy.com/?q=install+python3+on+windows).
+If you are using Windows, you can try [the chocolatey method](https://lmgtfy.com/?q=install+python3+on+windows+with+chocolatey).
 
-Otherwise if you are using an old version of Linux or macOS, you can simply install your own version of python in your home directory without administrator privileges. To do this we suggest using this excellent project: https://github.com/yyuu/pyenv
+Otherwise, if you are using an old version of macOS that doesn't ship with the latest python, you can simply run the following command after installing homebrew:
+
+    $ brew install python@3.9
+
+Finally, if you are using an old version of Linux that doesn't have a very recent python, you can install your own version of python in your home directory without administrator privileges. To do this we suggest using this excellent project: https://github.com/yyuu/pyenv
 
 To install it you may use this sister project: https://github.com/yyuu/pyenv-installer
 

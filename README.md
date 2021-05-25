@@ -35,19 +35,19 @@ If you use CREST in your research, please cite [this publication](https://dx.plo
 
 ## Installing
 
-Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is `python3` which is often installed by default. Simply type one of the two following commands on your terminal, depending on which package manager you prefer to use:
+Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply type one of the two following commands on your terminal, depending on which package manager you prefer to use:
 
     $ pip3 install crest4
-    $ conda install crest4 -c conda-forge
+    $ conda install -c conda-forge -c xapple crest4 
 
 Once the installation completes you are ready to use the `crest4` executable command from the shell. The reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
 
 ### Troubleshooting
 
-* If you can't run the `crest4` command, make sure that the python bin directory is in your path. This is usually `$HOME/.local/bin/crest4` for Ubuntu.
 * If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#obtaining-pip3).
-* If you do not have `python3` on your system you can refer to [this other section](docs/installing_tips.md#obtaining-python3).
-* If none the above has enabled you to install `crest4`, please open an issue on [the bug tracker](https://github.com/xapple/crest4/issues) and we will get back to you shortly.
+* If you do not have `python3` on your system or have an outdated version, you can refer to [this other section](docs/installing_tips.md#obtaining-python3).
+* If you can't run the `crest4` command after a successful installation, make sure that the python bin directory is in your path. This is usually `$HOME/.local/bin/` for Ubuntu.
+* If none of the above has enabled you to install `crest4`, please open an issue on [the bug tracker](https://github.com/xapple/crest4/issues) and we will get back to you shortly.
 
 ### Database location
 
