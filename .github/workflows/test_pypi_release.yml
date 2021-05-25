@@ -26,8 +26,5 @@ jobs:
     - name: Install the package from PyPI
       run: python -m pip install crest4
 
-    - name: Install pytest
-      run: python -m pip install pytest
-
     - name: Run the pytest suite
-      run: pytest --pyargs forest_puller
+      run: crest4 --pytest

@@ -24,11 +24,5 @@ jobs:
     - name: Install the package from the git repo
       run: pip install ./
 
-    - name: Change directory after installation
-      run: cd ../..
-
-    - name: Install pytest
-      run: pip install pytest
-
     - name: Test with pytest
-      run: pytest --pyargs crest4
+      run: crest4 --pytest
