@@ -23,10 +23,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install the package from anaconda
+        shell: bash -l {0}
         run: conda install -y -c conda-forge -c xapple crest4
 
       - name: Install BLAST
+        shell: bash -l {0}
         run: sudo apt-get install -y ncbi-blast+
 
       - name: Run the pytest suite
-        run: python -m crest4 --pytest
+        shell: bash -l {0}
+        run: crest4 --pytest
