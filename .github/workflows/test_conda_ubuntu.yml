@@ -26,16 +26,17 @@ jobs:
         shell: bash -l {0}
         run: ls $CONDA_PKGS_DIR
 
-      - name: ls bin
+      - name: ls ..
         shell: bash -l {0}
-        run: ls $CONDA_PKGS_DIR/bin
+        run: ls $CONDA_PKGS_DIR/..
 
       - name: Install the package from anaconda
+        shell: bash -l {0}
         run: conda install -y -c conda-forge -c xapple crest4
 
       - name: Test command
         shell: bash -l {0}
-        run: which crest4
+        run: echo $PATH
 
       - name: Run the pytest suite
         shell: bash -l {0}
