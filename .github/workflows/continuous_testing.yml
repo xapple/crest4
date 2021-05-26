@@ -24,5 +24,8 @@ jobs:
     - name: Install the package from the git repo
       run: pip install ./
 
+    - name: Install BLAST
+      run: sudo apt-get install -y ncbi-blast+
+
     - name: Test with pytest
       run: crest4 --pytest

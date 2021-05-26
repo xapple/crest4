@@ -26,5 +26,8 @@ jobs:
     - name: Install the package from PyPI
       run: python -m pip install crest4
 
+    - name: Install BLAST
+      run: sudo apt-get install -y ncbi-blast+
+
     - name: Run the pytest suite
       run: crest4 --pytest
