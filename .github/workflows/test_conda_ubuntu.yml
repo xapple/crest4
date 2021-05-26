@@ -22,25 +22,13 @@ jobs:
           auto-activate-base: true
           python-version: ${{ matrix.python-version }}
 
-      - name: ls
-        shell: bash -l {0}
-        run: ls $CONDA_PKGS_DIR
-
-      - name: ls ..
-        shell: bash -l {0}
-        run: ls $CONDA_PKGS_DIR/..
-
       - name: Install the package from anaconda
         shell: bash -l {0}
         run: conda install -y -c conda-forge -c xapple crest4
 
-      - name: Test command
-        shell: bash -l {0}
-        run: echo $PATH
+      - name: Install BLAST
+        run: sudo apt-get install -y ncbi-blast+
 
       - name: Run the pytest suite
         shell: bash -l {0}
-        run: crest4 --pytest
-
-      - name: Install BLAST
-        run: sudo apt-get install -y ncbi-blast+
+        run:  python -m crest4 --pytest
