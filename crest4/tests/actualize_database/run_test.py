@@ -22,6 +22,9 @@ def test_download_database():
     silvamod128.download()
     assert silvamod128.downloaded
 
+def test_blast_index():
+    assert silvamod128.blast_db
+
 ###############################################################################
 if __name__ == '__main__':
     test_download_metadata()
