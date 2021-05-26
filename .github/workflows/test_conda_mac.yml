@@ -20,6 +20,8 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
+          auto-activate-base: true
+          activate-environment: ""
 
       - name: Install the package from anaconda
         run: conda install -y -c conda-forge -c xapple crest4
