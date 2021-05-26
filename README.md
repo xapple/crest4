@@ -202,6 +202,18 @@ It is possible to construct a custom reference database for use with `crest4`. T
 
 <https://github.com/xapple/crest4_utils>
 
+### Continuous testing
+
+The repository for `crest4` comes along with five different GitHub actions for CI/CD which are:
+
+* Pytest master branch
+* Test PyPI release on Ubuntu
+* Test PyPI release on macOS
+* Test conda release on Ubuntu
+* Test conda release on macOS
+
+Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite for both python 3.8 and python 3.9 on different operating systems.
+
 ### Developer documentation
 
 The internal documentation of the `crest4` python package is available at:
