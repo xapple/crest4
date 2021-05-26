@@ -40,7 +40,15 @@ Since `crest4` is written in python it is compatible with all operating systems:
     $ pip3 install crest4
     $ conda install -c conda-forge -c xapple crest4 
 
-Once the installation completes you are ready to use the `crest4` executable command from the shell. The reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
+Once the installation completes you are ready to use the `crest4` executable command from the shell. Please note that the reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
+
+Finally, in order to search these databases, you will also need either BLAST or VSEARCH installed. You can obtain these with these commands on Linux:
+
+    $ aaa
+
+Or these commands on macOS:
+
+    $ aaa
 
 ### Troubleshooting
 
@@ -66,13 +74,13 @@ To change the output directory, specify the following option:
 
     crest4 -f sequences.fasta -o ~/data/results/crest_test/
 
-To parallelize the sequence similarity search with 32 processes use this option:
+To parallelize the sequence similarity search with 32 threads use this option:
 
-    crest4 -f sequences.fasta --num_threads 32
+    crest4 -f sequences.fasta -t 32
 
-Silvamod is the default reference database. To use another database, e.g. Greengenes, the `database` option must be specified followed by the database name:
+Silvamod is the default reference database. To use another database, e.g. Greengenes, the `d` option must be specified followed by the database name:
 
-    crest4 -f sequences.fasta --search_db greengenes
+    crest4 -f sequences.fasta -d greengenes
 
 ### All options
 
