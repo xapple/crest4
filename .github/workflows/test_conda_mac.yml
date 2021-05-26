@@ -1,8 +1,8 @@
-name: Test conda release
+name: Test conda release on macOS
 
 # This workflow will install the latest conda release of the package (not the
 # master branch of the repository) and will run pytest on various platforms.
-# This includes Ubuntu and macOS, as well as two different python versions.
+# This will run on the two latest python versions.
 
 on: workflow_dispatch
 
@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ['3.8', '3.9']
         os: [macos-latest]
 
     steps:
@@ -25,7 +25,7 @@ jobs:
         run: conda install -c conda-forge -c xapple crest4
 
       - name: Install BLAST
-        run: sudo apt-get install -y ncbi-blast+
+        run: brew install blast
 
       - name: Run the pytest suite
         run: crest4 --pytest

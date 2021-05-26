@@ -1,4 +1,4 @@
-name: Continuous testing
+name: Pytest master branch
 
 # This workflow will run `pytest` on the latest commit of the master
 # branch, after having installed the package with pip.
