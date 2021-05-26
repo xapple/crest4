@@ -142,6 +142,9 @@ class CrestDatabase:
         self.tarball.untargz_to(self.base_dir)
         # Remove tarball #
         self.tarball.remove()
+        # Remove macOS attribute files that get bundled in the tar #
+        for path in self.base_dir.flat_files:
+            if path.name.startswith("._"): path.remove()
 
     #--------------------------- Specific Indexes ----------------------------#
     @property_cached
