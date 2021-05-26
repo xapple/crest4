@@ -20,14 +20,17 @@ jobs:
         with:
           auto-update-conda: true
           python-version: ${{ matrix.python-version }}
-          auto-activate-base: true
 
       - name: Install the package from anaconda
         run: conda install -y -c conda-forge -c xapple crest4
 
-      - name: Install BLAST
-        run: sudo apt-get install -y ncbi-blast+
+      - name: Test command
+        shell: bash -l {0}
+        run: which crest4
 
       - name: Run the pytest suite
         shell: bash -l {0}
         run: crest4 --pytest
+
+      - name: Install BLAST
+        run: sudo apt-get install -y ncbi-blast+
