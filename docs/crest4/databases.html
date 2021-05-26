@@ -177,6 +177,9 @@ class CrestDatabase:
         self.tarball.untargz_to(self.base_dir)
         # Remove tarball #
         self.tarball.remove()
+        # Remove macOS attribute files that get bundled in the tar #
+        for path in self.base_dir.flat_files:
+            if path.name.startswith(&#34;._&#34;): path.remove()
 
     #--------------------------- Specific Indexes ----------------------------#
     @property_cached
@@ -381,6 +384,9 @@ It comes with a FASTA file, as well as a tree.</p></div>
         self.tarball.untargz_to(self.base_dir)
         # Remove tarball #
         self.tarball.remove()
+        # Remove macOS attribute files that get bundled in the tar #
+        for path in self.base_dir.flat_files:
+            if path.name.startswith(&#34;._&#34;): path.remove()
 
     #--------------------------- Specific Indexes ----------------------------#
     @property_cached
@@ -825,7 +831,10 @@ similarity search.</p></div>
     # Uncompress #
     self.tarball.untargz_to(self.base_dir)
     # Remove tarball #
-    self.tarball.remove()</code></pre>
+    self.tarball.remove()
+    # Remove macOS attribute files that get bundled in the tar #
+    for path in self.base_dir.flat_files:
+        if path.name.startswith(&#34;._&#34;): path.remove()</code></pre>
 </details>
 </dd>
 </dl>
