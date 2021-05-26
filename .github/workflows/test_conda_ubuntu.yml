@@ -24,7 +24,7 @@ jobs:
 
       - name: ls
         shell: bash -l {0}
-        run: ls $ CONDA_PKGS_DIR
+        run: ls $CONDA_PKGS_DIR
 
       - name: ls bin
         shell: bash -l {0}
