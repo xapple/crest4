@@ -19,7 +19,16 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           auto-update-conda: true
+          auto-activate-base: true
           python-version: ${{ matrix.python-version }}
+
+      - name: ls
+        shell: bash -l {0}
+        run: ls $ CONDA_PKGS_DIR
+
+      - name: ls bin
+        shell: bash -l {0}
+        run: ls $CONDA_PKGS_DIR/bin
 
       - name: Install the package from anaconda
         run: conda install -y -c conda-forge -c xapple crest4
