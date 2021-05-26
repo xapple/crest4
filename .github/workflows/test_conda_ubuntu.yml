@@ -29,4 +29,5 @@ jobs:
         run: sudo apt-get install -y ncbi-blast+
 
       - name: Run the pytest suite
+        shell: bash -l {0}
         run: crest4 --pytest
