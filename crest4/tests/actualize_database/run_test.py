@@ -18,7 +18,7 @@ from crest4.databases import metadata, silvamod128
 def test_download_metadata():
     urls = metadata.db_urls
     assert urls
-    
+
 def test_blast_index():
     db = silvamod128.blast_db
     assert db
