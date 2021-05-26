@@ -16,10 +16,12 @@ from crest4.databases import metadata, silvamod128
 
 ###############################################################################
 def test_download_metadata():
-    assert metadata.db_urls
-
+    urls = metadata.db_urls
+    assert urls
+    
 def test_blast_index():
-    assert silvamod128.blast_db
+    db = silvamod128.blast_db
+    assert db
 
 ###############################################################################
 if __name__ == '__main__':
