@@ -171,7 +171,7 @@ class CrestDatabase:
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
-        db = VSEARCHdb(self.prefix)
+        db = VSEARCHdb(self.prefix.replace_extension('udb'))
         # Create the database with `vsearch` if it's not made already #
         db.create_if_not_exists(verbose=True)
         # Return #
@@ -225,7 +225,7 @@ class CrestDatabase:
         return tree
 
 ###############################################################################
-class SilvaMod128(CrestDatabase):
+class Silvamod128(CrestDatabase):
     """
     Represents the silvamod database.
     """
@@ -248,5 +248,5 @@ class GreenGenes(CrestDatabase):
 
 ###############################################################################
 # As our databases should only be stored on disk once, we have singletons #
-silvamod128 = SilvaMod128()
+silvamod128 = Silvamod128()
 greengenes = GreenGenes()

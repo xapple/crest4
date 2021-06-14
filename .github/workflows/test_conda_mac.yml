@@ -26,9 +26,9 @@ jobs:
         shell: bash -l {0}
         run: conda install -y -c conda-forge -c xapple crest4
 
-      - name: Install BLAST
+      - name: Install BLAST and VSEARCH
         shell: bash -l {0}
-        run: brew install blast
+        run: brew install blast vsearch
 
       - name: Run the pytest suite
         shell: bash -l {0}

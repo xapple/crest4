@@ -23,7 +23,12 @@ def test_blast_index():
     db = silvamod128.blast_db
     assert db
 
+def test_vsearch_index():
+    db = silvamod128.vsearch_db
+    assert db
+
 ###############################################################################
 if __name__ == '__main__':
     test_download_metadata()
     test_blast_index()
+    test_vsearch_index()

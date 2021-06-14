@@ -24,8 +24,8 @@ jobs:
       - name: Install the package from the git repo
         run: pip install ./
 
-      - name: Install BLAST
-        run: sudo apt-get install -y ncbi-blast+
+      - name: Install BLAST and VSEARCH
+        run: sudo apt-get install -y ncbi-blast+ vsearch
 
       - name: Test with pytest
         run: crest4 --pytest

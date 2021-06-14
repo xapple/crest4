@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Written by Lucas Sinclair.
-GNUv3 Licensed.
-Contact at www.sinclair.bio
-Created in May 2021.
-"""
-
 # Imports #
 from setuptools import setup, find_namespace_packages
 from os import path

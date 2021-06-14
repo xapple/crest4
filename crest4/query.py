@@ -23,8 +23,9 @@ class Query:
     """
 
     def __init__(self, classify, query):
-        # Save attributes #
+        # A reference to the parent object #
         self.classify = classify
+        # An object containing all the hit results for this sequence #
         self.query = query
         # Get the name #
         self.name = self.query.id
@@ -50,7 +51,7 @@ class Query:
         top_score = self.query.hsps[0].bitscore
         # Check if the score is good enough to proceed further #
         if top_score < self.classify.min_score: return nodes
-        # Calculate the score threshold based on the best hit #
+        # Calculate the score-drop threshold based on the best hit #
         threshold = top_score * self.classify.score_frac
         # Iterate on the hits until falling below a threshold #
         for hsp in self.query.hsps:
@@ -79,7 +80,7 @@ class Query:
         """
         # If there are no hits #
         if len(self.nodes) == 0: return False
-        # If there is only one hit then get that node in the tree #
+        # If there is only one hit, then get that node in the tree #
         if len(self.nodes) == 1:
             name, = self.nodes
             node = self.db.tree.search_nodes(name=name)[0]
@@ -95,17 +96,14 @@ class Query:
         # satisfactory
         while True:
             # Check that the similarity filter is activated #
-            if True: break
-            # Check if we already got to the root #
-            if node is self.db.tree.root: break
-            # Check that there is a minimum associated #
-            if node.name not in self.tree.assignmentMin:
-                msg = "Missing a minimum score"
-                raise Exception(msg)
-            # Check that we are below that minimum #
-            if self.db.tree.assMin[node.name] > similarity:
-                break
-            # Otherwise go up one level for our classification #
+            if not self.classify.min_smlrty: break
+            # Check if we already got all the way down to the root #
+            if node.is_root(): break
+            # Get the minimum value associated for this level #
+            smlrty_min = float(self.db.node_to_name[node.name][1])
+            # Check if we are finally above that minimum #
+            if similarity > smlrty_min: break
+            # Otherwise go down one level for our classification #
             node = self.db.tree.get_parent(node)
         # Return #
         return node
@@ -113,7 +111,12 @@ class Query:
     @property_cached
     def taxonomy(self):
         """
-        This function will xxx.
+        This function will return a list containing the assigned taxonomy.
+
+        For instance:
+            ['root', 'Main genome', 'Bacteria', 'Bacteria (superkingdom)',
+             'Terrabacteria', 'Actinobacteria', 'Actinobacteria (class)',
+             'Micrococcales', 'Micrococcaceae']
         """
         # Check if there was no hits #
         if self.assigned_node is False: return ["No hits"]
@@ -125,9 +128,11 @@ class Query:
     @property_cached
     def tax_string(self):
         """
-        This function will xxx.
+        This function will return a single comma-separated string containing
+        the full assigned taxonomy along with the original name of the
+        sequence classified.
         """
         # Make a comma separated string #
         tax = ','.join(reversed(self.taxonomy))
-        # Add the name of the query to the line #
+        # Add the name of the query to the beginning line #
         return self.name + '\t' + tax + '\n'

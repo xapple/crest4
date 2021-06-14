@@ -4,7 +4,7 @@ The database is located at:
 
 https://www.ncbi.nlm.nih.gov/refseq/targetedloci/16S_process/
 
-The `generate.py` script automatically creates the input FASTA file by using these two accession numbers:
+The `generate.py` script automatically creates the input FASTA files by using these two accession numbers:
 
 * `NR_171545.1`
 * `NR_171544.1`

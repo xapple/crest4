@@ -37,8 +37,10 @@ if __name__ == '__main__':
     sequences = acc_to_fasta(accessions.keys())
 
     # Parse them #
-    records = [(seq['TSeq_sequence'], ' '.join(seq['TSeq_defline'].split(' ')[:3]))
+    records = [(seq['TSeq_sequence'],
+                ' '.join(seq['TSeq_defline'].split(' ')[:3]))
                for seq in sequences]
+
     # Make biopython objects out of them #
     records = [SeqRecord(Seq(seq), id=name, description='')
                for seq, name in records]

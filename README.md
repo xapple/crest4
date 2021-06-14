@@ -35,20 +35,27 @@ If you use CREST in your research, please cite [this publication](https://dx.plo
 
 ## Installing
 
-Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply type one of the two following commands on your terminal, depending on which package manager you prefer to use:
+Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply choose one of the two following methods, depending on which package manager you prefer to use.
+
+### Installing via `conda`
+
+    $ conda install -c conda-forge -c xapple crest4 
+
+### Installing via `pip`
 
     $ pip3 install crest4
-    $ conda install -c conda-forge -c xapple crest4 
+
+### Notes and extras
 
 Once the installation completes you are ready to use the `crest4` executable command from the shell. Please note that the reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
 
-Finally, in order to search these databases, you will also need either BLAST or VSEARCH installed. You can obtain these with these commands on Linux:
+In order to search the reference databases, you will also need either BLAST or VSEARCH installed. These are installed automatically with the `conda` method, but not with the `pip` method. You can obtain these with these commands on Linux:
 
-    $ aaa
+    $ sudo apt install ncbi-blast+
 
 Or these commands on macOS:
 
-    $ aaa
+    $ brew install blast
 
 ### Troubleshooting
 
@@ -60,7 +67,6 @@ Or these commands on macOS:
 ### Database location
 
 To download the databases that are used in the classification algorithm, `crest4` needs somewhere to write to on the filesystem. This will default to your home directory at: `~/.crest4/`. If you wish to change this, simply set the environment variable `$CREST4_DIR` to another directory path prior to execution.
-
 
 ## Usage
 
@@ -78,7 +84,7 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod is the default reference database. To use another database, e.g. Greengenes, the `d` option must be specified followed by the database name:
+Silvamod128 is the default reference database. To use another database, e.g. Greengenes, the `d` option must be specified followed by the database name:
 
     crest4 -f sequences.fasta -d greengenes
 
@@ -171,26 +177,19 @@ To create the hits file on a different server you should call the `blastn` execu
 We also recommend that you use `-num_threads` to enable multi-threading and speed up the alignments.
 
 
-## Results
-
-The results produced are as follows:
-
-
-
-
 ## More information
 
 ### Classification databases
 
-The SilvaMod database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. Release supported: Silva NR SSU Ref v128. The database was last released in: September 2016.
+The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. Release supported: Silva NR SSU Ref v128. The database was last released in: September 2016.
 
-The [Greengenes](http://greengenes.secondgenome.com) database is an alternative reference for classification of prokaryotic 16S, curated and maintained by The Greengenes Database Consortium. The database was last released in: May 2013
+The [Greengenes](http://greengenes.secondgenome.com) database is an alternative reference for classification of prokaryotic 16S, curated and maintained by The Greengenes Database Consortium. The database was last released in: May 2013.
 
 ### Classification algorithm
 
-The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) (LCA) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, providing the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the LCA range. Based on cross-validation testing using the non-redundant SilvaMod database, this results in relatively few false positives for most datasets. However, the LCA range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
+The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, providing the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant Silvamod128 database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
 
-In addition to LCA classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.map` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
+In addition to the lowest common ancestor classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.map` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
 
 When using amplicon sequences, we strongly recommend preparing the sequences by performing a noise reduction step as well as applying chimera removal. This can be achieved with various third party software: vsearch, UPARSE, DADA2, SWARM, etc.
 
@@ -201,6 +200,12 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentations are available in this other git repository:
 
 <https://github.com/xapple/crest4_utils>
+
+### QIIME2 plug-in
+
+A plug-in for usage with QIIME2 is being developed and will be accessible here once completed:
+
+<https://github.com/xapple/q2-crest4>
 
 ### Continuous testing
 

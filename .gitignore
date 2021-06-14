@@ -19,6 +19,6 @@
 # Testing #
 /.pytest_cache/
 
-# The results of the tests #
-*.hits
+# The results of the pytest cases #
+search.hits
 assignments.txt

@@ -46,8 +46,9 @@ class Classify:
                  search_db   = 'silvamod128',
                  output_dir  = None,
                  search_hits = None,
-                 min_score  = 155,
-                 score_drop = 2.0,
+                 min_score   = None,
+                 score_drop  = 2.0,
+                 min_smlrty  = True,
                  ):
         """
         Args:
@@ -58,9 +59,9 @@ class Classify:
 
             search_algo: The algorithm used for the sequence similarity search
                          that will be run to match the sequences against the
-                         database chosen. Either 'blast' or 'vsearch'. No
+                         database chosen. Either `blast` or `vsearch`. No
                          other values are currently supported. By default
-                         'blast'.
+                         `blast`.
 
             num_threads: The number of processors to use for the sequence
                          similarity search. By default parallelism is turned
@@ -69,13 +70,13 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either 'silvamod128' or 'greengenes'. No other values
-                       are currently supported. By default 'silvamod128'.
+                       Either `silvamod128` or `greengenes`. No other values
+                       are currently supported. By default `silvamod128`.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
-                        directory with the same name original FASTA file and
-                        a `.crest4` suffix appended.
+                        directory with the same name as the original FASTA
+                        file and a `.crest4` suffix appended.
 
             search_hits: The path where the search results will be stored.
                          This defaults to the output directory. However,
@@ -84,9 +85,24 @@ class Classify:
                          sequence similarity search step and go directly to
                          the taxonomy step.
 
-            min_score: a
+            min_score: The minimum bit-score for a search hit to be considered
+                       when using BLAST as the search algorithm. All hits below
+                       this score are ignored. When using VSEARCH, this value
+                       instead indicates the minimum identity between two
+                       sequences for the hit to be considered.
+                       The default is `155` for BLAST and `0.75` for VSEARCH.
 
-            score_drop: a
+            score_drop: Determines the range of hits to consider and the range
+                        to discard based on a drop in percentage from the score
+                        of the best hit. Any hit below the value:
+                        "(1 - score_drop) * best_hit_score" is ignored.
+                        By default `2.0`.
+
+            min_smlrty: Determines if the minimum similarity filter is turned
+                        on or off. Pass the value `False` to turn it off.
+                        The minimum similarity filter prevents classification
+                        to higher ranks when a minimum rank-identity is not met.
+                        By default `True`.
         """
         # Save attributes #
         self.fasta       = fasta
@@ -97,6 +113,7 @@ class Classify:
         self.search_hits = search_hits
         self.min_score   = min_score
         self.score_drop  = score_drop
+        self.min_smlrty  = min_smlrty
         # Assign default values and change others #
         self.transform()
         # Validate attributes #
@@ -122,6 +139,12 @@ class Classify:
         # Default for the search hits file #
         if self.search_hits is None:
             self.search_hits = self.output_dir + 'search.hits'
+        # Default for the minimum score #
+        if self.min_score is None:
+            if self.search_algo == 'blast':
+                self.min_score = 155
+            if self.search_algo == 'vsearch':
+                self.min_score = 0.75
 
     def validate(self):
         """
@@ -141,6 +164,15 @@ class Classify:
         if self.search_db not in ('silvamod128', 'greengenes'):
             msg = "The search database '%s' is not supported."
             raise ValueError(msg % self.search_db)
+        # Check the minimum score value #
+        if self.min_score < 0.0:
+            msg = "The minimum score cannot be smaller than zero ('%s')."
+            raise ValueError(msg % self.min_score)
+        if self.min_score > 1.0:
+            if self.search_algo == 'vsearch':
+                msg = "The minimum score cannot be more than 1.0 when" \
+                      "using VSEARCH ('%s')."
+                raise ValueError(msg % self.min_score)
 
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
@@ -161,6 +193,8 @@ class Classify:
         * Setting `-outfmt` to 6 means tabular output.
         * Setting `-outfmt` to 7 means tabular output with comments.
         """
+        # Initialize #
+        params = {}
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == 'blast':
             params = {'-outfmt': '7 qseqid sseqid bitscore length nident'}
@@ -218,5 +252,3 @@ class Classify:
         self.out_file.writelines(query.tax_string for query in self.queries)
         # Return #
         return self.out_file
-
-

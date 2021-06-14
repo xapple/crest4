@@ -27,8 +27,8 @@ jobs:
       - name: Install the package from PyPI
         run: python -m pip install --extra-index-url https://test.pypi.org/simple/ crest4
 
-      - name: Install BLAST
-        run: sudo apt-get install -y ncbi-blast+
+      - name: Install BLAST and VSEARCH
+        run: sudo apt-get install -y ncbi-blast+ vsearch
 
       - name: Run the pytest suite
         run: crest4 --pytest
