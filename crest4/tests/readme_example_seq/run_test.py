@@ -40,4 +40,4 @@ def test_readme_example_seq():
 
 ###############################################################################
 if __name__ == '__main__':
-    c = test_readme_example_seq()
+    classify = test_readme_example_seq()

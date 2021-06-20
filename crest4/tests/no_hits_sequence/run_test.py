@@ -42,4 +42,4 @@ def test_no_hits_sequence():
 
 ###############################################################################
 if __name__ == '__main__':
-    c = test_no_hits_sequence()
+    classify = test_no_hits_sequence()

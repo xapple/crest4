@@ -41,4 +41,4 @@ def test_ncbi_two_seqs():
 
 ###############################################################################
 if __name__ == '__main__':
-    c = test_ncbi_two_seqs()
+    classify = test_ncbi_two_seqs()
