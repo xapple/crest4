@@ -1,0 +1,1 @@
+This test uses the VSEARCH algorithm instead of the BLAST one.
