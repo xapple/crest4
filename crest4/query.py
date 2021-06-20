@@ -17,9 +17,8 @@ class Query:
     Represents a single sequence (for instance an OTU) along with
     all the information pertaining to it, such as its taxonomic assignment.
 
-    Takes care of assigning taxonomy for by using the results of
-    the sequence similarity search and a phylogenetic tree as a N-ary
-    directed graph.
+    Takes care of assigning taxonomy by using the results of the sequence
+    similarity search and a phylogenetic tree as a N-ary directed graph.
     """
 
     def __init__(self, classify, query):
@@ -31,6 +30,8 @@ class Query:
         self.name = self.query.id
         # Shortcut to the database used #
         self.db = self.classify.database
+        # Shortcut to the algorithm used #
+        self.algo = self.classify.search_algo
 
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
@@ -48,7 +49,8 @@ class Query:
         # Check there was at least one hit #
         if len(self.query.hits) == 0: return nodes
         # Get the score of the best hit #
-        top_score = self.query.hsps[0].bitscore
+        if self.algo == 'blast':   top_score = self.query.hsps[0].bitscore
+        if self.algo == 'vsearch': top_score = self.query.hsps[0].ident_pct/100
         # Check if the score is good enough to proceed further #
         if top_score < self.classify.min_score: return nodes
         # Calculate the score-drop threshold based on the best hit #
@@ -56,14 +58,16 @@ class Query:
         # Iterate on the hits until falling below a threshold #
         for hsp in self.query.hsps:
             # Stop if the current bitscore is below our threshold #
-            if hsp.bitscore < threshold: break
+            if self.algo == 'blast':   score = hsp.bitscore
+            if self.algo == 'vsearch': score = hsp.ident_pct/100
+            if score < threshold: break
             # Get the name of the current hit #
             name = hsp.hit_id
             # Get the corresponding node name in the tree #
             node = self.db.acc_to_node.get(name)
             # Check that it was found #
             if node is None:
-                msg = "The search hit '%s' was not found in the tree of %s."
+                msg = "The search hit '%s' was not found in the tree of '%s'."
                 raise Exception(msg % (node, self.db.short_name))
             # Add it to the list #
             nodes.add(node)
@@ -88,9 +92,12 @@ class Query:
         else:
             node = self.db.tree.get_common_ancestor(self.nodes)
         # Calculate the similarity fraction of the best alignment #
-        ident_num = self.query.hsps[0].ident_num
-        algn_span = self.query.fragments[0]._aln_span
-        similarity = ident_num / algn_span
+        if self.algo == 'blast':
+            ident_num = self.query.hsps[0].ident_num
+            algn_span = self.query.fragments[0]._aln_span
+            similarity = ident_num / algn_span
+        if self.algo == 'vsearch':
+            similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
         # level and proceed descending the tree until the similarity is
         # satisfactory
