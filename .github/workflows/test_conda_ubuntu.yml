@@ -1,8 +1,8 @@
 name: Test conda release on Ubuntu
 
 # This workflow will install the latest conda release of the package (not the
-# master branch of the repository) and will run pytest on various platforms.
-# This will run on the two latest python versions.
+# master branch of the repository) and will run pytest on the two latest
+# python versions.
 
 on: workflow_dispatch
 
@@ -24,11 +24,7 @@ jobs:
 
       - name: Install the package from anaconda
         shell: bash -l {0}
-        run: conda install -y -c conda-forge -c xapple crest4
-
-      - name: Install BLAST and VSEARCH
-        shell: bash -l {0}
-        run: sudo apt-get install -y ncbi-blast+ vsearch
+        run: conda install -y -c bioconda -c conda-forge -c xapple crest4
 
       - name: Run the pytest suite
         shell: bash -l {0}

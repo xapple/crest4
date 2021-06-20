@@ -1,9 +1,9 @@
 name: Test PyPI release on Ubuntu
 
 # This workflow will install the latest PyPI release of the package (not the
-# master branch of the repository) and will run pytest on various platforms.
-# It will search both in the real PyPI index as well as the test PyPI.
-# This will run on the two latest python versions.
+# master branch of the repository) and will run pytest on the two latest
+# python versions. It will search both in the real PyPI index as well as the
+# test PyPI.
 
 on: workflow_dispatch
 
