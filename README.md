@@ -1,3 +1,6 @@
+[![PyPI version](https://badge.fury.io/py/seqsearch.svg)](https://badge.fury.io/py/crest4)
+![example workflow](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
+
 # CREST version 4.0.1
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
@@ -39,7 +42,7 @@ Since `crest4` is written in python it is compatible with all operating systems:
 
 ### Installing via `conda`
 
-    $ conda install -c conda-forge -c xapple crest4 
+    $ conda install -c bioconda -c conda-forge -c xapple crest4 
 
 ### Installing via `pip`
 
@@ -149,10 +152,14 @@ Required arguments:
 
 If you want to integrate `crest4` directly into your python pipeline, you may do so by accessing the convenient `Classify` object as follows:
 
+    # Import #
     from crest4 import Classify
+    # Create a new instance #
     tax = Classify('~/data/sequences.fasta', num_threads=16)
-    output = tax()
-    print(output)
+    # Run the simliarty search and classification #
+    tax()
+    # Print the results #
+    for query in tax.queries: print(query.taxonomy)
 
 The specific arguments accepted are the same as the command line version as specified in the [internal API documentation](http://xapple.github.io/crest4/crest4/classify#Classify).
 
@@ -175,6 +182,10 @@ To create the hits file on a different server you should call the `blastn` execu
     blastn -query sequences.fasta -db ~/.crest4/silvamod128/silvamod128.fasta -num_alignments 100 -outfmt "7 qseqid sseqid bitscore length nident" -out seq_search.hits
 
 We also recommend that you use `-num_threads` to enable multi-threading and speed up the alignments.
+
+The equivalent VSEARCH command is the following:
+
+    vsearch --usearch_global sequences.fasta -db ~/.crest4/silvamod128/silvamod128.udb -blast6out seq_search.hits -threads 32 -id 0.75 -maxaccepts 100
 
 
 ## More information
