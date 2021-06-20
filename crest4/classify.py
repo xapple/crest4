@@ -53,9 +53,9 @@ class Classify:
         """
         Args:
 
-            fasta: The path to a single FASTA or FASTQ file as a string.
+            fasta: The path to a single FASTA file as a string.
                    These are the sequences that will be taxonomically
-                   classified. The file can be gzipped or not.
+                   classified.
 
             search_algo: The algorithm used for the sequence similarity search
                          that will be run to match the sequences against the
@@ -92,10 +92,10 @@ class Classify:
                        sequences for the hit to be considered.
                        The default is `155` for BLAST and `0.75` for VSEARCH.
 
-            score_drop: Determines the range of hits to consider and the range
+            score_drop: Determines the range of hits to retain and the range
                         to discard based on a drop in percentage from the score
-                        of the best hit. Any hit below the value:
-                        "(1 - score_drop) * best_hit_score" is ignored.
+                        of the best hit. Any hit below the following value:
+                        "(100 - score_drop)/100 * best_hit_score" is ignored.
                         By default `2.0`.
 
             min_smlrty: Determines if the minimum similarity filter is turned
@@ -130,9 +130,15 @@ class Classify:
         # The search hits is a file somewhere #
         if self.search_hits is not None:
             self.search_hits = FilePath(self.search_hits)
+            self.search_hits.must_exist()
         # Default for the number of threads #
-        if self.num_threads is True:
-            self.num_threads = min(multiprocessing.cpu_count(), 32)
+        if not isinstance(self.num_threads, int):
+            if self.num_threads is True:
+                self.num_threads = min(multiprocessing.cpu_count(), 32)
+            elif self.num_threads is False:
+                self.num_threads = 1
+            elif self.num_threads.lower() == 'true':
+                self.num_threads = min(multiprocessing.cpu_count(), 32)
         # Default for the output directory #
         if self.output_dir is None:
             self.output_dir = DirectoryPath(self.fasta + '.crest4/')
@@ -151,6 +157,9 @@ class Classify:
         This method will raise an Exception if any of the arguments passed by
         the user are illegal.
         """
+        # The fasta should exist if passed #
+        if self.fasta is not None:
+            self.fasta.must_exist()
         # Either the FASTA file or the hits file has to contain something #
         if not self.fasta and not self.search_hits:
             msg = "Neither the FASTA file at '%s' nor the search hits file at" \
@@ -164,15 +173,24 @@ class Classify:
         if self.search_db not in ('silvamod128', 'greengenes'):
             msg = "The search database '%s' is not supported."
             raise ValueError(msg % self.search_db)
-        # Check the minimum score value #
+        # Check the minimum score value above zero #
         if self.min_score < 0.0:
             msg = "The minimum score cannot be smaller than zero ('%s')."
             raise ValueError(msg % self.min_score)
+        # Check the minimum score value below zero #
         if self.min_score > 1.0:
             if self.search_algo == 'vsearch':
                 msg = "The minimum score cannot be more than 1.0 when" \
-                      "using VSEARCH ('%s')."
+                      " using VSEARCH ('%s') because it represents the" \
+                      " the minimum identity between two sequences."
                 raise ValueError(msg % self.min_score)
+        # Check the score drop value #
+        if self.score_drop < 0.0:
+            msg = "The score drop value cannot be smaller than zero ('%s')."
+            raise ValueError(msg % self.min_score)
+        if self.score_drop > 100.0:
+            msg = "The score drop value cannot be over 100 ('%s')."
+            raise ValueError(msg % self.min_score)
 
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
@@ -198,9 +216,9 @@ class Classify:
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == 'blast':
             params = {'-outfmt': '7 qseqid sseqid bitscore length nident'}
-        # In case the user chose VSEARCH #
+        # In case the user chose VSEARCH we specify the minimum identify #
         if self.search_algo == 'vsearch':
-            params = {}
+            params = {'-id': self.min_score}
         # Build the object
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
