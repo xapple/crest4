@@ -12,7 +12,6 @@ Created in May 2021.
 import os, json
 
 # Internal modules #
-from seqsearch.search.vsearch import VSEARCHdb
 
 import crest4
 
@@ -20,7 +19,8 @@ import crest4
 from autopaths.dir_path import DirectoryPath
 from plumbing.cache     import property_cached
 from plumbing.scraping  import download_from_url, retrieve_from_url
-from seqsearch.search   import BLASTdb
+from seqsearch.search.blast   import BLASTdb
+from seqsearch.search.vsearch import VSEARCHdb
 
 # Third party modules #
 from ete3 import Tree
@@ -78,6 +78,9 @@ class CrestDatabase:
     # The environment variable that the user can set #
     environ_var = "CREST4_DIR"
 
+    # Children should overwrite this
+    short_name = None
+
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
         return "<%s object at '%s'>" % (self.__class__.__name__, self.prefix)
@@ -127,7 +130,7 @@ class CrestDatabase:
                   " patient. The result will be saved to '%s'. You can" \
                   " override this by setting the $%s environment variable."
         message = message % (self.short_name, self.base_dir, self.environ_var)
-        # Display the message with style #
+        # Display the message with style in a box #
         from plumbing.common import rich_panel_print
         rich_panel_print(message, "Large Download")
         # Show a progress bar a bit like wget #
