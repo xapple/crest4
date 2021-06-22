@@ -1,0 +1,1 @@
+This test has a precomputed hits file that will be provided to `crest4` in order to skip the similarity search step.
