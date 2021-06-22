@@ -5,3 +5,4 @@ global-exclude .pytest_cache/README.md
 exclude crest4/tests/gio_hundred_seqs/*
 exclude crest4/tests/hmp_mock_dataset/*
 exclude crest4/tests/long_otus_confident/*
+include crest4/tests/precomputed_hits/precomputed.hits
