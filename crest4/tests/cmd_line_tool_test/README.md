@@ -1,0 +1,1 @@
+This test spawns a python subprocess to test calling the command line tool directly.
