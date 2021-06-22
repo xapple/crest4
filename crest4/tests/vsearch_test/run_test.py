@@ -34,6 +34,13 @@ def test_vsearch():
                  num_threads = True)
     # Run it #
     c()
+    # This test is sometimes failing, more prints for debugging #
+    print("c.queries --------")
+    print(c.queries)
+    print("c.queries[0].taxonomy --------")
+    print(c.queries[0].taxonomy)
+    print("c.queries[1].taxonomy --------")
+    print(c.queries[1].taxonomy)
     # Check that the results are good #
     assert c.queries[0].taxonomy[0] == "Micrococcaceae"
     # Here with VSEARCH we end up one level above as compared to BLAST #
