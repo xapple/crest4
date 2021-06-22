@@ -29,14 +29,12 @@ class Classify:
     It enables you to automatically assign taxonomic names to DNA sequences
     obtained from environmental sequencing.
 
-    After creating a new instance of a `Classify` object:
+    After creating a new instance of a `Classify` object, you can simply call
+    it to have it process your input data and generate the assignments output
+    file. Examples are included in the README.md file of this package or
+    directly on the github page at:
 
-    * First, call the `search()` method to XXXX
-    * Secondly, call the `assign()` method to YYYY
-
-    Once both methods have been called, the results are found at: ZZZZ
-
-    To export the results to the filesystem, you can do the following: AAAAA
+    https://github.com/xapple/crest4/
     """
 
     def __init__(self,
@@ -268,5 +266,8 @@ class Classify:
         """Generate outputs."""
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
+        # Print a success message #
+        msg = "Classification ran successfully. Results are placed in '%s'"
+        print(msg % self.out_file)
         # Return #
         return self.out_file
