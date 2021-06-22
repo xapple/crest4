@@ -1,3 +1,8 @@
 global-include README.md
 global-include pytest.ini
 global-include *.fasta
+global-exclude .pytest_cache/README.md
+exclude crest4/tests/gio_hundred_seqs/*
+exclude crest4/tests/gio_hundred_seqs/expected_output/*
+exclude crest4/tests/hmp_mock_dataset/*
+exclude crest4/tests/long_otus_confident/*
