@@ -160,10 +160,6 @@ class Classify:
         # The fasta should be a FASTA object #
         if self.fasta is not None:
             self.fasta = FASTA(self.fasta)
-        # The search hits is a file somewhere #
-        if self.search_hits is not None:
-            self.search_hits = FilePath(self.search_hits)
-            self.search_hits.must_exist()
         # Default for the number of threads #
         if not isinstance(self.num_threads, int):
             if self.num_threads is True:
@@ -174,10 +170,15 @@ class Classify:
                 self.num_threads = min(multiprocessing.cpu_count(), 32)
         # Default for the output directory #
         if self.output_dir is None:
-            self.output_dir = DirectoryPath(self.fasta + &#39;.crest4/&#39;)
-        # Default for the search hits file #
+            self.output_dir = self.fasta + &#39;.crest4/&#39;
+        self.output_dir = DirectoryPath(self.output_dir)
+        # The search hits is a file somewhere if passed #
+        if self.search_hits is not None:
+            self.search_hits = FilePath(self.search_hits)
+            self.search_hits.must_exist()
+        # Default for the search hits file if not passed #
         if self.search_hits is None:
-            self.search_hits = self.output_dir + &#39;search.hits&#39;
+            self.search_hits = FilePath(self.output_dir + &#39;search.hits&#39;)
         # Default for the minimum score #
         if self.min_score is None:
             if self.search_algo == &#39;blast&#39;:
@@ -295,7 +296,10 @@ class Classify:
         The path to the file that will contain the taxonomic assignments
         for every sequence.
         &#34;&#34;&#34;
-        return self.output_dir + &#34;assignments.txt&#34;
+        # Make sure that output directory exists #
+        self.output_dir.create_if_not_exists()
+        # Return #
+        return  self.output_dir + &#34;assignments.txt&#34;
 
     def __call__(self):
         &#34;&#34;&#34;Generate outputs.&#34;&#34;&#34;
@@ -490,10 +494,6 @@ By default <code>True</code>.</dd>
         # The fasta should be a FASTA object #
         if self.fasta is not None:
             self.fasta = FASTA(self.fasta)
-        # The search hits is a file somewhere #
-        if self.search_hits is not None:
-            self.search_hits = FilePath(self.search_hits)
-            self.search_hits.must_exist()
         # Default for the number of threads #
         if not isinstance(self.num_threads, int):
             if self.num_threads is True:
@@ -504,10 +504,15 @@ By default <code>True</code>.</dd>
                 self.num_threads = min(multiprocessing.cpu_count(), 32)
         # Default for the output directory #
         if self.output_dir is None:
-            self.output_dir = DirectoryPath(self.fasta + &#39;.crest4/&#39;)
-        # Default for the search hits file #
+            self.output_dir = self.fasta + &#39;.crest4/&#39;
+        self.output_dir = DirectoryPath(self.output_dir)
+        # The search hits is a file somewhere if passed #
+        if self.search_hits is not None:
+            self.search_hits = FilePath(self.search_hits)
+            self.search_hits.must_exist()
+        # Default for the search hits file if not passed #
         if self.search_hits is None:
-            self.search_hits = self.output_dir + &#39;search.hits&#39;
+            self.search_hits = FilePath(self.output_dir + &#39;search.hits&#39;)
         # Default for the minimum score #
         if self.min_score is None:
             if self.search_algo == &#39;blast&#39;:
@@ -625,7 +630,10 @@ By default <code>True</code>.</dd>
         The path to the file that will contain the taxonomic assignments
         for every sequence.
         &#34;&#34;&#34;
-        return self.output_dir + &#34;assignments.txt&#34;
+        # Make sure that output directory exists #
+        self.output_dir.create_if_not_exists()
+        # Return #
+        return  self.output_dir + &#34;assignments.txt&#34;
 
     def __call__(self):
         &#34;&#34;&#34;Generate outputs.&#34;&#34;&#34;
@@ -833,10 +841,6 @@ needed and will convert others to proper types.</p></div>
     # The fasta should be a FASTA object #
     if self.fasta is not None:
         self.fasta = FASTA(self.fasta)
-    # The search hits is a file somewhere #
-    if self.search_hits is not None:
-        self.search_hits = FilePath(self.search_hits)
-        self.search_hits.must_exist()
     # Default for the number of threads #
     if not isinstance(self.num_threads, int):
         if self.num_threads is True:
@@ -847,10 +851,15 @@ needed and will convert others to proper types.</p></div>
             self.num_threads = min(multiprocessing.cpu_count(), 32)
     # Default for the output directory #
     if self.output_dir is None:
-        self.output_dir = DirectoryPath(self.fasta + &#39;.crest4/&#39;)
-    # Default for the search hits file #
+        self.output_dir = self.fasta + &#39;.crest4/&#39;
+    self.output_dir = DirectoryPath(self.output_dir)
+    # The search hits is a file somewhere if passed #
+    if self.search_hits is not None:
+        self.search_hits = FilePath(self.search_hits)
+        self.search_hits.must_exist()
+    # Default for the search hits file if not passed #
     if self.search_hits is None:
-        self.search_hits = self.output_dir + &#39;search.hits&#39;
+        self.search_hits = FilePath(self.output_dir + &#39;search.hits&#39;)
     # Default for the minimum score #
     if self.min_score is None:
         if self.search_algo == &#39;blast&#39;:
