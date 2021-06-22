@@ -1,5 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/seqsearch.svg)](https://badge.fury.io/py/crest4)
-![example workflow](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
+![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
 
 # CREST version 4.0.16
 
