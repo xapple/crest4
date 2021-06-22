@@ -260,7 +260,10 @@ class Classify:
         The path to the file that will contain the taxonomic assignments
         for every sequence.
         """
-        return self.output_dir + "assignments.txt"
+        # Make sure that output directory exists #
+        self.output_dir.create_if_not_exists()
+        # Return #
+        return  self.output_dir + "assignments.txt"
 
     def __call__(self):
         """Generate outputs."""
