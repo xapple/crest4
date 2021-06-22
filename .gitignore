@@ -17,7 +17,7 @@
 /crest4.egg-info/
 
 # Testing #
-/.pytest_cache/
+.pytest_cache/
 
 # The results of the pytest cases #
 search.hits
