@@ -52,19 +52,21 @@ class Query:
     Represents a single sequence (for instance an OTU) along with
     all the information pertaining to it, such as its taxonomic assignment.
 
-    Takes care of assigning taxonomy for by using the results of
-    the sequence similarity search and a phylogenetic tree as a N-ary
-    directed graph.
+    Takes care of assigning taxonomy by using the results of the sequence
+    similarity search and a phylogenetic tree as a N-ary directed graph.
     &#34;&#34;&#34;
 
     def __init__(self, classify, query):
-        # Save attributes #
+        # A reference to the parent object #
         self.classify = classify
+        # An object containing all the hit results for this sequence #
         self.query = query
         # Get the name #
         self.name = self.query.id
         # Shortcut to the database used #
         self.db = self.classify.database
+        # Shortcut to the algorithm used #
+        self.algo = self.classify.search_algo
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -82,22 +84,25 @@ class Query:
         # Check there was at least one hit #
         if len(self.query.hits) == 0: return nodes
         # Get the score of the best hit #
-        top_score = self.query.hsps[0].bitscore
+        if self.algo == &#39;blast&#39;:   top_score = self.query.hsps[0].bitscore
+        if self.algo == &#39;vsearch&#39;: top_score = self.query.hsps[0].ident_pct/100
         # Check if the score is good enough to proceed further #
         if top_score &lt; self.classify.min_score: return nodes
-        # Calculate the score threshold based on the best hit #
+        # Calculate the score-drop threshold based on the best hit #
         threshold = top_score * self.classify.score_frac
         # Iterate on the hits until falling below a threshold #
         for hsp in self.query.hsps:
             # Stop if the current bitscore is below our threshold #
-            if hsp.bitscore &lt; threshold: break
+            if self.algo == &#39;blast&#39;:   score = hsp.bitscore
+            if self.algo == &#39;vsearch&#39;: score = hsp.ident_pct/100
+            if score &lt; threshold: break
             # Get the name of the current hit #
             name = hsp.hit_id
             # Get the corresponding node name in the tree #
             node = self.db.acc_to_node.get(name)
             # Check that it was found #
             if node is None:
-                msg = &#34;The search hit &#39;%s&#39; was not found in the tree of %s.&#34;
+                msg = &#34;The search hit &#39;%s&#39; was not found in the tree of &#39;%s&#39;.&#34;
                 raise Exception(msg % (node, self.db.short_name))
             # Add it to the list #
             nodes.add(node)
@@ -114,7 +119,7 @@ class Query:
         &#34;&#34;&#34;
         # If there are no hits #
         if len(self.nodes) == 0: return False
-        # If there is only one hit then get that node in the tree #
+        # If there is only one hit, then get that node in the tree #
         if len(self.nodes) == 1:
             name, = self.nodes
             node = self.db.tree.search_nodes(name=name)[0]
@@ -122,25 +127,25 @@ class Query:
         else:
             node = self.db.tree.get_common_ancestor(self.nodes)
         # Calculate the similarity fraction of the best alignment #
-        ident_num = self.query.hsps[0].ident_num
-        algn_span = self.query.fragments[0]._aln_span
-        similarity = ident_num / algn_span
+        if self.algo == &#39;blast&#39;:
+            ident_num = self.query.hsps[0].ident_num
+            algn_span = self.query.fragments[0]._aln_span
+            similarity = ident_num / algn_span
+        if self.algo == &#39;vsearch&#39;:
+            similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
         # level and proceed descending the tree until the similarity is
         # satisfactory
         while True:
             # Check that the similarity filter is activated #
-            if True: break
-            # Check if we already got to the root #
-            if node is self.db.tree.root: break
-            # Check that there is a minimum associated #
-            if node.name not in self.tree.assignmentMin:
-                msg = &#34;Missing a minimum score&#34;
-                raise Exception(msg)
-            # Check that we are below that minimum #
-            if self.db.tree.assMin[node.name] &gt; similarity:
-                break
-            # Otherwise go up one level for our classification #
+            if not self.classify.min_smlrty: break
+            # Check if we already got all the way down to the root #
+            if node.is_root(): break
+            # Get the minimum value associated for this level #
+            smlrty_min = float(self.db.node_to_name[node.name][1])
+            # Check if we are finally above that minimum #
+            if similarity &gt; smlrty_min: break
+            # Otherwise go down one level for our classification #
             node = self.db.tree.get_parent(node)
         # Return #
         return node
@@ -148,7 +153,12 @@ class Query:
     @property_cached
     def taxonomy(self):
         &#34;&#34;&#34;
-        This function will xxx.
+        This function will return a list containing the assigned taxonomy.
+
+        For instance:
+            [&#39;root&#39;, &#39;Main genome&#39;, &#39;Bacteria&#39;, &#39;Bacteria (superkingdom)&#39;,
+             &#39;Terrabacteria&#39;, &#39;Actinobacteria&#39;, &#39;Actinobacteria (class)&#39;,
+             &#39;Micrococcales&#39;, &#39;Micrococcaceae&#39;]
         &#34;&#34;&#34;
         # Check if there was no hits #
         if self.assigned_node is False: return [&#34;No hits&#34;]
@@ -160,11 +170,13 @@ class Query:
     @property_cached
     def tax_string(self):
         &#34;&#34;&#34;
-        This function will xxx.
+        This function will return a single comma-separated string containing
+        the full assigned taxonomy along with the original name of the
+        sequence classified.
         &#34;&#34;&#34;
         # Make a comma separated string #
         tax = &#39;,&#39;.join(reversed(self.taxonomy))
-        # Add the name of the query to the line #
+        # Add the name of the query to the beginning line #
         return self.name + &#39;\t&#39; + tax + &#39;\n&#39;</code></pre>
 </details>
 </section>
@@ -184,9 +196,8 @@ class Query:
 <dd>
 <div class="desc"><p>Represents a single sequence (for instance an OTU) along with
 all the information pertaining to it, such as its taxonomic assignment.</p>
-<p>Takes care of assigning taxonomy for by using the results of
-the sequence similarity search and a phylogenetic tree as a N-ary
-directed graph.</p></div>
+<p>Takes care of assigning taxonomy by using the results of the sequence
+similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -196,19 +207,21 @@ directed graph.</p></div>
     Represents a single sequence (for instance an OTU) along with
     all the information pertaining to it, such as its taxonomic assignment.
 
-    Takes care of assigning taxonomy for by using the results of
-    the sequence similarity search and a phylogenetic tree as a N-ary
-    directed graph.
+    Takes care of assigning taxonomy by using the results of the sequence
+    similarity search and a phylogenetic tree as a N-ary directed graph.
     &#34;&#34;&#34;
 
     def __init__(self, classify, query):
-        # Save attributes #
+        # A reference to the parent object #
         self.classify = classify
+        # An object containing all the hit results for this sequence #
         self.query = query
         # Get the name #
         self.name = self.query.id
         # Shortcut to the database used #
         self.db = self.classify.database
+        # Shortcut to the algorithm used #
+        self.algo = self.classify.search_algo
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -226,22 +239,25 @@ directed graph.</p></div>
         # Check there was at least one hit #
         if len(self.query.hits) == 0: return nodes
         # Get the score of the best hit #
-        top_score = self.query.hsps[0].bitscore
+        if self.algo == &#39;blast&#39;:   top_score = self.query.hsps[0].bitscore
+        if self.algo == &#39;vsearch&#39;: top_score = self.query.hsps[0].ident_pct/100
         # Check if the score is good enough to proceed further #
         if top_score &lt; self.classify.min_score: return nodes
-        # Calculate the score threshold based on the best hit #
+        # Calculate the score-drop threshold based on the best hit #
         threshold = top_score * self.classify.score_frac
         # Iterate on the hits until falling below a threshold #
         for hsp in self.query.hsps:
             # Stop if the current bitscore is below our threshold #
-            if hsp.bitscore &lt; threshold: break
+            if self.algo == &#39;blast&#39;:   score = hsp.bitscore
+            if self.algo == &#39;vsearch&#39;: score = hsp.ident_pct/100
+            if score &lt; threshold: break
             # Get the name of the current hit #
             name = hsp.hit_id
             # Get the corresponding node name in the tree #
             node = self.db.acc_to_node.get(name)
             # Check that it was found #
             if node is None:
-                msg = &#34;The search hit &#39;%s&#39; was not found in the tree of %s.&#34;
+                msg = &#34;The search hit &#39;%s&#39; was not found in the tree of &#39;%s&#39;.&#34;
                 raise Exception(msg % (node, self.db.short_name))
             # Add it to the list #
             nodes.add(node)
@@ -258,7 +274,7 @@ directed graph.</p></div>
         &#34;&#34;&#34;
         # If there are no hits #
         if len(self.nodes) == 0: return False
-        # If there is only one hit then get that node in the tree #
+        # If there is only one hit, then get that node in the tree #
         if len(self.nodes) == 1:
             name, = self.nodes
             node = self.db.tree.search_nodes(name=name)[0]
@@ -266,25 +282,25 @@ directed graph.</p></div>
         else:
             node = self.db.tree.get_common_ancestor(self.nodes)
         # Calculate the similarity fraction of the best alignment #
-        ident_num = self.query.hsps[0].ident_num
-        algn_span = self.query.fragments[0]._aln_span
-        similarity = ident_num / algn_span
+        if self.algo == &#39;blast&#39;:
+            ident_num = self.query.hsps[0].ident_num
+            algn_span = self.query.fragments[0]._aln_span
+            similarity = ident_num / algn_span
+        if self.algo == &#39;vsearch&#39;:
+            similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
         # level and proceed descending the tree until the similarity is
         # satisfactory
         while True:
             # Check that the similarity filter is activated #
-            if True: break
-            # Check if we already got to the root #
-            if node is self.db.tree.root: break
-            # Check that there is a minimum associated #
-            if node.name not in self.tree.assignmentMin:
-                msg = &#34;Missing a minimum score&#34;
-                raise Exception(msg)
-            # Check that we are below that minimum #
-            if self.db.tree.assMin[node.name] &gt; similarity:
-                break
-            # Otherwise go up one level for our classification #
+            if not self.classify.min_smlrty: break
+            # Check if we already got all the way down to the root #
+            if node.is_root(): break
+            # Get the minimum value associated for this level #
+            smlrty_min = float(self.db.node_to_name[node.name][1])
+            # Check if we are finally above that minimum #
+            if similarity &gt; smlrty_min: break
+            # Otherwise go down one level for our classification #
             node = self.db.tree.get_parent(node)
         # Return #
         return node
@@ -292,7 +308,12 @@ directed graph.</p></div>
     @property_cached
     def taxonomy(self):
         &#34;&#34;&#34;
-        This function will xxx.
+        This function will return a list containing the assigned taxonomy.
+
+        For instance:
+            [&#39;root&#39;, &#39;Main genome&#39;, &#39;Bacteria&#39;, &#39;Bacteria (superkingdom)&#39;,
+             &#39;Terrabacteria&#39;, &#39;Actinobacteria&#39;, &#39;Actinobacteria (class)&#39;,
+             &#39;Micrococcales&#39;, &#39;Micrococcaceae&#39;]
         &#34;&#34;&#34;
         # Check if there was no hits #
         if self.assigned_node is False: return [&#34;No hits&#34;]
@@ -304,11 +325,13 @@ directed graph.</p></div>
     @property_cached
     def tax_string(self):
         &#34;&#34;&#34;
-        This function will xxx.
+        This function will return a single comma-separated string containing
+        the full assigned taxonomy along with the original name of the
+        sequence classified.
         &#34;&#34;&#34;
         # Make a comma separated string #
         tax = &#39;,&#39;.join(reversed(self.taxonomy))
-        # Add the name of the query to the line #
+        # Add the name of the query to the beginning line #
         return self.name + &#39;\t&#39; + tax + &#39;\n&#39;</code></pre>
 </details>
 <h3>Instance variables</h3>
@@ -379,7 +402,9 @@ sequence got at least one hit in a set.</p></div>
 </dd>
 <dt id="crest4.query.Query.tax_string"><code class="name">var <span class="ident">tax_string</span></code></dt>
 <dd>
-<div class="desc"><p>This function will xxx.</p></div>
+<div class="desc"><p>This function will return a single comma-separated string containing
+the full assigned taxonomy along with the original name of the
+sequence classified.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -409,7 +434,11 @@ sequence got at least one hit in a set.</p></div>
 </dd>
 <dt id="crest4.query.Query.taxonomy"><code class="name">var <span class="ident">taxonomy</span></code></dt>
 <dd>
-<div class="desc"><p>This function will xxx.</p></div>
+<div class="desc"><p>This function will return a list containing the assigned taxonomy.</p>
+<p>For instance:
+['root', 'Main genome', 'Bacteria', 'Bacteria (superkingdom)',
+'Terrabacteria', 'Actinobacteria', 'Actinobacteria (class)',
+'Micrococcales', 'Micrococcaceae']</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>

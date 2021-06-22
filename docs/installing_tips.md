@@ -1,10 +1,10 @@
 ## Obtaining `python3`
 
-Most modern operating systems, with exception to Windows, come with `python3` pre-installed.
+Most modern operating systems, with the exception of Windows, come with `python3` pre-installed.
 
 If you are using Windows, you can try [the chocolatey method](https://lmgtfy.com/?q=install+python3+on+windows+with+chocolatey).
 
-Otherwise, if you are using an old version of macOS that doesn't ship with the latest python, you can simply run the following command after installing homebrew:
+Otherwise, if you are using an old version of macOS that doesn't ship with the latest python, you can simply run the following command after installing [homebrew](https://brew.sh/):
 
     $ brew install python@3.9
 

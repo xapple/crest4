@@ -1,7 +1,7 @@
 [![PyPI version](https://badge.fury.io/py/seqsearch.svg)](https://badge.fury.io/py/crest4)
 ![example workflow](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
 
-# CREST version 4.0.1
+# CREST version 4.0.15
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
 
@@ -23,10 +23,9 @@ Simply put, given the following fragment of an rRNA 16S sequence from an uncultu
 
     Bacteria; Terrabacteria; Cyanobacteria; Oxyphotobacteria; Synechococcales
 
-To produce this result, each input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), and the exact position in the phylogenetic tree of life of every high similarity hit is recorded.
+To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identify threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification.
 
-Insert brief description of the LCA method and comparison with kmers.
-
+This strategy contrasts with the other tools that instead use a naive bayesian classifier for taxonomic assignment. Often referred to as the Wang method and used for instance in the RDP software, it consists of the following steps: calculate the probability that the query sequence would be part of any given reference taxonomy sequence based on the decomposed *kmer* content and pick the taxonomy with the highest probability while considering a confidence limit computed by a bootstrapping algorithm.
 
 ### Citation
 
@@ -55,10 +54,12 @@ Once the installation completes you are ready to use the `crest4` executable com
 In order to search the reference databases, you will also need either BLAST or VSEARCH installed. These are installed automatically with the `conda` method, but not with the `pip` method. You can obtain these with these commands on Linux:
 
     $ sudo apt install ncbi-blast+
+    $ sudo apt install vsearch
 
 Or these commands on macOS:
 
     $ brew install blast
+    $ brew install vsearch
 
 ### Troubleshooting
 
@@ -77,7 +78,7 @@ Bellow are some examples to illustrate the various ways there are to use this pa
 
     crest4 -f sequences.fasta
 
-Simply specifying a FASTA file is sufficient, and `crest4` will choose default values for all the parameters automatically. The results produced will be placed in a sub-directory inside the same directory as the FASTA file. Refer to the [results](#Results) section below for more information.
+Simply specifying a FASTA file with the sequences to classify is sufficient, and `crest4` will choose default values for all the parameters automatically. The results produced will be placed in a sub-directory inside the same directory as the FASTA file.
 
 To change the output directory, specify the following option:
 
@@ -96,14 +97,19 @@ Silvamod128 is the default reference database. To use another database, e.g. Gre
 The full list of options is as follows:
 
 ```
-Optional arguments:
+Required arguments:
+  --fasta PATH, -f PATH
+                        The path to a single FASTA file as a string.
+                        These are the sequences that will be taxonomically
+                        classified.
 
+Optional arguments:
   --search_algo ALGORITHM, -a ALGORITHM
                         The algorithm used for the sequence similarity search
                         that will be run to match the sequences against the
-                        database chosen. Either 'blast' or 'vsearch'. No
+                        database chosen. Either `blast` or `vsearch`. No
                         other values are currently supported. By default
-                        'blast'.
+                        `blast`.
 
   --num_threads NUM, -t NUM
                         The number of processors to use for the sequence
@@ -114,14 +120,14 @@ Optional arguments:
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either 'silvamod128' or 'greengenes'. No other values
-                        are currently supported. By default 'silvamod128'.
+                        Either `silvamod128` or `greengenes`. No other values
+                        are currently supported. By default `silvamod128`.
 
   --output_dir DIR, -o DIR
                         The directory into which all the classification
                         results will be written to. This defaults to a
-                        directory with the same name original FASTA file and
-                        a `.crest4` suffix appended.
+                        directory with the same name as the original FASTA
+                        file and a `.crest4` suffix appended.
 
   --search_hits PATH, -s PATH
                         The path where the search results will be stored.
@@ -131,21 +137,32 @@ Optional arguments:
                         sequence similarity search step and go directly to
                         the taxonomy step.
 
-  --min_score MIN_SCORE, -m MIN_SCORE
-                        a
+  --min_score MINIMUM, -m MINIMUM
+                        The minimum bit-score for a search hit to be considered
+                        when using BLAST as the search algorithm. All hits below
+                        this score are ignored. When using VSEARCH, this value
+                        instead indicates the minimum identity between two
+                        sequences for the hit to be considered.
+                        The default is `155` for BLAST and `0.75` for VSEARCH.
 
   --score_drop SCORE_DROP, -c SCORE_DROP
-                        a
+                        Determines the range of hits to retain and the range
+                        to discard based on a drop in percentage from the score
+                        of the best hit. Any hit below the following value:
+                        "(100 - score_drop)/100 * best_hit_score" is ignored.
+                        By default `2.0`.
 
+  --min_smlrty MIN_SMLRTY, -i MIN_SMLRTY
+                        Determines if the minimum similarity filter is turned
+                        on or off. Pass the value `False` to turn it off.
+                        The minimum similarity filter prevents classification
+                        to higher ranks when a minimum rank-identity is not met.
+                        By default `True`.
+
+Other arguments:
   --version, -v         Show program's version number and exit.
   --help, -h            Show this help message and exit.
-
-Required arguments:
-
-  --fasta PATH, -f PATH
-                        The path to a single FASTA or FASTQ file as a string.
-                        These are the sequences that will be taxonomically
-                        classified. The file can be gzipped or not.
+  --pytest              Run the test suite and exit.
 ```
 
 ### Python API
@@ -192,19 +209,19 @@ The equivalent VSEARCH command is the following:
 
 ### Classification databases
 
-The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. Release supported: Silva NR SSU Ref v128. The database was last released in: September 2016.
+The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. Release supported: Silva NR SSU Ref v128. This database was last released in September 2016.
 
-The [Greengenes](http://greengenes.secondgenome.com) database is an alternative reference for classification of prokaryotic 16S, curated and maintained by The Greengenes Database Consortium. The database was last released in: May 2013.
+The [Greengenes](http://greengenes.secondgenome.com) database is an alternative reference for classification of prokaryotic 16S, curated and maintained by The Greengenes Database Consortium. This database was last released in May 2013.
 
 ### Classification algorithm
 
-The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, providing the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant Silvamod128 database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
+The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, provided the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant Silvamod128 database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
 
 In addition to the lowest common ancestor classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.map` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
 
-When using amplicon sequences, we strongly recommend preparing the sequences by performing a noise reduction step as well as applying chimera removal. This can be achieved with various third party software: vsearch, UPARSE, DADA2, SWARM, etc.
+When using amplicon sequences, we strongly recommend preparing the sequences by performing a noise reduction step as well as applying chimera removal. This can be achieved with various third party software such as: VSEARCH, UPARSE, DADA2, SWARM, etc.
 
-For amplicon sequencing experiments with many replicates or similar samples (>~10), the unique noise-reduced sequences may be further clustered using a similarity threshold (often 97% although larger thresholds are probably preferable) into Operational Taxonomic Units (OTUs), prior to classification.
+For amplicon sequencing experiments with many replicates or similar samples (>~10), the unique noise-reduced sequences may be further clustered using a similarity threshold (often 97% although larger thresholds are probably preferable) into operational taxonomic units (OTUs), prior to classification.
 
 ### Custom databases
 

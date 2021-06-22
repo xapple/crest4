@@ -52,10 +52,15 @@ def test_blast_index():
     db = silvamod128.blast_db
     assert db
 
+def test_vsearch_index():
+    db = silvamod128.vsearch_db
+    assert db
+
 ###############################################################################
 if __name__ == &#39;__main__&#39;:
     test_download_metadata()
-    test_blast_index()</code></pre>
+    test_blast_index()
+    test_vsearch_index()</code></pre>
 </details>
 </section>
 <section>
@@ -93,6 +98,20 @@ if __name__ == &#39;__main__&#39;:
     assert urls</code></pre>
 </details>
 </dd>
+<dt id="crest4.tests.actualize_database.run_test.test_vsearch_index"><code class="name flex">
+<span>def <span class="ident">test_vsearch_index</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_vsearch_index():
+    db = silvamod128.vsearch_db
+    assert db</code></pre>
+</details>
+</dd>
 </dl>
 </section>
 <section>
@@ -113,6 +132,7 @@ if __name__ == &#39;__main__&#39;:
 <ul class="">
 <li><code><a title="crest4.tests.actualize_database.run_test.test_blast_index" href="#crest4.tests.actualize_database.run_test.test_blast_index">test_blast_index</a></code></li>
 <li><code><a title="crest4.tests.actualize_database.run_test.test_download_metadata" href="#crest4.tests.actualize_database.run_test.test_download_metadata">test_download_metadata</a></code></li>
+<li><code><a title="crest4.tests.actualize_database.run_test.test_vsearch_index" href="#crest4.tests.actualize_database.run_test.test_vsearch_index">test_vsearch_index</a></code></li>
 </ul>
 </li>
 </ul>

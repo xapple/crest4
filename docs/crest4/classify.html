@@ -64,14 +64,12 @@ class Classify:
     It enables you to automatically assign taxonomic names to DNA sequences
     obtained from environmental sequencing.
 
-    After creating a new instance of a `Classify` object:
+    After creating a new instance of a `Classify` object, you can simply call
+    it to have it process your input data and generate the assignments output
+    file. Examples are included in the README.md file of this package or
+    directly on the github page at:
 
-    * First, call the `search()` method to XXXX
-    * Secondly, call the `assign()` method to YYYY
-
-    Once both methods have been called, the results are found at: ZZZZ
-
-    To export the results to the filesystem, you can do the following: AAAAA
+    https://github.com/xapple/crest4/
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -81,21 +79,22 @@ class Classify:
                  search_db   = &#39;silvamod128&#39;,
                  output_dir  = None,
                  search_hits = None,
-                 min_score  = 155,
-                 score_drop = 2.0,
+                 min_score   = None,
+                 score_drop  = 2.0,
+                 min_smlrty  = True,
                  ):
         &#34;&#34;&#34;
         Args:
 
-            fasta: The path to a single FASTA or FASTQ file as a string.
+            fasta: The path to a single FASTA file as a string.
                    These are the sequences that will be taxonomically
-                   classified. The file can be gzipped or not.
+                   classified.
 
             search_algo: The algorithm used for the sequence similarity search
                          that will be run to match the sequences against the
-                         database chosen. Either &#39;blast&#39; or &#39;vsearch&#39;. No
+                         database chosen. Either `blast` or `vsearch`. No
                          other values are currently supported. By default
-                         &#39;blast&#39;.
+                         `blast`.
 
             num_threads: The number of processors to use for the sequence
                          similarity search. By default parallelism is turned
@@ -104,13 +103,13 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either &#39;silvamod128&#39; or &#39;greengenes&#39;. No other values
-                       are currently supported. By default &#39;silvamod128&#39;.
+                       Either `silvamod128` or `greengenes`. No other values
+                       are currently supported. By default `silvamod128`.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
-                        directory with the same name original FASTA file and
-                        a `.crest4` suffix appended.
+                        directory with the same name as the original FASTA
+                        file and a `.crest4` suffix appended.
 
             search_hits: The path where the search results will be stored.
                          This defaults to the output directory. However,
@@ -119,9 +118,24 @@ class Classify:
                          sequence similarity search step and go directly to
                          the taxonomy step.
 
-            min_score: a
+            min_score: The minimum bit-score for a search hit to be considered
+                       when using BLAST as the search algorithm. All hits below
+                       this score are ignored. When using VSEARCH, this value
+                       instead indicates the minimum identity between two
+                       sequences for the hit to be considered.
+                       The default is `155` for BLAST and `0.75` for VSEARCH.
 
-            score_drop: a
+            score_drop: Determines the range of hits to retain and the range
+                        to discard based on a drop in percentage from the score
+                        of the best hit. Any hit below the following value:
+                        &#34;(100 - score_drop)/100 * best_hit_score&#34; is ignored.
+                        By default `2.0`.
+
+            min_smlrty: Determines if the minimum similarity filter is turned
+                        on or off. Pass the value `False` to turn it off.
+                        The minimum similarity filter prevents classification
+                        to higher ranks when a minimum rank-identity is not met.
+                        By default `True`.
         &#34;&#34;&#34;
         # Save attributes #
         self.fasta       = fasta
@@ -132,6 +146,7 @@ class Classify:
         self.search_hits = search_hits
         self.min_score   = min_score
         self.score_drop  = score_drop
+        self.min_smlrty  = min_smlrty
         # Assign default values and change others #
         self.transform()
         # Validate attributes #
@@ -148,21 +163,36 @@ class Classify:
         # The search hits is a file somewhere #
         if self.search_hits is not None:
             self.search_hits = FilePath(self.search_hits)
+            self.search_hits.must_exist()
         # Default for the number of threads #
-        if self.num_threads is True:
-            self.num_threads = min(multiprocessing.cpu_count(), 32)
+        if not isinstance(self.num_threads, int):
+            if self.num_threads is True:
+                self.num_threads = min(multiprocessing.cpu_count(), 32)
+            elif self.num_threads is False:
+                self.num_threads = 1
+            elif self.num_threads.lower() == &#39;true&#39;:
+                self.num_threads = min(multiprocessing.cpu_count(), 32)
         # Default for the output directory #
         if self.output_dir is None:
             self.output_dir = DirectoryPath(self.fasta + &#39;.crest4/&#39;)
         # Default for the search hits file #
         if self.search_hits is None:
             self.search_hits = self.output_dir + &#39;search.hits&#39;
+        # Default for the minimum score #
+        if self.min_score is None:
+            if self.search_algo == &#39;blast&#39;:
+                self.min_score = 155
+            if self.search_algo == &#39;vsearch&#39;:
+                self.min_score = 0.75
 
     def validate(self):
         &#34;&#34;&#34;
         This method will raise an Exception if any of the arguments passed by
         the user are illegal.
         &#34;&#34;&#34;
+        # The fasta should exist if passed #
+        if self.fasta is not None:
+            self.fasta.must_exist()
         # Either the FASTA file or the hits file has to contain something #
         if not self.fasta and not self.search_hits:
             msg = &#34;Neither the FASTA file at &#39;%s&#39; nor the search hits file at&#34; \
@@ -176,6 +206,24 @@ class Classify:
         if self.search_db not in (&#39;silvamod128&#39;, &#39;greengenes&#39;):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
+        # Check the minimum score value above zero #
+        if self.min_score &lt; 0.0:
+            msg = &#34;The minimum score cannot be smaller than zero (&#39;%s&#39;).&#34;
+            raise ValueError(msg % self.min_score)
+        # Check the minimum score value below zero #
+        if self.min_score &gt; 1.0:
+            if self.search_algo == &#39;vsearch&#39;:
+                msg = &#34;The minimum score cannot be more than 1.0 when&#34; \
+                      &#34; using VSEARCH (&#39;%s&#39;) because it represents the&#34; \
+                      &#34; the minimum identity between two sequences.&#34;
+                raise ValueError(msg % self.min_score)
+        # Check the score drop value #
+        if self.score_drop &lt; 0.0:
+            msg = &#34;The score drop value cannot be smaller than zero (&#39;%s&#39;).&#34;
+            raise ValueError(msg % self.min_score)
+        if self.score_drop &gt; 100.0:
+            msg = &#34;The score drop value cannot be over 100 (&#39;%s&#39;).&#34;
+            raise ValueError(msg % self.min_score)
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -196,12 +244,14 @@ class Classify:
         * Setting `-outfmt` to 6 means tabular output.
         * Setting `-outfmt` to 7 means tabular output with comments.
         &#34;&#34;&#34;
+        # Initialize #
+        params = {}
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == &#39;blast&#39;:
             params = {&#39;-outfmt&#39;: &#39;7 qseqid sseqid bitscore length nident&#39;}
-        # In case the user chose VSEARCH #
+        # In case the user chose VSEARCH we specify the minimum identify #
         if self.search_algo == &#39;vsearch&#39;:
-            params = {}
+            params = {&#39;-id&#39;: self.min_score}
         # Build the object
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
@@ -251,6 +301,9 @@ class Classify:
         &#34;&#34;&#34;Generate outputs.&#34;&#34;&#34;
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
+        # Print a sucess message #
+        msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;&#34;
+        print(msg % self.out_file)
         # Return #
         return self.out_file</code></pre>
 </details>
@@ -266,31 +319,29 @@ class Classify:
 <dl>
 <dt id="crest4.classify.Classify"><code class="flex name class">
 <span>class <span class="ident">Classify</span></span>
-<span>(</span><span>fasta, search_algo='blast', num_threads=1, search_db='silvamod128', output_dir=None, search_hits=None, min_score=155, score_drop=2.0)</span>
+<span>(</span><span>fasta, search_algo='blast', num_threads=1, search_db='silvamod128', output_dir=None, search_hits=None, min_score=None, score_drop=2.0, min_smlrty=True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This is the main object offered by the <code><a title="crest4" href="index.html">crest4</a></code> package.
 It enables you to automatically assign taxonomic names to DNA sequences
 obtained from environmental sequencing.</p>
-<p>After creating a new instance of a <code><a title="crest4.classify.Classify" href="#crest4.classify.Classify">Classify</a></code> object:</p>
-<ul>
-<li>First, call the <code>search()</code> method to XXXX</li>
-<li>Secondly, call the <code>assign()</code> method to YYYY</li>
-</ul>
-<p>Once both methods have been called, the results are found at: ZZZZ</p>
-<p>To export the results to the filesystem, you can do the following: AAAAA</p>
+<p>After creating a new instance of a <code><a title="crest4.classify.Classify" href="#crest4.classify.Classify">Classify</a></code> object, you can simply call
+it to have it process your input data and generate the assignments output
+file. Examples are included in the README.md file of this package or
+directly on the github page at:</p>
+<p><a href="https://github.com/xapple/crest4/">https://github.com/xapple/crest4/</a></p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>fasta</code></strong></dt>
-<dd>The path to a single FASTA or FASTQ file as a string.
+<dd>The path to a single FASTA file as a string.
 These are the sequences that will be taxonomically
-classified. The file can be gzipped or not.</dd>
+classified.</dd>
 <dt><strong><code>search_algo</code></strong></dt>
 <dd>The algorithm used for the sequence similarity search
 that will be run to match the sequences against the
-database chosen. Either 'blast' or 'vsearch'. No
+database chosen. Either <code>blast</code> or <code>vsearch</code>. No
 other values are currently supported. By default
-'blast'.</dd>
+<code>blast</code>.</dd>
 <dt><strong><code>num_threads</code></strong></dt>
 <dd>The number of processors to use for the sequence
 similarity search. By default parallelism is turned
@@ -299,13 +350,13 @@ we will run as many processes as there are CPUs but
 no more than 32.</dd>
 <dt><strong><code>search_db</code></strong></dt>
 <dd>The database used for the sequence similarity search.
-Either 'silvamod128' or 'greengenes'. No other values
-are currently supported. By default 'silvamod128'.</dd>
+Either <code>silvamod128</code> or <code>greengenes</code>. No other values
+are currently supported. By default <code>silvamod128</code>.</dd>
 <dt><strong><code>output_dir</code></strong></dt>
 <dd>The directory into which all the classification
 results will be written to. This defaults to a
-directory with the same name original FASTA file and
-a <code>.<a title="crest4" href="index.html">crest4</a></code> suffix appended.</dd>
+directory with the same name as the original FASTA
+file and a <code>.<a title="crest4" href="index.html">crest4</a></code> suffix appended.</dd>
 <dt><strong><code>search_hits</code></strong></dt>
 <dd>The path where the search results will be stored.
 This defaults to the output directory. However,
@@ -314,9 +365,24 @@ before hand, specify the path here to skip the
 sequence similarity search step and go directly to
 the taxonomy step.</dd>
 <dt><strong><code>min_score</code></strong></dt>
-<dd>a</dd>
+<dd>The minimum bit-score for a search hit to be considered
+when using BLAST as the search algorithm. All hits below
+this score are ignored. When using VSEARCH, this value
+instead indicates the minimum identity between two
+sequences for the hit to be considered.
+The default is <code>155</code> for BLAST and <code>0.75</code> for VSEARCH.</dd>
 <dt><strong><code>score_drop</code></strong></dt>
-<dd>a</dd>
+<dd>Determines the range of hits to retain and the range
+to discard based on a drop in percentage from the score
+of the best hit. Any hit below the following value:
+"(100 - score_drop)/100 * best_hit_score" is ignored.
+By default <code>2.0</code>.</dd>
+<dt><strong><code>min_smlrty</code></strong></dt>
+<dd>Determines if the minimum similarity filter is turned
+on or off. Pass the value <code>False</code> to turn it off.
+The minimum similarity filter prevents classification
+to higher ranks when a minimum rank-identity is not met.
+By default <code>True</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -328,14 +394,12 @@ the taxonomy step.</dd>
     It enables you to automatically assign taxonomic names to DNA sequences
     obtained from environmental sequencing.
 
-    After creating a new instance of a `Classify` object:
+    After creating a new instance of a `Classify` object, you can simply call
+    it to have it process your input data and generate the assignments output
+    file. Examples are included in the README.md file of this package or
+    directly on the github page at:
 
-    * First, call the `search()` method to XXXX
-    * Secondly, call the `assign()` method to YYYY
-
-    Once both methods have been called, the results are found at: ZZZZ
-
-    To export the results to the filesystem, you can do the following: AAAAA
+    https://github.com/xapple/crest4/
     &#34;&#34;&#34;
 
     def __init__(self,
@@ -345,21 +409,22 @@ the taxonomy step.</dd>
                  search_db   = &#39;silvamod128&#39;,
                  output_dir  = None,
                  search_hits = None,
-                 min_score  = 155,
-                 score_drop = 2.0,
+                 min_score   = None,
+                 score_drop  = 2.0,
+                 min_smlrty  = True,
                  ):
         &#34;&#34;&#34;
         Args:
 
-            fasta: The path to a single FASTA or FASTQ file as a string.
+            fasta: The path to a single FASTA file as a string.
                    These are the sequences that will be taxonomically
-                   classified. The file can be gzipped or not.
+                   classified.
 
             search_algo: The algorithm used for the sequence similarity search
                          that will be run to match the sequences against the
-                         database chosen. Either &#39;blast&#39; or &#39;vsearch&#39;. No
+                         database chosen. Either `blast` or `vsearch`. No
                          other values are currently supported. By default
-                         &#39;blast&#39;.
+                         `blast`.
 
             num_threads: The number of processors to use for the sequence
                          similarity search. By default parallelism is turned
@@ -368,13 +433,13 @@ the taxonomy step.</dd>
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either &#39;silvamod128&#39; or &#39;greengenes&#39;. No other values
-                       are currently supported. By default &#39;silvamod128&#39;.
+                       Either `silvamod128` or `greengenes`. No other values
+                       are currently supported. By default `silvamod128`.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
-                        directory with the same name original FASTA file and
-                        a `.crest4` suffix appended.
+                        directory with the same name as the original FASTA
+                        file and a `.crest4` suffix appended.
 
             search_hits: The path where the search results will be stored.
                          This defaults to the output directory. However,
@@ -383,9 +448,24 @@ the taxonomy step.</dd>
                          sequence similarity search step and go directly to
                          the taxonomy step.
 
-            min_score: a
+            min_score: The minimum bit-score for a search hit to be considered
+                       when using BLAST as the search algorithm. All hits below
+                       this score are ignored. When using VSEARCH, this value
+                       instead indicates the minimum identity between two
+                       sequences for the hit to be considered.
+                       The default is `155` for BLAST and `0.75` for VSEARCH.
 
-            score_drop: a
+            score_drop: Determines the range of hits to retain and the range
+                        to discard based on a drop in percentage from the score
+                        of the best hit. Any hit below the following value:
+                        &#34;(100 - score_drop)/100 * best_hit_score&#34; is ignored.
+                        By default `2.0`.
+
+            min_smlrty: Determines if the minimum similarity filter is turned
+                        on or off. Pass the value `False` to turn it off.
+                        The minimum similarity filter prevents classification
+                        to higher ranks when a minimum rank-identity is not met.
+                        By default `True`.
         &#34;&#34;&#34;
         # Save attributes #
         self.fasta       = fasta
@@ -396,6 +476,7 @@ the taxonomy step.</dd>
         self.search_hits = search_hits
         self.min_score   = min_score
         self.score_drop  = score_drop
+        self.min_smlrty  = min_smlrty
         # Assign default values and change others #
         self.transform()
         # Validate attributes #
@@ -412,21 +493,36 @@ the taxonomy step.</dd>
         # The search hits is a file somewhere #
         if self.search_hits is not None:
             self.search_hits = FilePath(self.search_hits)
+            self.search_hits.must_exist()
         # Default for the number of threads #
-        if self.num_threads is True:
-            self.num_threads = min(multiprocessing.cpu_count(), 32)
+        if not isinstance(self.num_threads, int):
+            if self.num_threads is True:
+                self.num_threads = min(multiprocessing.cpu_count(), 32)
+            elif self.num_threads is False:
+                self.num_threads = 1
+            elif self.num_threads.lower() == &#39;true&#39;:
+                self.num_threads = min(multiprocessing.cpu_count(), 32)
         # Default for the output directory #
         if self.output_dir is None:
             self.output_dir = DirectoryPath(self.fasta + &#39;.crest4/&#39;)
         # Default for the search hits file #
         if self.search_hits is None:
             self.search_hits = self.output_dir + &#39;search.hits&#39;
+        # Default for the minimum score #
+        if self.min_score is None:
+            if self.search_algo == &#39;blast&#39;:
+                self.min_score = 155
+            if self.search_algo == &#39;vsearch&#39;:
+                self.min_score = 0.75
 
     def validate(self):
         &#34;&#34;&#34;
         This method will raise an Exception if any of the arguments passed by
         the user are illegal.
         &#34;&#34;&#34;
+        # The fasta should exist if passed #
+        if self.fasta is not None:
+            self.fasta.must_exist()
         # Either the FASTA file or the hits file has to contain something #
         if not self.fasta and not self.search_hits:
             msg = &#34;Neither the FASTA file at &#39;%s&#39; nor the search hits file at&#34; \
@@ -440,6 +536,24 @@ the taxonomy step.</dd>
         if self.search_db not in (&#39;silvamod128&#39;, &#39;greengenes&#39;):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
+        # Check the minimum score value above zero #
+        if self.min_score &lt; 0.0:
+            msg = &#34;The minimum score cannot be smaller than zero (&#39;%s&#39;).&#34;
+            raise ValueError(msg % self.min_score)
+        # Check the minimum score value below zero #
+        if self.min_score &gt; 1.0:
+            if self.search_algo == &#39;vsearch&#39;:
+                msg = &#34;The minimum score cannot be more than 1.0 when&#34; \
+                      &#34; using VSEARCH (&#39;%s&#39;) because it represents the&#34; \
+                      &#34; the minimum identity between two sequences.&#34;
+                raise ValueError(msg % self.min_score)
+        # Check the score drop value #
+        if self.score_drop &lt; 0.0:
+            msg = &#34;The score drop value cannot be smaller than zero (&#39;%s&#39;).&#34;
+            raise ValueError(msg % self.min_score)
+        if self.score_drop &gt; 100.0:
+            msg = &#34;The score drop value cannot be over 100 (&#39;%s&#39;).&#34;
+            raise ValueError(msg % self.min_score)
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -460,12 +574,14 @@ the taxonomy step.</dd>
         * Setting `-outfmt` to 6 means tabular output.
         * Setting `-outfmt` to 7 means tabular output with comments.
         &#34;&#34;&#34;
+        # Initialize #
+        params = {}
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == &#39;blast&#39;:
             params = {&#39;-outfmt&#39;: &#39;7 qseqid sseqid bitscore length nident&#39;}
-        # In case the user chose VSEARCH #
+        # In case the user chose VSEARCH we specify the minimum identify #
         if self.search_algo == &#39;vsearch&#39;:
-            params = {}
+            params = {&#39;-id&#39;: self.min_score}
         # Build the object
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
@@ -515,6 +631,9 @@ the taxonomy step.</dd>
         &#34;&#34;&#34;Generate outputs.&#34;&#34;&#34;
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
+        # Print a sucess message #
+        msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;&#34;
+        print(msg % self.out_file)
         # Return #
         return self.out_file</code></pre>
 </details>
@@ -717,15 +836,27 @@ needed and will convert others to proper types.</p></div>
     # The search hits is a file somewhere #
     if self.search_hits is not None:
         self.search_hits = FilePath(self.search_hits)
+        self.search_hits.must_exist()
     # Default for the number of threads #
-    if self.num_threads is True:
-        self.num_threads = min(multiprocessing.cpu_count(), 32)
+    if not isinstance(self.num_threads, int):
+        if self.num_threads is True:
+            self.num_threads = min(multiprocessing.cpu_count(), 32)
+        elif self.num_threads is False:
+            self.num_threads = 1
+        elif self.num_threads.lower() == &#39;true&#39;:
+            self.num_threads = min(multiprocessing.cpu_count(), 32)
     # Default for the output directory #
     if self.output_dir is None:
         self.output_dir = DirectoryPath(self.fasta + &#39;.crest4/&#39;)
     # Default for the search hits file #
     if self.search_hits is None:
-        self.search_hits = self.output_dir + &#39;search.hits&#39;</code></pre>
+        self.search_hits = self.output_dir + &#39;search.hits&#39;
+    # Default for the minimum score #
+    if self.min_score is None:
+        if self.search_algo == &#39;blast&#39;:
+            self.min_score = 155
+        if self.search_algo == &#39;vsearch&#39;:
+            self.min_score = 0.75</code></pre>
 </details>
 </dd>
 <dt id="crest4.classify.Classify.validate"><code class="name flex">
@@ -743,6 +874,9 @@ the user are illegal.</p></div>
     This method will raise an Exception if any of the arguments passed by
     the user are illegal.
     &#34;&#34;&#34;
+    # The fasta should exist if passed #
+    if self.fasta is not None:
+        self.fasta.must_exist()
     # Either the FASTA file or the hits file has to contain something #
     if not self.fasta and not self.search_hits:
         msg = &#34;Neither the FASTA file at &#39;%s&#39; nor the search hits file at&#34; \
@@ -755,7 +889,25 @@ the user are illegal.</p></div>
     # Check the search database #
     if self.search_db not in (&#39;silvamod128&#39;, &#39;greengenes&#39;):
         msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
-        raise ValueError(msg % self.search_db)</code></pre>
+        raise ValueError(msg % self.search_db)
+    # Check the minimum score value above zero #
+    if self.min_score &lt; 0.0:
+        msg = &#34;The minimum score cannot be smaller than zero (&#39;%s&#39;).&#34;
+        raise ValueError(msg % self.min_score)
+    # Check the minimum score value below zero #
+    if self.min_score &gt; 1.0:
+        if self.search_algo == &#39;vsearch&#39;:
+            msg = &#34;The minimum score cannot be more than 1.0 when&#34; \
+                  &#34; using VSEARCH (&#39;%s&#39;) because it represents the&#34; \
+                  &#34; the minimum identity between two sequences.&#34;
+            raise ValueError(msg % self.min_score)
+    # Check the score drop value #
+    if self.score_drop &lt; 0.0:
+        msg = &#34;The score drop value cannot be smaller than zero (&#39;%s&#39;).&#34;
+        raise ValueError(msg % self.min_score)
+    if self.score_drop &gt; 100.0:
+        msg = &#34;The score drop value cannot be over 100 (&#39;%s&#39;).&#34;
+        raise ValueError(msg % self.min_score)</code></pre>
 </details>
 </dd>
 </dl>

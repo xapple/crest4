@@ -38,13 +38,14 @@ DNA sequences obtained from environmental sequencing.
 &#34;&#34;&#34;
 
 # Special variables #
-__version__ = &#39;4.0.13&#39;
+__version__ = &#39;4.0.15&#39;
 
 # Constants #
 project_url = &#39;https://github.com/xapple/crest4&#39;
 
-# Expose our main object at the module level #
-from crest4.classify import Classify</code></pre>
+# Expose our main object at the module level
+# So that you can just do &#39;from crest4 import Classify&#39; later
+from .classify import Classify</code></pre>
 </details>
 </section>
 <section>

@@ -47,7 +47,6 @@ Created in May 2021.
 import os, json
 
 # Internal modules #
-from seqsearch.search.vsearch import VSEARCHdb
 
 import crest4
 
@@ -55,7 +54,8 @@ import crest4
 from autopaths.dir_path import DirectoryPath
 from plumbing.cache     import property_cached
 from plumbing.scraping  import download_from_url, retrieve_from_url
-from seqsearch.search   import BLASTdb
+from seqsearch.search.blast   import BLASTdb
+from seqsearch.search.vsearch import VSEARCHdb
 
 # Third party modules #
 from ete3 import Tree
@@ -113,6 +113,9 @@ class CrestDatabase:
     # The environment variable that the user can set #
     environ_var = &#34;CREST4_DIR&#34;
 
+    # Children should overwrite this
+    short_name = None
+
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
         return &#34;&lt;%s object at &#39;%s&#39;&gt;&#34; % (self.__class__.__name__, self.prefix)
@@ -162,7 +165,7 @@ class CrestDatabase:
                   &#34; patient. The result will be saved to &#39;%s&#39;. You can&#34; \
                   &#34; override this by setting the $%s environment variable.&#34;
         message = message % (self.short_name, self.base_dir, self.environ_var)
-        # Display the message with style #
+        # Display the message with style in a box #
         from plumbing.common import rich_panel_print
         rich_panel_print(message, &#34;Large Download&#34;)
         # Show a progress bar a bit like wget #
@@ -206,7 +209,7 @@ class CrestDatabase:
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
-        db = VSEARCHdb(self.prefix)
+        db = VSEARCHdb(self.prefix.replace_extension(&#39;udb&#39;))
         # Create the database with `vsearch` if it&#39;s not made already #
         db.create_if_not_exists(verbose=True)
         # Return #
@@ -260,7 +263,7 @@ class CrestDatabase:
         return tree
 
 ###############################################################################
-class SilvaMod128(CrestDatabase):
+class Silvamod128(CrestDatabase):
     &#34;&#34;&#34;
     Represents the silvamod database.
     &#34;&#34;&#34;
@@ -283,7 +286,7 @@ class GreenGenes(CrestDatabase):
 
 ###############################################################################
 # As our databases should only be stored on disk once, we have singletons #
-silvamod128 = SilvaMod128()
+silvamod128 = Silvamod128()
 greengenes = GreenGenes()</code></pre>
 </details>
 </section>
@@ -319,6 +322,9 @@ It comes with a FASTA file, as well as a tree.</p></div>
 
     # The environment variable that the user can set #
     environ_var = &#34;CREST4_DIR&#34;
+
+    # Children should overwrite this
+    short_name = None
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -369,7 +375,7 @@ It comes with a FASTA file, as well as a tree.</p></div>
                   &#34; patient. The result will be saved to &#39;%s&#39;. You can&#34; \
                   &#34; override this by setting the $%s environment variable.&#34;
         message = message % (self.short_name, self.base_dir, self.environ_var)
-        # Display the message with style #
+        # Display the message with style in a box #
         from plumbing.common import rich_panel_print
         rich_panel_print(message, &#34;Large Download&#34;)
         # Show a progress bar a bit like wget #
@@ -413,7 +419,7 @@ It comes with a FASTA file, as well as a tree.</p></div>
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
-        db = VSEARCHdb(self.prefix)
+        db = VSEARCHdb(self.prefix.replace_extension(&#39;udb&#39;))
         # Create the database with `vsearch` if it&#39;s not made already #
         db.create_if_not_exists(verbose=True)
         # Return #
@@ -469,7 +475,7 @@ It comes with a FASTA file, as well as a tree.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="crest4.databases.GreenGenes" href="#crest4.databases.GreenGenes">GreenGenes</a></li>
-<li><a title="crest4.databases.SilvaMod128" href="#crest4.databases.SilvaMod128">SilvaMod128</a></li>
+<li><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -478,6 +484,10 @@ It comes with a FASTA file, as well as a tree.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="crest4.databases.CrestDatabase.environ_var"><code class="name">var <span class="ident">environ_var</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="crest4.databases.CrestDatabase.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -817,7 +827,7 @@ similarity search.</p></div>
               &#34; patient. The result will be saved to &#39;%s&#39;. You can&#34; \
               &#34; override this by setting the $%s environment variable.&#34;
     message = message % (self.short_name, self.base_dir, self.environ_var)
-    # Display the message with style #
+    # Display the message with style in a box #
     from plumbing.common import rich_panel_print
     rich_panel_print(message, &#34;Large Download&#34;)
     # Show a progress bar a bit like wget #
@@ -996,8 +1006,8 @@ to download. A good read on this subject is the following:</p>
 </li>
 </ul>
 </dd>
-<dt id="crest4.databases.SilvaMod128"><code class="flex name class">
-<span>class <span class="ident">SilvaMod128</span></span>
+<dt id="crest4.databases.Silvamod128"><code class="flex name class">
+<span>class <span class="ident">Silvamod128</span></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Represents the silvamod database.</p></div>
@@ -1005,7 +1015,7 @@ to download. A good read on this subject is the following:</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class SilvaMod128(CrestDatabase):
+<pre><code class="python">class Silvamod128(CrestDatabase):
     &#34;&#34;&#34;
     Represents the silvamod database.
     &#34;&#34;&#34;
@@ -1018,7 +1028,7 @@ to download. A good read on this subject is the following:</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="crest4.databases.SilvaMod128.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
+<dt id="crest4.databases.Silvamod128.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1070,6 +1080,7 @@ to download. A good read on this subject is the following:</p>
 <li><code><a title="crest4.databases.CrestDatabase.environ_var" href="#crest4.databases.CrestDatabase.environ_var">environ_var</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.prefix" href="#crest4.databases.CrestDatabase.prefix">prefix</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.short_name" href="#crest4.databases.CrestDatabase.short_name">short_name</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
@@ -1093,9 +1104,9 @@ to download. A good read on this subject is the following:</p>
 </ul>
 </li>
 <li>
-<h4><code><a title="crest4.databases.SilvaMod128" href="#crest4.databases.SilvaMod128">SilvaMod128</a></code></h4>
+<h4><code><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></code></h4>
 <ul class="">
-<li><code><a title="crest4.databases.SilvaMod128.short_name" href="#crest4.databases.SilvaMod128.short_name">short_name</a></code></li>
+<li><code><a title="crest4.databases.Silvamod128.short_name" href="#crest4.databases.Silvamod128.short_name">short_name</a></code></li>
 </ul>
 </li>
 </ul>
