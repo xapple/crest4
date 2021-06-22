@@ -125,10 +125,6 @@ class Classify:
         # The fasta should be a FASTA object #
         if self.fasta is not None:
             self.fasta = FASTA(self.fasta)
-        # The search hits is a file somewhere #
-        if self.search_hits is not None:
-            self.search_hits = FilePath(self.search_hits)
-            self.search_hits.must_exist()
         # Default for the number of threads #
         if not isinstance(self.num_threads, int):
             if self.num_threads is True:
@@ -139,10 +135,15 @@ class Classify:
                 self.num_threads = min(multiprocessing.cpu_count(), 32)
         # Default for the output directory #
         if self.output_dir is None:
-            self.output_dir = DirectoryPath(self.fasta + '.crest4/')
-        # Default for the search hits file #
+            self.output_dir = self.fasta + '.crest4/'
+        self.output_dir = DirectoryPath(self.output_dir)
+        # The search hits is a file somewhere if passed #
+        if self.search_hits is not None:
+            self.search_hits = FilePath(self.search_hits)
+            self.search_hits.must_exist()
+        # Default for the search hits file if not passed #
         if self.search_hits is None:
-            self.search_hits = self.output_dir + 'search.hits'
+            self.search_hits = FilePath(self.output_dir + 'search.hits')
         # Default for the minimum score #
         if self.min_score is None:
             if self.search_algo == 'blast':
