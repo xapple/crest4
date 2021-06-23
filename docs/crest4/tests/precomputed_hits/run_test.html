@@ -68,8 +68,8 @@ def test_precomputed_hits():
     # Run it #
     c()
     # Check that the results are good #
-    assert c.queries[0].taxonomy[0] == &#34;Micrococcaceae&#34;
-    assert c.queries[1].taxonomy[0] == &#34;Nocardioidaceae&#34;
+    assert c.queries_by_id[&#39;Kocuria&#39;].taxonomy[0] == &#34;Micrococcaceae&#34;
+    assert c.queries_by_id[&#39;Marmoricola&#39;].taxonomy[0] == &#34;Nocardioidaceae&#34;
     # Return #
     return c
 
@@ -112,8 +112,8 @@ if __name__ == &#39;__main__&#39;:
     # Run it #
     c()
     # Check that the results are good #
-    assert c.queries[0].taxonomy[0] == &#34;Micrococcaceae&#34;
-    assert c.queries[1].taxonomy[0] == &#34;Nocardioidaceae&#34;
+    assert c.queries_by_id[&#39;Kocuria&#39;].taxonomy[0] == &#34;Micrococcaceae&#34;
+    assert c.queries_by_id[&#39;Marmoricola&#39;].taxonomy[0] == &#34;Nocardioidaceae&#34;
     # Return #
     return c</code></pre>
 </details>

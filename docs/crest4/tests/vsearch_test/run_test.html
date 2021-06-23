@@ -50,7 +50,7 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_vsearch():
+def test_vsearch(verbose=True):
     # The input fasta #
     fasta = this_dir.find(&#39;*.fasta&#39;)
     # The output directory #
@@ -63,10 +63,19 @@ def test_vsearch():
                  num_threads = True)
     # Run it #
     c()
+    # This test is sometimes failing, more prints for debugging #
+    if verbose:
+        print(&#34;c.queries_by_id --------&#34;)
+        print(c.queries_by_id)
+        print(&#34;c.queries[0].taxonomy --------&#34;)
+        print(c.queries[0].taxonomy)
+        print(&#34;c.queries[1].taxonomy --------&#34;)
+        print(c.queries[1].taxonomy)
     # Check that the results are good #
     assert c.queries[0].taxonomy[0] == &#34;Micrococcaceae&#34;
+    assert c.queries_by_id[&#39;Kocuria&#39;].taxonomy[0] == &#34;Micrococcaceae&#34;
     # Here with VSEARCH we end up one level above as compared to BLAST #
-    assert c.queries[1].taxonomy[0] == &#34;Propionibacteriales&#34;
+    assert c.queries_by_id[&#39;Marmoricola&#39;].taxonomy[0] == &#34;Propionibacteriales&#34;
     # Return #
     return c
 
@@ -83,7 +92,7 @@ if __name__ == &#39;__main__&#39;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="crest4.tests.vsearch_test.run_test.test_vsearch"><code class="name flex">
-<span>def <span class="ident">test_vsearch</span></span>(<span>)</span>
+<span>def <span class="ident">test_vsearch</span></span>(<span>verbose=True)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -91,7 +100,7 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_vsearch():
+<pre><code class="python">def test_vsearch(verbose=True):
     # The input fasta #
     fasta = this_dir.find(&#39;*.fasta&#39;)
     # The output directory #
@@ -104,10 +113,19 @@ if __name__ == &#39;__main__&#39;:
                  num_threads = True)
     # Run it #
     c()
+    # This test is sometimes failing, more prints for debugging #
+    if verbose:
+        print(&#34;c.queries_by_id --------&#34;)
+        print(c.queries_by_id)
+        print(&#34;c.queries[0].taxonomy --------&#34;)
+        print(c.queries[0].taxonomy)
+        print(&#34;c.queries[1].taxonomy --------&#34;)
+        print(c.queries[1].taxonomy)
     # Check that the results are good #
     assert c.queries[0].taxonomy[0] == &#34;Micrococcaceae&#34;
+    assert c.queries_by_id[&#39;Kocuria&#39;].taxonomy[0] == &#34;Micrococcaceae&#34;
     # Here with VSEARCH we end up one level above as compared to BLAST #
-    assert c.queries[1].taxonomy[0] == &#34;Propionibacteriales&#34;
+    assert c.queries_by_id[&#39;Marmoricola&#39;].taxonomy[0] == &#34;Propionibacteriales&#34;
     # Return #
     return c</code></pre>
 </details>
