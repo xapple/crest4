@@ -240,11 +240,11 @@ A plug-in for usage with QIIME2 is being developed and will be accessible here o
 
 The repository for `crest4` comes along with five different GitHub actions for CI/CD which are:
 
-* Pytest master branch
-* Test PyPI release on Ubuntu ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_pypi_ubuntu.yml/badge.svg)
-* Test PyPI release on macOS ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_pypi_macos.yml/badge.svg)
-* Test conda release on Ubuntu ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
-* Test conda release on macOS ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
+* Pytest master branch - ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
+* Test PyPI release on Ubuntu - ![PyPI Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_pypi_ubuntu.yml/badge.svg)
+* Test PyPI release on macOS - ![PyPI macOS](https://github.com/xapple/crest4/actions/workflows/test_pypi_macos.yml/badge.svg)
+* Test conda release on Ubuntu - ![conda Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
+* Test conda release on macOS - ![conda macOS](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
 
 Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite for both python 3.8 and python 3.9 on different operating systems.
 
