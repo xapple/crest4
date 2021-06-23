@@ -172,11 +172,12 @@ If you want to integrate `crest4` directly into your python pipeline, you may do
     # Import #
     from crest4 import Classify
     # Create a new instance #
-    tax = Classify('~/data/sequences.fasta', num_threads=16)
+    get_tax = Classify('~/data/sequences.fasta', num_threads=16)
     # Run the simliarty search and classification #
-    tax()
+    get_tax()
     # Print the results #
-    for query in tax.queries: print(query.taxonomy)
+    for name, query in get_tax.queries_by_id.items():
+        print(name, query.taxonomy)
 
 The specific arguments accepted are the same as the command line version as specified in the [internal API documentation](http://xapple.github.io/crest4/crest4/classify#Classify).
 
@@ -240,10 +241,10 @@ A plug-in for usage with QIIME2 is being developed and will be accessible here o
 The repository for `crest4` comes along with five different GitHub actions for CI/CD which are:
 
 * Pytest master branch
-* Test PyPI release on Ubuntu
-* Test PyPI release on macOS
-* Test conda release on Ubuntu
-* Test conda release on macOS
+* Test PyPI release on Ubuntu ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_pypi_ubuntu.yml/badge.svg)
+* Test PyPI release on macOS ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_pypi_macos.yml/badge.svg)
+* Test conda release on Ubuntu ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
+* Test conda release on macOS ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
 
 Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite for both python 3.8 and python 3.9 on different operating systems.
 

@@ -34,8 +34,8 @@ def test_ncbi_two_seqs():
     # Run it #
     c()
     # Check that the results are good #
-    assert c.queries[0].taxonomy[0] == "Micrococcaceae"
-    assert c.queries[1].taxonomy[0] == "Nocardioidaceae"
+    assert c.queries_by_id['Kocuria'].taxonomy[0] == "Micrococcaceae"
+    assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Nocardioidaceae"
     # Return #
     return c
 

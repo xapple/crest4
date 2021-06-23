@@ -254,6 +254,15 @@ class Classify:
         # Iterate on the sequence search results #
         return [Query(self, query) for query in self.seqsearch.results]
 
+    @property_cached
+    def queries_by_id(self):
+        """
+        References the same Query objects as the `queries` property above,
+        except that this time they are in a dictionary with the query ids
+        (i.e. the original fasta ids) as keys instead of in a list.
+        """
+        return {query.name: query for query in self.queries}
+
     #------------------------------- Outputs ---------------------------------#
     @property_cached
     def out_file(self):

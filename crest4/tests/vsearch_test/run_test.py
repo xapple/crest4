@@ -21,7 +21,7 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_vsearch():
+def test_vsearch(verbose=True):
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The output directory #
@@ -35,16 +35,18 @@ def test_vsearch():
     # Run it #
     c()
     # This test is sometimes failing, more prints for debugging #
-    print("c.queries --------")
-    print(c.queries)
-    print("c.queries[0].taxonomy --------")
-    print(c.queries[0].taxonomy)
-    print("c.queries[1].taxonomy --------")
-    print(c.queries[1].taxonomy)
+    if verbose:
+        print("c.queries_by_id --------")
+        print(c.queries_by_id)
+        print("c.queries[0].taxonomy --------")
+        print(c.queries[0].taxonomy)
+        print("c.queries[1].taxonomy --------")
+        print(c.queries[1].taxonomy)
     # Check that the results are good #
     assert c.queries[0].taxonomy[0] == "Micrococcaceae"
+    assert c.queries_by_id['Kocuria'].taxonomy[0] == "Micrococcaceae"
     # Here with VSEARCH we end up one level above as compared to BLAST #
-    assert c.queries[1].taxonomy[0] == "Propionibacteriales"
+    assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Propionibacteriales"
     # Return #
     return c
 
