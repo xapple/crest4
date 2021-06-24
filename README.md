@@ -41,7 +41,7 @@ Since `crest4` is written in python it is compatible with all operating systems:
 
 ### Installing via `conda`
 
-    $ conda install -c bioconda -c conda-forge -c xapple crest4 
+    $ conda install -c bioconda -c conda-forge -c xapple crest4
 
 ### Installing via `pip`
 
@@ -60,6 +60,8 @@ Or these commands on macOS:
 
     $ brew install blast
     $ brew install vsearch
+
+If you wish to install `crest4` from the repository source code you can follow [these instructions](docs/install_from_source.md) instead.
 
 ### Troubleshooting
 
@@ -226,7 +228,7 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 
 ### Custom databases
 
-It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentations are available in this other git repository:
+It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation is available in this other git repository:
 
 <https://github.com/xapple/crest4_utils>
 
