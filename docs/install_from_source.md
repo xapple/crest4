@@ -55,6 +55,7 @@ Relaunch your shell and type these commands to get the right version of python:
     $ python3 -m pip install ete3
     $ python3 -m pip install pytest
     $ python3 -m pip install rich
+    $ python3 -m pip install setuptools
     $ python3 -m pip install autopaths
     $ python3 -m pip install optmagic
     $ python3 -m pip install plumbing
