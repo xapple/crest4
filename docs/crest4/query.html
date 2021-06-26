@@ -102,8 +102,9 @@ class Query:
             node = self.db.acc_to_node.get(name)
             # Check that it was found #
             if node is None:
-                msg = &#34;The search hit &#39;%s&#39; was not found in the tree of &#39;%s&#39;.&#34;
-                raise Exception(msg % (node, self.db.short_name))
+                msg = &#34;The search hit &#39;%s&#39; was not found in the tree.&#34; \
+                      &#34; The database &#39;%s&#39; is probably corrupted.&#34;
+                raise Exception(msg % (name, self.db.short_name))
             # Add it to the list #
             nodes.add(node)
         # Return #
@@ -134,19 +135,19 @@ class Query:
         if self.algo == &#39;vsearch&#39;:
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
-        # level and proceed descending the tree until the similarity is
+        # level and proceed ascending the tree until the similarity is
         # satisfactory
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
-            # Check if we already got all the way down to the root #
+            # Check if we already got all the way up to the root #
             if node.is_root(): break
             # Get the minimum value associated for this level #
             smlrty_min = float(self.db.node_to_name[node.name][1])
             # Check if we are finally above that minimum #
             if similarity &gt; smlrty_min: break
-            # Otherwise go down one level for our classification #
-            node = self.db.tree.get_parent(node)
+            # Otherwise go up one level for our classification #
+            node = node.up
         # Return #
         return node
 
@@ -257,8 +258,9 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
             node = self.db.acc_to_node.get(name)
             # Check that it was found #
             if node is None:
-                msg = &#34;The search hit &#39;%s&#39; was not found in the tree of &#39;%s&#39;.&#34;
-                raise Exception(msg % (node, self.db.short_name))
+                msg = &#34;The search hit &#39;%s&#39; was not found in the tree.&#34; \
+                      &#34; The database &#39;%s&#39; is probably corrupted.&#34;
+                raise Exception(msg % (name, self.db.short_name))
             # Add it to the list #
             nodes.add(node)
         # Return #
@@ -289,19 +291,19 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
         if self.algo == &#39;vsearch&#39;:
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
-        # level and proceed descending the tree until the similarity is
+        # level and proceed ascending the tree until the similarity is
         # satisfactory
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
-            # Check if we already got all the way down to the root #
+            # Check if we already got all the way up to the root #
             if node.is_root(): break
             # Get the minimum value associated for this level #
             smlrty_min = float(self.db.node_to_name[node.name][1])
             # Check if we are finally above that minimum #
             if similarity &gt; smlrty_min: break
-            # Otherwise go down one level for our classification #
-            node = self.db.tree.get_parent(node)
+            # Otherwise go up one level for our classification #
+            node = node.up
         # Return #
         return node
 

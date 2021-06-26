@@ -75,6 +75,8 @@ class CrestMetadata:
 
     # The location of the metadata file is hardcoded #
     base_url  = &#34;https://gist.githubusercontent.com/xapple/&#34;
+
+    # The hash never changes after creation #
     gist_hash = &#34;a6961fe5a52f87746b9ab0d66c672871&#34;
     file_name = &#34;crest4_db_urls.json&#34;
 
@@ -120,6 +122,14 @@ class CrestDatabase:
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
         return &#34;&lt;%s object at &#39;%s&#39;&gt;&#34; % (self.__class__.__name__, self.prefix)
 
+    @property
+    def tag(self):
+        &#34;&#34;&#34;
+        Some methods will look for the `tag` attribute to print the name of the
+        database.
+        &#34;&#34;&#34;
+        return self.short_name
+
     @property_cached
     def base_dir(self):
         &#34;&#34;&#34;Determine where the database should be located on disk.&#34;&#34;&#34;
@@ -136,6 +146,11 @@ class CrestDatabase:
         &#34;&#34;&#34;Determine where the actual files will be located on disk.&#34;&#34;&#34;
         return self.base_dir + self.short_name + &#39;/&#39; + \
                self.short_name + &#39;.fasta&#39;
+
+    @property
+    def path(self):
+        &#34;&#34;&#34;Some methods will look for the `path` attribute instead.&#34;&#34;&#34;
+        return self.prefix
 
     @property_cached
     def downloaded(self):
@@ -228,6 +243,7 @@ class CrestDatabase:
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
+                if line.startswith(&#39;#&#39;) or not line: continue
                 num, name, frac = line.strip().split(&#39;,&#39;)
                 yield num, (name, frac)
         # Create a dictionary #
@@ -245,6 +261,7 @@ class CrestDatabase:
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
+                if line.startswith(&#39;#&#39;) or not line: continue
                 num, name = line.strip().split(&#39;,&#39;)
                 yield name, num
         # Create a dictionary #
@@ -262,32 +279,41 @@ class CrestDatabase:
         # Add information from the `map` file #
         return tree
 
+    #--------------------------- Extra information ----------------------------#
+    @property
+    def rank_names(self):
+        return [&#39;Domain&#39;,         # 1
+                &#39;Superkingdom&#39;,   # 2
+                &#39;Kingdom&#39;,        # 3
+                &#39;Phylum&#39;,         # 4
+                &#39;Class&#39;,          # 5
+                &#39;Order&#39;,          # 6
+                &#39;Family&#39;,         # 7
+                &#39;Genus&#39;,          # 8
+                &#39;Species&#39;]        # 9
+
 ###############################################################################
 class Silvamod128(CrestDatabase):
     &#34;&#34;&#34;
-    Represents the silvamod database.
+    Represents the old silvamod database.
     &#34;&#34;&#34;
 
     short_name = &#39;silvamod128&#39;
+    long_name  = &#39;Silva version 128 modified for CREST&#39;
 
 ###############################################################################
-class GreenGenes(CrestDatabase):
+class Silvamod138(CrestDatabase):
     &#34;&#34;&#34;
-    Represents the greengenes database.
+    Represents the new silvamod database.
     &#34;&#34;&#34;
 
-    short_name = &#39;greengenes&#39;
-
-    def download(self):
-        msg = &#34;The greengenes database is included only as a placeholder,&#34; \
-              &#34;it will not be present in the final version and cannot be&#34; \
-              &#34;used.&#34;
-        raise NotImplementedError(msg)
+    short_name = &#39;silvamod138&#39;
+    long_name  = &#39;Silva version 138 modified for CREST&#39;
 
 ###############################################################################
-# As our databases should only be stored on disk once, we have singletons #
+# As our databases should only be stored on disk once, so we have singletons #
 silvamod128 = Silvamod128()
-greengenes = GreenGenes()</code></pre>
+silvamod138 = Silvamod138()</code></pre>
 </details>
 </section>
 <section>
@@ -330,6 +356,14 @@ It comes with a FASTA file, as well as a tree.</p></div>
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
         return &#34;&lt;%s object at &#39;%s&#39;&gt;&#34; % (self.__class__.__name__, self.prefix)
 
+    @property
+    def tag(self):
+        &#34;&#34;&#34;
+        Some methods will look for the `tag` attribute to print the name of the
+        database.
+        &#34;&#34;&#34;
+        return self.short_name
+
     @property_cached
     def base_dir(self):
         &#34;&#34;&#34;Determine where the database should be located on disk.&#34;&#34;&#34;
@@ -346,6 +380,11 @@ It comes with a FASTA file, as well as a tree.</p></div>
         &#34;&#34;&#34;Determine where the actual files will be located on disk.&#34;&#34;&#34;
         return self.base_dir + self.short_name + &#39;/&#39; + \
                self.short_name + &#39;.fasta&#39;
+
+    @property
+    def path(self):
+        &#34;&#34;&#34;Some methods will look for the `path` attribute instead.&#34;&#34;&#34;
+        return self.prefix
 
     @property_cached
     def downloaded(self):
@@ -438,6 +477,7 @@ It comes with a FASTA file, as well as a tree.</p></div>
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
+                if line.startswith(&#39;#&#39;) or not line: continue
                 num, name, frac = line.strip().split(&#39;,&#39;)
                 yield num, (name, frac)
         # Create a dictionary #
@@ -455,6 +495,7 @@ It comes with a FASTA file, as well as a tree.</p></div>
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
+                if line.startswith(&#39;#&#39;) or not line: continue
                 num, name = line.strip().split(&#39;,&#39;)
                 yield name, num
         # Create a dictionary #
@@ -470,12 +511,25 @@ It comes with a FASTA file, as well as a tree.</p></div>
         # Load the tree with ete3 #
         tree = Tree(self.prefix.replace_extension(&#39;tre&#39;), format=8)
         # Add information from the `map` file #
-        return tree</code></pre>
+        return tree
+
+    #--------------------------- Extra information ----------------------------#
+    @property
+    def rank_names(self):
+        return [&#39;Domain&#39;,         # 1
+                &#39;Superkingdom&#39;,   # 2
+                &#39;Kingdom&#39;,        # 3
+                &#39;Phylum&#39;,         # 4
+                &#39;Class&#39;,          # 5
+                &#39;Order&#39;,          # 6
+                &#39;Family&#39;,         # 7
+                &#39;Genus&#39;,          # 8
+                &#39;Species&#39;]        # 9</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="crest4.databases.GreenGenes" href="#crest4.databases.GreenGenes">GreenGenes</a></li>
 <li><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></li>
+<li><a title="crest4.databases.Silvamod138" href="#crest4.databases.Silvamod138">Silvamod138</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -650,6 +704,19 @@ Example: 51 -&gt; (Proteobacteria, 0.8)</p></div>
     return result</code></pre>
 </details>
 </dd>
+<dt id="crest4.databases.CrestDatabase.path"><code class="name">var <span class="ident">path</span></code></dt>
+<dd>
+<div class="desc"><p>Some methods will look for the <code>path</code> attribute instead.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def path(self):
+    &#34;&#34;&#34;Some methods will look for the `path` attribute instead.&#34;&#34;&#34;
+    return self.prefix</code></pre>
+</details>
+</dd>
 <dt id="crest4.databases.CrestDatabase.prefix"><code class="name">var <span class="ident">prefix</span></code></dt>
 <dd>
 <div class="desc"><p>Determine where the actual files will be located on disk.</p></div>
@@ -678,6 +745,43 @@ Example: 51 -&gt; (Proteobacteria, 0.8)</p></div>
     instance.__cache__[self.name] = result
     # Return #
     return result</code></pre>
+</details>
+</dd>
+<dt id="crest4.databases.CrestDatabase.rank_names"><code class="name">var <span class="ident">rank_names</span></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rank_names(self):
+    return [&#39;Domain&#39;,         # 1
+            &#39;Superkingdom&#39;,   # 2
+            &#39;Kingdom&#39;,        # 3
+            &#39;Phylum&#39;,         # 4
+            &#39;Class&#39;,          # 5
+            &#39;Order&#39;,          # 6
+            &#39;Family&#39;,         # 7
+            &#39;Genus&#39;,          # 8
+            &#39;Species&#39;]        # 9</code></pre>
+</details>
+</dd>
+<dt id="crest4.databases.CrestDatabase.tag"><code class="name">var <span class="ident">tag</span></code></dt>
+<dd>
+<div class="desc"><p>Some methods will look for the <code>tag</code> attribute to print the name of the
+database.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def tag(self):
+    &#34;&#34;&#34;
+    Some methods will look for the `tag` attribute to print the name of the
+    database.
+    &#34;&#34;&#34;
+    return self.short_name</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.tarball"><code class="name">var <span class="ident">tarball</span></code></dt>
@@ -878,6 +982,8 @@ to download. A good read on this subject is the following:</p>
 
     # The location of the metadata file is hardcoded #
     base_url  = &#34;https://gist.githubusercontent.com/xapple/&#34;
+
+    # The hash never changes after creation #
     gist_hash = &#34;a6961fe5a52f87746b9ab0d66c672871&#34;
     file_name = &#34;crest4_db_urls.json&#34;
 
@@ -954,73 +1060,22 @@ to download. A good read on this subject is the following:</p>
 </dd>
 </dl>
 </dd>
-<dt id="crest4.databases.GreenGenes"><code class="flex name class">
-<span>class <span class="ident">GreenGenes</span></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Represents the greengenes database.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class GreenGenes(CrestDatabase):
-    &#34;&#34;&#34;
-    Represents the greengenes database.
-    &#34;&#34;&#34;
-
-    short_name = &#39;greengenes&#39;
-
-    def download(self):
-        msg = &#34;The greengenes database is included only as a placeholder,&#34; \
-              &#34;it will not be present in the final version and cannot be&#34; \
-              &#34;used.&#34;
-        raise NotImplementedError(msg)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="crest4.databases.GreenGenes.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></b></code>:
-<ul class="hlist">
-<li><code><a title="crest4.databases.CrestDatabase.acc_to_node" href="#crest4.databases.CrestDatabase.acc_to_node">acc_to_node</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.base_dir" href="#crest4.databases.CrestDatabase.base_dir">base_dir</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.blast_db" href="#crest4.databases.CrestDatabase.blast_db">blast_db</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.download" href="#crest4.databases.CrestDatabase.download">download</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.downloaded" href="#crest4.databases.CrestDatabase.downloaded">downloaded</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.prefix" href="#crest4.databases.CrestDatabase.prefix">prefix</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.vsearch_db" href="#crest4.databases.CrestDatabase.vsearch_db">vsearch_db</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="crest4.databases.Silvamod128"><code class="flex name class">
 <span>class <span class="ident">Silvamod128</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Represents the silvamod database.</p></div>
+<div class="desc"><p>Represents the old silvamod database.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Silvamod128(CrestDatabase):
     &#34;&#34;&#34;
-    Represents the silvamod database.
+    Represents the old silvamod database.
     &#34;&#34;&#34;
 
-    short_name = &#39;silvamod128&#39;</code></pre>
+    short_name = &#39;silvamod128&#39;
+    long_name  = &#39;Silva version 128 modified for CREST&#39;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1028,6 +1083,10 @@ to download. A good read on this subject is the following:</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="crest4.databases.Silvamod128.long_name"><code class="name">var <span class="ident">long_name</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="crest4.databases.Silvamod128.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -1043,7 +1102,62 @@ to download. A good read on this subject is the following:</p>
 <li><code><a title="crest4.databases.CrestDatabase.download" href="#crest4.databases.CrestDatabase.download">download</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.downloaded" href="#crest4.databases.CrestDatabase.downloaded">downloaded</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.path" href="#crest4.databases.CrestDatabase.path">path</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.prefix" href="#crest4.databases.CrestDatabase.prefix">prefix</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.tag" href="#crest4.databases.CrestDatabase.tag">tag</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.vsearch_db" href="#crest4.databases.CrestDatabase.vsearch_db">vsearch_db</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="crest4.databases.Silvamod138"><code class="flex name class">
+<span>class <span class="ident">Silvamod138</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Represents the new silvamod database.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Silvamod138(CrestDatabase):
+    &#34;&#34;&#34;
+    Represents the new silvamod database.
+    &#34;&#34;&#34;
+
+    short_name = &#39;silvamod138&#39;
+    long_name  = &#39;Silva version 138 modified for CREST&#39;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="crest4.databases.Silvamod138.long_name"><code class="name">var <span class="ident">long_name</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="crest4.databases.Silvamod138.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="crest4.databases.CrestDatabase.acc_to_node" href="#crest4.databases.CrestDatabase.acc_to_node">acc_to_node</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.base_dir" href="#crest4.databases.CrestDatabase.base_dir">base_dir</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.blast_db" href="#crest4.databases.CrestDatabase.blast_db">blast_db</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.download" href="#crest4.databases.CrestDatabase.download">download</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.downloaded" href="#crest4.databases.CrestDatabase.downloaded">downloaded</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.path" href="#crest4.databases.CrestDatabase.path">path</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.prefix" href="#crest4.databases.CrestDatabase.prefix">prefix</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.tag" href="#crest4.databases.CrestDatabase.tag">tag</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
@@ -1079,8 +1193,11 @@ to download. A good read on this subject is the following:</p>
 <li><code><a title="crest4.databases.CrestDatabase.downloaded" href="#crest4.databases.CrestDatabase.downloaded">downloaded</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.environ_var" href="#crest4.databases.CrestDatabase.environ_var">environ_var</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.path" href="#crest4.databases.CrestDatabase.path">path</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.prefix" href="#crest4.databases.CrestDatabase.prefix">prefix</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.rank_names" href="#crest4.databases.CrestDatabase.rank_names">rank_names</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.short_name" href="#crest4.databases.CrestDatabase.short_name">short_name</a></code></li>
+<li><code><a title="crest4.databases.CrestDatabase.tag" href="#crest4.databases.CrestDatabase.tag">tag</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
 <li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
@@ -1098,15 +1215,17 @@ to download. A good read on this subject is the following:</p>
 </ul>
 </li>
 <li>
-<h4><code><a title="crest4.databases.GreenGenes" href="#crest4.databases.GreenGenes">GreenGenes</a></code></h4>
+<h4><code><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></code></h4>
 <ul class="">
-<li><code><a title="crest4.databases.GreenGenes.short_name" href="#crest4.databases.GreenGenes.short_name">short_name</a></code></li>
+<li><code><a title="crest4.databases.Silvamod128.long_name" href="#crest4.databases.Silvamod128.long_name">long_name</a></code></li>
+<li><code><a title="crest4.databases.Silvamod128.short_name" href="#crest4.databases.Silvamod128.short_name">short_name</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></code></h4>
+<h4><code><a title="crest4.databases.Silvamod138" href="#crest4.databases.Silvamod138">Silvamod138</a></code></h4>
 <ul class="">
-<li><code><a title="crest4.databases.Silvamod128.short_name" href="#crest4.databases.Silvamod128.short_name">short_name</a></code></li>
+<li><code><a title="crest4.databases.Silvamod138.long_name" href="#crest4.databases.Silvamod138.long_name">long_name</a></code></li>
+<li><code><a title="crest4.databases.Silvamod138.short_name" href="#crest4.databases.Silvamod138.short_name">short_name</a></code></li>
 </ul>
 </li>
 </ul>
