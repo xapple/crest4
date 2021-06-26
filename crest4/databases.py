@@ -87,6 +87,14 @@ class CrestDatabase:
         """A simple representation of this object to avoid memory addresses."""
         return "<%s object at '%s'>" % (self.__class__.__name__, self.prefix)
 
+    @property
+    def tag(self):
+        """
+        Some methods will look for the `tag` attribute to print the name of the
+        database.
+        """
+        return self.short_name
+
     @property_cached
     def base_dir(self):
         """Determine where the database should be located on disk."""
@@ -103,6 +111,11 @@ class CrestDatabase:
         """Determine where the actual files will be located on disk."""
         return self.base_dir + self.short_name + '/' + \
                self.short_name + '.fasta'
+
+    @property
+    def path(self):
+        """Some methods will look for the `path` attribute instead."""
+        return self.prefix
 
     @property_cached
     def downloaded(self):
@@ -231,6 +244,19 @@ class CrestDatabase:
         # Add information from the `map` file #
         return tree
 
+    #--------------------------- Extra information ----------------------------#
+    @property
+    def rank_names(self):
+        return ['Domain',         # 1
+                'Superkingdom',   # 2
+                'Kingdom',        # 3
+                'Phylum',         # 4
+                'Class',          # 5
+                'Order',          # 6
+                'Family',         # 7
+                'Genus',          # 8
+                'Species']        # 9
+
 ###############################################################################
 class Silvamod128(CrestDatabase):
     """
@@ -238,6 +264,7 @@ class Silvamod128(CrestDatabase):
     """
 
     short_name = 'silvamod128'
+    long_name  = 'Silva version 128 modified for CREST'
 
 ###############################################################################
 class Silvamod138(CrestDatabase):
@@ -246,6 +273,7 @@ class Silvamod138(CrestDatabase):
     """
 
     short_name = 'silvamod138'
+    long_name  = 'Silva version 138 modified for CREST'
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
