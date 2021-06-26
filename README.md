@@ -23,9 +23,9 @@ Simply put, given the following fragment of an rRNA 16S sequence from an uncultu
 
     Bacteria; Terrabacteria; Cyanobacteria; Oxyphotobacteria; Synechococcales
 
-To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identify threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification.
+To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identify threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification. Simply put, if for instance all hits for a given sequence only agree at the order level, the assignment stops at the order level.
 
-This strategy contrasts with the other tools that instead use a naive bayesian classifier for taxonomic assignment. Often referred to as the Wang method and used for instance in the RDP software, it consists of the following steps: calculate the probability that the query sequence would be part of any given reference taxonomy sequence based on the decomposed *kmer* content and pick the taxonomy with the highest probability while considering a confidence limit computed by a bootstrapping algorithm.
+This strategy contrasts with the other tools that instead use a naive bayesian classifier for taxonomic assignment. Often referred to as the Wang method and used for example in the RDP software, it consists of the following steps: calculate the probability that the query sequence would be part of any given reference taxonomy sequence based on the decomposed *kmer* content and pick the taxonomy with the highest probability while considering a confidence limit computed by a bootstrapping algorithm.
 
 ### Citation
 
@@ -90,7 +90,7 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod128 is the default reference database. To use another database, e.g. Greengenes, the `d` option must be specified followed by the database name:
+Silvamod128 is the default reference database. To use another database, e.g. Greengenes, the `-d` option must be specified followed by the database name:
 
     crest4 -f sequences.fasta -d greengenes
 
@@ -175,7 +175,7 @@ If you want to integrate `crest4` directly into your python pipeline, you may do
     from crest4 import Classify
     # Create a new instance #
     get_tax = Classify('~/data/sequences.fasta', num_threads=16)
-    # Run the simliarty search and classification #
+    # Run the similarity search and classification #
     get_tax()
     # Print the results #
     for name, query in get_tax.queries_by_id.items():
@@ -231,12 +231,6 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation is available in this other git repository:
 
 <https://github.com/xapple/crest4_utils>
-
-### QIIME2 plug-in
-
-A plug-in for usage with QIIME2 is being developed and will be accessible here once completed:
-
-<https://github.com/xapple/q2-crest4>
 
 ### Continuous testing
 
