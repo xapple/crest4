@@ -40,6 +40,8 @@ class CrestMetadata:
 
     # The location of the metadata file is hardcoded #
     base_url  = "https://gist.githubusercontent.com/xapple/"
+
+    # The hash never changes after creation #
     gist_hash = "a6961fe5a52f87746b9ab0d66c672871"
     file_name = "crest4_db_urls.json"
 
@@ -193,6 +195,7 @@ class CrestDatabase:
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
+                if line.startswith('#') or not line: continue
                 num, name, frac = line.strip().split(',')
                 yield num, (name, frac)
         # Create a dictionary #
@@ -210,6 +213,7 @@ class CrestDatabase:
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
+                if line.startswith('#') or not line: continue
                 num, name = line.strip().split(',')
                 yield name, num
         # Create a dictionary #
@@ -230,26 +234,20 @@ class CrestDatabase:
 ###############################################################################
 class Silvamod128(CrestDatabase):
     """
-    Represents the silvamod database.
+    Represents the old silvamod database.
     """
 
     short_name = 'silvamod128'
 
 ###############################################################################
-class GreenGenes(CrestDatabase):
+class Silvamod138(CrestDatabase):
     """
-    Represents the greengenes database.
+    Represents the new silvamod database.
     """
 
-    short_name = 'greengenes'
-
-    def download(self):
-        msg = "The greengenes database is included only as a placeholder," \
-              "it will not be present in the final version and cannot be" \
-              "used."
-        raise NotImplementedError(msg)
+    short_name = 'silvamod138'
 
 ###############################################################################
-# As our databases should only be stored on disk once, we have singletons #
+# As our databases should only be stored on disk once, so we have singletons #
 silvamod128 = Silvamod128()
-greengenes = GreenGenes()
+silvamod138 = Silvamod138()

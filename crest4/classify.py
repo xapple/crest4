@@ -41,7 +41,7 @@ class Classify:
                  fasta,
                  search_algo = 'blast',
                  num_threads = 1,
-                 search_db   = 'silvamod128',
+                 search_db   = 'silvamod138',
                  output_dir  = None,
                  search_hits = None,
                  min_score   = None,
@@ -68,8 +68,8 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `silvamod128` or `greengenes`. No other values
-                       are currently supported. By default `silvamod128`.
+                       Either `silvamod138` or `silvamod128`. No other values
+                       are currently supported. By default `silvamod138`.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
@@ -144,6 +144,7 @@ class Classify:
         # Default for the search hits file if not passed #
         if self.search_hits is None:
             self.search_hits = FilePath(self.output_dir + 'search.hits')
+            self.search_hits.remove()
         # Default for the minimum score #
         if self.min_score is None:
             if self.search_algo == 'blast':
@@ -169,7 +170,7 @@ class Classify:
             msg = "The search algorithm '%s' is not supported."
             raise ValueError(msg % self.search_algo)
         # Check the search database #
-        if self.search_db not in ('silvamod128', 'greengenes'):
+        if self.search_db not in ('silvamod128', 'silvamod138'):
             msg = "The search database '%s' is not supported."
             raise ValueError(msg % self.search_db)
         # Check the minimum score value above zero #
@@ -273,7 +274,7 @@ class Classify:
         # Make sure that output directory exists #
         self.output_dir.create_if_not_exists()
         # Return #
-        return  self.output_dir + "assignments.txt"
+        return self.output_dir + "assignments.txt"
 
     def __call__(self):
         """Generate outputs."""

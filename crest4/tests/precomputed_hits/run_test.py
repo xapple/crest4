@@ -25,7 +25,7 @@ def test_precomputed_hits():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The input BLAST hits #
-    hits = this_dir.find('*.hits')
+    hits = this_dir.find('silvamod138.hits')
     # The output directory #
     output_dir = this_dir + 'results/'
     output_dir.remove()

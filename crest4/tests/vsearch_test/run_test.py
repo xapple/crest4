@@ -34,19 +34,13 @@ def test_vsearch(verbose=True):
                  num_threads = True)
     # Run it #
     c()
-    # This test is sometimes failing, more prints for debugging #
-    if verbose:
-        print("c.queries_by_id --------")
-        print(c.queries_by_id)
-        print("c.queries[0].taxonomy --------")
-        print(c.queries[0].taxonomy)
-        print("c.queries[1].taxonomy --------")
-        print(c.queries[1].taxonomy)
     # Check that the results are good #
-    assert c.queries[0].taxonomy[0] == "Micrococcaceae"
     assert c.queries_by_id['Kocuria'].taxonomy[0] == "Micrococcaceae"
-    # Here with VSEARCH we end up one level above as compared to BLAST #
-    assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Propionibacteriales"
+    # Here with VSEARCH we can end up one level above as compared to BLAST #
+    if c.search_db == 'silvamod128':
+        assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Propionibacteriales"
+    else:
+        assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Nocardioidaceae"
     # Return #
     return c
 

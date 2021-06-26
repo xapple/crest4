@@ -19,9 +19,9 @@ Simply put, given the following fragment of an rRNA 16S sequence from an uncultu
     AATTAAGTCTGTTGTTAAAGCCCACAGCTCAACTGTGGATCGGCAATGGAAACTGGTTGACTAGAGTGTG
     GTAGGGGTAGAGGGAATTCCCGGTGTAGCGGTGAAATGCGTAGATATCG
 
-`crest4` will be able to tell you that this gene is likely originating from the following taxonomy order:
+`crest4` will be able to tell you that this gene is likely originating from the following taxonomy family:
 
-    Bacteria; Terrabacteria; Cyanobacteria; Oxyphotobacteria; Synechococcales
+    Bacteria; Terrabacteria; Cyanobacteria; Cyanobacteriia; Phormidesmiales; Nodosilineaceae
 
 To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identify threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification. Simply put, if for instance all hits for a given sequence only agree at the order level, the assignment stops at the order level.
 
@@ -90,9 +90,9 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod128 is the default reference database. To use another database, e.g. Greengenes, the `-d` option must be specified followed by the database name:
+Silvamod138 is the default reference database. To use another database, e.g. Silvamod128, the `-d` option must be specified followed by the database name:
 
-    crest4 -f sequences.fasta -d greengenes
+    crest4 -f sequences.fasta -d silvamod128
 
 ### All options
 
@@ -122,8 +122,8 @@ Optional arguments:
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either `silvamod128` or `greengenes`. No other values
-                        are currently supported. By default `silvamod128`.
+                        Either `silvamod138` or `silvamod128`. No other values
+                        are currently supported. By default `silvamod138`.
 
   --output_dir DIR, -o DIR
                         The directory into which all the classification
@@ -214,7 +214,7 @@ The equivalent VSEARCH command is the following:
 
 The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. Release supported: Silva NR SSU Ref v128. This database was last released in September 2016.
 
-The [Greengenes](http://greengenes.secondgenome.com) database is an alternative reference for classification of prokaryotic 16S, curated and maintained by The Greengenes Database Consortium. This database was last released in May 2013.
+The `silvamod138` database used the same process but with the latest version of SILVA NR SSU.
 
 ### Classification algorithm
 
@@ -228,7 +228,7 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 
 ### Custom databases
 
-It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation is available in this other git repository:
+It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation are available in this other git repository:
 
 <https://github.com/xapple/crest4_utils>
 

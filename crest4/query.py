@@ -67,8 +67,9 @@ class Query:
             node = self.db.acc_to_node.get(name)
             # Check that it was found #
             if node is None:
-                msg = "The search hit '%s' was not found in the tree of '%s'."
-                raise Exception(msg % (node, self.db.short_name))
+                msg = "The search hit '%s' was not found in the tree." \
+                      " The database '%s' is probably corrupted."
+                raise Exception(msg % (name, self.db.short_name))
             # Add it to the list #
             nodes.add(node)
         # Return #
