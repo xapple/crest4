@@ -100,19 +100,19 @@ class Query:
         if self.algo == 'vsearch':
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
-        # level and proceed descending the tree until the similarity is
+        # level and proceed ascending the tree until the similarity is
         # satisfactory
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
-            # Check if we already got all the way down to the root #
+            # Check if we already got all the way up to the root #
             if node.is_root(): break
             # Get the minimum value associated for this level #
             smlrty_min = float(self.db.node_to_name[node.name][1])
             # Check if we are finally above that minimum #
             if similarity > smlrty_min: break
-            # Otherwise go down one level for our classification #
-            node = self.db.tree.get_parent(node)
+            # Otherwise go up one level for our classification #
+            node = node.up
         # Return #
         return node
 
