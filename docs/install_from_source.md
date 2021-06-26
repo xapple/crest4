@@ -25,7 +25,15 @@ Add this line:
 
 ### Step 3: Install your own version of python
 
-Your system probably comes with a version of python installed. But the variations from system to system are too great to rely on any available setup. We recommend to install our own in the home directory for development purposes. Also, we will then be able to install modules without administrator privileges. You can skip this step if you are confident enough about about your system's python or are an administrator.
+Your system probably comes with a version of python installed, but the it might be outdated or configured in a particular way. If your current version of python is at least 3.8 or above, it should be safe to skip this step.
+
+To check this simply type:
+
+    $ python3 -V
+
+You can also skip this step if you are confident enough about about your system's setup or are an administrator with `sudo` privileges.
+
+If this is not the case and your python is outdated, we recommend to install our own in the home directory for development purposes. Also, this guarantees that we will then be able to install python modules without administrator privileges for instance.
 
 For this we will be using this excellent project: https://github.com/yyuu/pyenv
 
