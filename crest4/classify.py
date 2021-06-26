@@ -81,7 +81,9 @@ class Classify:
                          if the search operation has already been completed
                          before hand, specify the path here to skip the
                          sequence similarity search step and go directly to
-                         the taxonomy step.
+                         the taxonomy step. If a hits file exists in the output
+                         directory and this option is not specified, it is
+                         deleted and regenerated.
 
             min_score: The minimum bit-score for a search hit to be considered
                        when using BLAST as the search algorithm. All hits below
