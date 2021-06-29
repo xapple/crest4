@@ -244,6 +244,15 @@ class CrestDatabase:
         # Add information from the `map` file #
         return tree
 
+###############################################################################
+class Silvamod128(CrestDatabase):
+    """
+    Represents the old silvamod database.
+    """
+
+    short_name = 'silvamod128'
+    long_name  = 'Silva version 128 modified for CREST'
+
     #--------------------------- Extra information ----------------------------#
     @property
     def rank_names(self):
@@ -258,15 +267,6 @@ class CrestDatabase:
                 'Species']        # 9
 
 ###############################################################################
-class Silvamod128(CrestDatabase):
-    """
-    Represents the old silvamod database.
-    """
-
-    short_name = 'silvamod128'
-    long_name  = 'Silva version 128 modified for CREST'
-
-###############################################################################
 class Silvamod138(CrestDatabase):
     """
     Represents the new silvamod database.
@@ -274,6 +274,21 @@ class Silvamod138(CrestDatabase):
 
     short_name = 'silvamod138'
     long_name  = 'Silva version 138 modified for CREST'
+
+    #--------------------------- Extra information ----------------------------#
+    @property
+    def rank_names(self):
+        """The superphylum rank is added."""
+        return ['Domain',         # 1
+                'Superkingdom',   # 2
+                'Kingdom',        # 3
+                'Superphylum',    # 4
+                'Phylum',         # 5
+                'Class',          # 6
+                'Order',          # 7
+                'Family',         # 8
+                'Genus',          # 9
+                'Species']        # 10
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
