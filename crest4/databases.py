@@ -48,6 +48,9 @@ class CrestMetadata:
     # This will always retrieve the raw content of the latest gist version #
     metadata_url = base_url + gist_hash + '/raw/' + file_name
 
+    # To see the HTML version on github simply head to this address instead:
+    # https://gist.github.com/xapple/a6961fe5a52f87746b9ab0d66c672871
+
     @property_cached
     def db_urls(self):
         """
@@ -197,6 +200,18 @@ class CrestDatabase:
 
     #--------------------------- Loading the tree ----------------------------#
     @property_cached
+    def tree(self):
+        """
+        Using the `.tre` file, we return a N-ary tree in memory.
+        Every node is characterised by a number. For instance between
+        1 and 32477.
+        """
+        # Load the tree with ete3 #
+        tree = Tree(self.prefix.replace_extension('tre'), format=8)
+        # Add information from the `map` file #
+        return tree
+
+    @property_cached
     def node_to_name(self):
         """
         Using the `.names` file, we return a dictionary linking node numbers to
@@ -232,17 +247,18 @@ class CrestDatabase:
         # Create a dictionary #
         with open(path, 'rt') as handle: return dict(parse_lines(handle))
 
-    @property_cached
-    def tree(self):
-        """
-        Using the `.tre` file, we return a N-ary tree in memory.
-        Every node is characterised by a number. For instance between
-        1 and 32477.
-        """
-        # Load the tree with ete3 #
-        tree = Tree(self.prefix.replace_extension('tre'), format=8)
-        # Add information from the `map` file #
-        return tree
+    #--------------------------- Extra information ----------------------------#
+    @property
+    def rank_names(self):
+        return ['Domain',         # 1
+                'Superkingdom',   # 2
+                'Kingdom',        # 3   (This is also called Superphylum)
+                'Phylum',         # 4
+                'Class',          # 5
+                'Order',          # 6
+                'Family',         # 7
+                'Genus',          # 8
+                'Species']        # 9
 
 ###############################################################################
 class Silvamod128(CrestDatabase):
@@ -253,19 +269,6 @@ class Silvamod128(CrestDatabase):
     short_name = 'silvamod128'
     long_name  = 'Silva version 128 modified for CREST'
 
-    #--------------------------- Extra information ----------------------------#
-    @property
-    def rank_names(self):
-        return ['Domain',         # 1
-                'Superkingdom',   # 2
-                'Kingdom',        # 3
-                'Phylum',         # 4
-                'Class',          # 5
-                'Order',          # 6
-                'Family',         # 7
-                'Genus',          # 8
-                'Species']        # 9
-
 ###############################################################################
 class Silvamod138(CrestDatabase):
     """
@@ -274,21 +277,6 @@ class Silvamod138(CrestDatabase):
 
     short_name = 'silvamod138'
     long_name  = 'Silva version 138 modified for CREST'
-
-    #--------------------------- Extra information ----------------------------#
-    @property
-    def rank_names(self):
-        """The superphylum rank is added."""
-        return ['Domain',         # 1
-                'Superkingdom',   # 2
-                'Kingdom',        # 3
-                'Superphylum',    # 4
-                'Phylum',         # 5
-                'Class',          # 6
-                'Order',          # 7
-                'Family',         # 8
-                'Genus',          # 9
-                'Species']        # 10
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
