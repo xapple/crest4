@@ -37,7 +37,7 @@ If you use CREST in your research, please cite [this publication](https://dx.plo
 
 ## Installing
 
-Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply choose one of the two following methods, depending on which package manager you prefer to use.
+Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply choose one of the two following methods to install, depending on which package manager you prefer to use.
 
 ### Installing via `conda`
 
@@ -72,7 +72,7 @@ If you wish to install `crest4` from the repository source code you can follow [
 
 ### Database location
 
-To download the databases that are used in the classification algorithm, `crest4` needs somewhere to write to on the filesystem. This will default to your home directory at: `~/.crest4/`. If you wish to change this, simply set the environment variable `$CREST4_DIR` to another directory path prior to execution.
+To download the databases that are used in the classification algorithm, `crest4` needs somewhere to write to on the filesystem. This will default to your home directory at: `~/.crest4/`. If you wish to change this, simply set the environment variable `$CREST4_DIR` to another writable directory path prior to execution.
 
 ## Usage
 
@@ -90,7 +90,7 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod138 is the default reference database. To use another database, e.g. Silvamod128, the `-d` option must be specified followed by the database name:
+Silvamod138 is the default reference database. To use another database, e.g., Silvamod128, the `-d` option must be specified followed by the database name:
 
     crest4 -f sequences.fasta -d silvamod128
 
@@ -214,9 +214,9 @@ The equivalent VSEARCH command is the following:
 
 ### Classification databases
 
-The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. Release supported: Silva NR SSU Ref v128. This database was last released in September 2016.
+The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. This database was last released in September 2016.
 
-The `silvamod138` database used the same process but with the latest version of SILVA NR SSU.
+The `silvamod138` database uses a similar process but with a more recent version of the database. More specifically it is based on SILVA v138 PR2 release v4.13.
 
 ### Classification algorithm
 
