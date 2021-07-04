@@ -83,12 +83,29 @@ class CrestDatabase:
     # The environment variable that the user can set #
     environ_var = "CREST4_DIR"
 
-    # Children should overwrite this
-    short_name = None
+    def __init__(self, short_name, long_name, base_dir=None):
+        """
+        The user can specify a path pointing to a directory that contains all
+        the required files, and having the same prefix as the directory name.
+        It must include the database FASTA file as well as the `.map` and
+        `.names` file.
+        """
+        # Base required attributes #
+        self.short_name = short_name
+        self.long_name = long_name
+        # Determine where the actual files will be located on disk #
+        # Check if the user has set an environment variable #
+        if base_dir is None:
+            base_dir = os.environ.get(self.environ_var, self.default_dir)
+        # If the user specifies a base_dir no need to download #
+        if base_dir is not None:
+            self.downloaded = True
+        # Convert to DirectoryPath
+        self.base_dir = DirectoryPath(base_dir)
 
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
-        return "<%s object at '%s'>" % (self.__class__.__name__, self.prefix)
+        return "<%s object at '%s'>" % (self.__class__.__name__, self.path)
 
     @property
     def tag(self):
@@ -99,26 +116,15 @@ class CrestDatabase:
         return self.short_name
 
     @property_cached
-    def base_dir(self):
-        """Determine where the database should be located on disk."""
-        # Check if the user has set an environment variable #
-        return DirectoryPath(os.environ.get(self.environ_var, self.default_dir))
-
-    @property_cached
     def tarball(self):
         """Determine where the database `.tar.gz` will be located on disk."""
         return self.base_dir + self.short_name + '.tar.gz'
 
     @property_cached
-    def prefix(self):
-        """Determine where the actual files will be located on disk."""
+    def path(self):
+        """The path to the FASTA file."""
         return self.base_dir + self.short_name + '/' + \
                self.short_name + '.fasta'
-
-    @property
-    def path(self):
-        """Some methods will look for the `path` attribute instead."""
-        return self.prefix
 
     @property_cached
     def downloaded(self):
@@ -127,7 +133,7 @@ class CrestDatabase:
         previously. Returns `True` or `False`.
         """
         # Check if the tree is there and not empty #
-        return bool(self.prefix.replace_extension('tre'))
+        return bool(self.path.replace_extension('tre'))
 
     @property_cached
     def url(self):
@@ -177,7 +183,7 @@ class CrestDatabase:
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
-        db = BLASTdb(self.prefix, seq_type='nucl')
+        db = BLASTdb(self.path, seq_type='nucl')
         # Create the database with `mkblastdb` if it's not made already #
         db.create_if_not_exists(verbose=True)
         # Return #
@@ -192,7 +198,7 @@ class CrestDatabase:
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
-        db = VSEARCHdb(self.prefix.replace_extension('udb'))
+        db = VSEARCHdb(self.path.replace_extension('udb'))
         # Create the database with `vsearch` if it's not made already #
         db.create_if_not_exists(verbose=True)
         # Return #
@@ -207,7 +213,7 @@ class CrestDatabase:
         1 and 32477.
         """
         # Load the tree with ete3 #
-        tree = Tree(self.prefix.replace_extension('tre'), format=8)
+        tree = Tree(self.path.replace_extension('tre'), format=8)
         # Add information from the `map` file #
         return tree
 
@@ -219,7 +225,7 @@ class CrestDatabase:
         Example: 51 -> (Proteobacteria, 0.8)
         """
         # Get the path of the file #
-        path = self.prefix.replace_extension('names')
+        path = self.path.replace_extension('names')
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
@@ -237,7 +243,7 @@ class CrestDatabase:
         Example: HQ191339 -> 28386
         """
         # Get the path of the file #
-        path = self.prefix.replace_extension('map')
+        path = self.path.replace_extension('map')
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
@@ -280,5 +286,7 @@ class Silvamod138(CrestDatabase):
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
-silvamod128 = Silvamod128()
-silvamod138 = Silvamod138()
+silvamod128 = CrestDatabase('silvamod128',
+                            'Silva version 128 modified for CREST')
+silvamod138 = CrestDatabase('silvamod138',
+                            'Silva version 138 modified for CREST')

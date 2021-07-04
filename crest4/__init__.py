@@ -13,5 +13,5 @@ __version__ = '4.0.29'
 project_url = 'https://github.com/xapple/crest4'
 
 # Expose our main object at the module level
-# So that you can just do 'from crest4 import Classify' later
+# So that you can just do `from crest4 import Classify` later
 from .classify import Classify

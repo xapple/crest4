@@ -19,6 +19,9 @@ class Query:
 
     Takes care of assigning taxonomy by using the results of the sequence
     similarity search and a phylogenetic tree as a N-ary directed graph.
+
+    The query parameter is a object coming from biopython and of type:
+    'Bio.SearchIO._model.query.QueryResult'
     """
 
     def __init__(self, classify, query):
@@ -61,7 +64,7 @@ class Query:
             if self.algo == 'blast':   score = hsp.bitscore
             if self.algo == 'vsearch': score = hsp.ident_pct/100
             if score < threshold: break
-            # Get the name of the current hit #
+            # Get the name (or ID) of the current hit #
             name = hsp.hit_id
             # Get the corresponding node name in the tree #
             node = self.db.acc_to_node.get(name)
@@ -101,7 +104,7 @@ class Query:
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
         # level and proceed ascending the tree until the similarity is
-        # satisfactory
+        # satisfactory.
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break

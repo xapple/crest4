@@ -9,7 +9,7 @@ Created in May 2021.
 """
 
 # Built-in modules #
-import multiprocessing
+import os, multiprocessing
 
 # Internal modules #
 import crest4.databases
@@ -70,6 +70,9 @@ class Classify:
             search_db: The database used for the sequence similarity search.
                        Either `silvamod138` or `silvamod128`. No other values
                        are currently supported. By default `silvamod138`.
+                       Optionally the user can provide his own custom database
+                       by specifying the full path to a directory containing
+                       all required files under `search_db`. See README.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
@@ -201,7 +204,12 @@ class Classify:
     @property_cached
     def database(self):
         """Retrieve the database object that the user has selected."""
-        return getattr(crest4.databases, self.search_db)
+        if '/' in self.search_db:
+            short_name = os.path.basename(os.path.dirname(self.search_db))
+            long_name  = "Custom user provided database '%s'." % short_name
+            return CrestDatabase(short_name, long_name, self.search_db)
+        else:
+            return getattr(crest4.databases, self.search_db)
 
     #------------------------------ Searching --------------------------------#
     @property_cached
