@@ -63,10 +63,7 @@ def test_readme_example_seq():
     # Run it #
     c()
     # Check that the results are good #
-    if c.search_db == &#39;silvamod128&#39;:
-        assert c.queries[0].taxonomy[0] == &#34;Synechococcales&#34;
-    else:
-        assert c.queries[0].taxonomy[0] == &#34;Nodosilineaceae&#34;
+    assert c.queries[0].taxonomy[0] == &#34;Nodosilinea PCC-7104&#34;
     # Return #
     return c
 
@@ -104,10 +101,7 @@ if __name__ == &#39;__main__&#39;:
     # Run it #
     c()
     # Check that the results are good #
-    if c.search_db == &#39;silvamod128&#39;:
-        assert c.queries[0].taxonomy[0] == &#34;Synechococcales&#34;
-    else:
-        assert c.queries[0].taxonomy[0] == &#34;Nodosilineaceae&#34;
+    assert c.queries[0].taxonomy[0] == &#34;Nodosilinea PCC-7104&#34;
     # Return #
     return c</code></pre>
 </details>

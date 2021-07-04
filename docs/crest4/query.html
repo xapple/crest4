@@ -54,6 +54,9 @@ class Query:
 
     Takes care of assigning taxonomy by using the results of the sequence
     similarity search and a phylogenetic tree as a N-ary directed graph.
+
+    The query parameter is a object coming from biopython and of type:
+    &#39;Bio.SearchIO._model.query.QueryResult&#39;
     &#34;&#34;&#34;
 
     def __init__(self, classify, query):
@@ -96,7 +99,7 @@ class Query:
             if self.algo == &#39;blast&#39;:   score = hsp.bitscore
             if self.algo == &#39;vsearch&#39;: score = hsp.ident_pct/100
             if score &lt; threshold: break
-            # Get the name of the current hit #
+            # Get the name (or ID) of the current hit #
             name = hsp.hit_id
             # Get the corresponding node name in the tree #
             node = self.db.acc_to_node.get(name)
@@ -136,7 +139,7 @@ class Query:
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
         # level and proceed ascending the tree until the similarity is
-        # satisfactory
+        # satisfactory.
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
@@ -163,10 +166,14 @@ class Query:
         &#34;&#34;&#34;
         # Check if there was no hits #
         if self.assigned_node is False: return [&#34;No hits&#34;]
+        # Function to get the taxonomy name of a node
+        get_tax = lambda node: self.db.node_to_name[node.name][0]
+        # The taxonomic name of the current node #
+        name = get_tax(self.assigned_node)
         # Traverse the tree up to the root
         tree_path = self.assigned_node.iter_ancestors()
         # Get name of every parent along the way #
-        return [self.db.node_to_name[parent.name][0] for parent in tree_path]
+        return [name] + [get_tax(parent) for parent in tree_path]
 
     @property_cached
     def tax_string(self):
@@ -198,7 +205,9 @@ class Query:
 <div class="desc"><p>Represents a single sequence (for instance an OTU) along with
 all the information pertaining to it, such as its taxonomic assignment.</p>
 <p>Takes care of assigning taxonomy by using the results of the sequence
-similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
+similarity search and a phylogenetic tree as a N-ary directed graph.</p>
+<p>The query parameter is a object coming from biopython and of type:
+'Bio.SearchIO._model.query.QueryResult'</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -210,6 +219,9 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
 
     Takes care of assigning taxonomy by using the results of the sequence
     similarity search and a phylogenetic tree as a N-ary directed graph.
+
+    The query parameter is a object coming from biopython and of type:
+    &#39;Bio.SearchIO._model.query.QueryResult&#39;
     &#34;&#34;&#34;
 
     def __init__(self, classify, query):
@@ -252,7 +264,7 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
             if self.algo == &#39;blast&#39;:   score = hsp.bitscore
             if self.algo == &#39;vsearch&#39;: score = hsp.ident_pct/100
             if score &lt; threshold: break
-            # Get the name of the current hit #
+            # Get the name (or ID) of the current hit #
             name = hsp.hit_id
             # Get the corresponding node name in the tree #
             node = self.db.acc_to_node.get(name)
@@ -292,7 +304,7 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
         # level and proceed ascending the tree until the similarity is
-        # satisfactory
+        # satisfactory.
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
@@ -319,10 +331,14 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p></div>
         &#34;&#34;&#34;
         # Check if there was no hits #
         if self.assigned_node is False: return [&#34;No hits&#34;]
+        # Function to get the taxonomy name of a node
+        get_tax = lambda node: self.db.node_to_name[node.name][0]
+        # The taxonomic name of the current node #
+        name = get_tax(self.assigned_node)
         # Traverse the tree up to the root
         tree_path = self.assigned_node.iter_ancestors()
         # Get name of every parent along the way #
-        return [self.db.node_to_name[parent.name][0] for parent in tree_path]
+        return [name] + [get_tax(parent) for parent in tree_path]
 
     @property_cached
     def tax_string(self):
