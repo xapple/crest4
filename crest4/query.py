@@ -131,10 +131,14 @@ class Query:
         """
         # Check if there was no hits #
         if self.assigned_node is False: return ["No hits"]
+        # Function to get the taxonomy name of a node
+        get_tax = lambda node: self.db.node_to_name[node.name][0]
+        # The taxonomic name of the current node #
+        name = get_tax(self.assigned_node)
         # Traverse the tree up to the root
         tree_path = self.assigned_node.iter_ancestors()
         # Get name of every parent along the way #
-        return [self.db.node_to_name[parent.name][0] for parent in tree_path]
+        return [name] + [get_tax(parent) for parent in tree_path]
 
     @property_cached
     def tax_string(self):

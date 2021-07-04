@@ -19,9 +19,9 @@ Simply put, given the following fragment of an rRNA 16S sequence from an uncultu
     AATTAAGTCTGTTGTTAAAGCCCACAGCTCAACTGTGGATCGGCAATGGAAACTGGTTGACTAGAGTGTG
     GTAGGGGTAGAGGGAATTCCCGGTGTAGCGGTGAAATGCGTAGATATCG
 
-`crest4` will be able to tell you that this gene is likely originating from the following taxonomy family:
+`crest4` will be able to tell you that this gene is likely originating from the following taxonomy genus:
 
-    Bacteria; Terrabacteria; Cyanobacteria; Cyanobacteriia; Phormidesmiales; Nodosilineaceae
+    Bacteria; Terrabacteria; Cyanobacteria; Cyanobacteriia; Phormidesmiales; Nodosilineaceae; Nodosilinea
 
 To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identify threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification. Simply put, if for instance all hits for a given sequence only agree at the order level, the assignment stops at the order level.
 

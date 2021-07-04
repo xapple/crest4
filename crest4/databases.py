@@ -288,5 +288,6 @@ class Silvamod138(CrestDatabase):
 # As our databases should only be stored on disk once, so we have singletons #
 silvamod128 = CrestDatabase('silvamod128',
                             'Silva version 128 modified for CREST')
+
 silvamod138 = CrestDatabase('silvamod138',
                             'Silva version 138 modified for CREST')

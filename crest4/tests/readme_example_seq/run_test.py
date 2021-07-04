@@ -34,10 +34,7 @@ def test_readme_example_seq():
     # Run it #
     c()
     # Check that the results are good #
-    if c.search_db == 'silvamod128':
-        assert c.queries[0].taxonomy[0] == "Synechococcales"
-    else:
-        assert c.queries[0].taxonomy[0] == "Nodosilineaceae"
+    assert c.queries[0].taxonomy[0] == "Nodosilinea PCC-7104"
     # Return #
     return c
 
