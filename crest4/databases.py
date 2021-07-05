@@ -93,13 +93,14 @@ class CrestDatabase:
         # Base required attributes #
         self.short_name = short_name
         self.long_name = long_name
-        # Determine where the actual files will be located on disk #
-        # Check if the user has set an environment variable #
-        if base_dir is None:
-            base_dir = os.environ.get(self.environ_var, self.default_dir)
         # If the user specifies a base_dir no need to download #
         if base_dir is not None:
             self.downloaded = True
+        # If the user doesn't specify a path then we should
+        # determine where the actual files will be located on disk and
+        # check if the user has set an environment variable
+        if base_dir is None:
+            base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to DirectoryPath
         self.base_dir = DirectoryPath(base_dir)
 
@@ -115,12 +116,12 @@ class CrestDatabase:
         """
         return self.short_name
 
-    @property_cached
+    @property
     def tarball(self):
         """Determine where the database `.tar.gz` will be located on disk."""
         return self.base_dir + self.short_name + '.tar.gz'
 
-    @property_cached
+    @property
     def path(self):
         """The path to the FASTA file."""
         return self.base_dir + self.short_name + '/' + \
@@ -135,7 +136,7 @@ class CrestDatabase:
         # Check if the tree is there and not empty #
         return bool(self.path.replace_extension('tre'))
 
-    @property_cached
+    @property
     def url(self):
         """
         Retrieve the URL of the database file to download by first downloading
