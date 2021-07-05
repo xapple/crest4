@@ -173,6 +173,9 @@ class CrestDatabase:
         # Remove macOS attribute files that get bundled in the tar #
         for path in self.base_dir.flat_files:
             if path.name.startswith("._"): path.remove()
+        # Check it worked #
+        del self.downloaded
+        assert self.downloaded
 
     #--------------------------- Specific Indexes ----------------------------#
     @property_cached
