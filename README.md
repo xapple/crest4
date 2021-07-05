@@ -53,6 +53,7 @@ Once the installation completes you are ready to use the `crest4` executable com
 
 In order to search the reference databases, you will also need either BLAST or VSEARCH installed. These are installed automatically with the `conda` method, but not with the `pip` method. You can obtain these with these commands on Linux:
 
+    $ sudo apt update
     $ sudo apt install ncbi-blast+
     $ sudo apt install vsearch
 

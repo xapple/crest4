@@ -4,12 +4,12 @@ If you wish to install `crest4` from the repository source code you can follow t
 
 ### Step 1: Cloning the repository
 
-Here you will download a copy of the code from github and place it in your home directory.
+Here you will download a copy of the code from GitHub and place it in your home directory.
 
     $ cd ~
     $ mkdir repos
     $ cd repos
-    $ git@github.com:xapple/crest4.git
+    $ git clone https://github.com/xapple/crest4.git
 
 The read access to this repository is public.
 
@@ -23,37 +23,40 @@ Add this line:
 
     export PYTHONPATH="$HOME/repos/crest4":$PYTHONPATH
 
+Source your bash profile to acquire these new changes:
+
+    $ source ~/.bash_profile
+
 ### Step 3: Install your own version of python
 
-Your system probably comes with a version of python installed, but the it might be outdated or configured in a particular way. If your current version of python is at least 3.8 or above, it should be safe to skip this step.
+Your system probably comes with a version of python installed, but it might be outdated or configured in a particular way. If your current version of python is at least 3.8 or above, it should be safe to skip this step.
 
-To check this simply type:
+If you are an administrator on your machine and can install the latest version of python using a package manager, you can also skip this step.
+
+To check the version of python simply type:
 
     $ python3 -V
 
-You can also skip this step if you are confident enough about about your system's setup or are an administrator with `sudo` privileges.
+If this is not the case, and your python is outdated, we recommend installing your own python in the home directory for development purposes. Also, this guarantees that we will then be able to install python modules without administrator privileges for instance.
 
-If this is not the case and your python is outdated, we recommend to install our own in the home directory for development purposes. Also, this guarantees that we will then be able to install python modules without administrator privileges for instance.
+The easiest way to achieve this is to install miniconda by following these instructions:
 
-For this we will be using this excellent project: https://github.com/yyuu/pyenv
+https://conda.io/projects/conda/en/latest/user-guide/install/index.html
 
-To install it you may use this sister project: https://github.com/yyuu/pyenv-installer
+If you are using Linux this boils down to:
 
-Basically you just need to type this command:
+    $ wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh
+    $ bash Miniconda3-py39_4.9.2-Linux-x86_64.sh
 
-    $ curl https://pyenv.run | bash
+Then you follow the interactive instructions. Once the installation is finished, you relaunch a new shell. Finally, you can create a new environment called `myenv` by typing the following command:
 
-These lines go into your ``.bash_profile``:
+    $ conda create -n myenv python=3.9
 
-    export PATH="$HOME/.pyenv/bin:$PATH"
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+To activate this environment, type:
 
-Relaunch your shell and type these commands to get the right version of python:
+    $ conda activate myenv
 
-    $ pyenv install 3.9.5
-    $ pyenv global 3.9.5
-    $ pyenv rehash
+You should now be using the latest version of python.
 
 ### Step 4: Install all required python packages
 
@@ -76,3 +79,11 @@ Relaunch your shell and type these commands to get the right version of python:
 
  * [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) providing the executable ``blastn``.
  * [VSEARCH](https://github.com/torognes/vsearch) providing the executable ``vsearch``.
+
+### Step 6: Running `crest4` without `bin/`
+
+Since `crest4` is now installed from source, there is no executable on the `$PATH` that can be run directly.
+
+Instead, to launch `crest4` from the command line, one must proceed as so and add a `python3 -m` suffix to each command:
+
+    $ python3 -m crest4 -f ~/test/sequences.fasta -d silvamod138 -t 4
