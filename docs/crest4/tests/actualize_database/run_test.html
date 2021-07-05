@@ -41,7 +41,7 @@ Script to run the `actualize_database` unittest.
 # Third party modules #
 
 # Internal modules #
-from crest4.databases import metadata, silvamod128
+from crest4.databases import metadata, silvamod138, CrestDatabase
 
 ###############################################################################
 def test_download_metadata():
@@ -49,15 +49,24 @@ def test_download_metadata():
     assert urls
 
 def test_blast_index():
-    db = silvamod128.blast_db
+    db = silvamod138.blast_db
     assert db
 
 def test_vsearch_index():
-    db = silvamod128.vsearch_db
+    db = silvamod138.vsearch_db
     assert db
 
 ###############################################################################
 if __name__ == &#39;__main__&#39;:
+    # Some debug information #
+    print(&#34;Default directory: &#34;,      CrestDatabase.default_dir)
+    print(&#34;Environment variable: &#34;,   CrestDatabase.environ_var)
+    print(&#34;Environment value: &#34;,      os.environ.get(CrestDatabase.environ_var))
+    print(&#34;Silvamod138 path: &#34;,       silvamod138.path)
+    print(&#34;Silvamod138 exists: &#34;,     silvamod138.path.exists)
+    print(&#34;Silvamod138 downloaded: &#34;, silvamod138.downloaded)
+    print(&#34;Silvamod138 URL: &#34;,        silvamod138.url)
+    # Run the three tests #
     test_download_metadata()
     test_blast_index()
     test_vsearch_index()</code></pre>
@@ -80,7 +89,7 @@ if __name__ == &#39;__main__&#39;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_blast_index():
-    db = silvamod128.blast_db
+    db = silvamod138.blast_db
     assert db</code></pre>
 </details>
 </dd>
@@ -108,7 +117,7 @@ if __name__ == &#39;__main__&#39;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def test_vsearch_index():
-    db = silvamod128.vsearch_db
+    db = silvamod138.vsearch_db
     assert db</code></pre>
 </details>
 </dd>

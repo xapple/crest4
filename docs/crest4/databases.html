@@ -128,13 +128,14 @@ class CrestDatabase:
         # Base required attributes #
         self.short_name = short_name
         self.long_name = long_name
-        # Determine where the actual files will be located on disk #
-        # Check if the user has set an environment variable #
-        if base_dir is None:
-            base_dir = os.environ.get(self.environ_var, self.default_dir)
         # If the user specifies a base_dir no need to download #
         if base_dir is not None:
             self.downloaded = True
+        # If the user doesn&#39;t specify a path then we should
+        # determine where the actual files will be located on disk and
+        # check if the user has set an environment variable
+        if base_dir is None:
+            base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to DirectoryPath
         self.base_dir = DirectoryPath(base_dir)
 
@@ -150,12 +151,12 @@ class CrestDatabase:
         &#34;&#34;&#34;
         return self.short_name
 
-    @property_cached
+    @property
     def tarball(self):
         &#34;&#34;&#34;Determine where the database `.tar.gz` will be located on disk.&#34;&#34;&#34;
         return self.base_dir + self.short_name + &#39;.tar.gz&#39;
 
-    @property_cached
+    @property
     def path(self):
         &#34;&#34;&#34;The path to the FASTA file.&#34;&#34;&#34;
         return self.base_dir + self.short_name + &#39;/&#39; + \
@@ -170,7 +171,7 @@ class CrestDatabase:
         # Check if the tree is there and not empty #
         return bool(self.path.replace_extension(&#39;tre&#39;))
 
-    @property_cached
+    @property
     def url(self):
         &#34;&#34;&#34;
         Retrieve the URL of the database file to download by first downloading
@@ -207,6 +208,9 @@ class CrestDatabase:
         # Remove macOS attribute files that get bundled in the tar #
         for path in self.base_dir.flat_files:
             if path.name.startswith(&#34;._&#34;): path.remove()
+        # Check it worked #
+        del self.downloaded
+        assert self.downloaded
 
     #--------------------------- Specific Indexes ----------------------------#
     @property_cached
@@ -376,13 +380,14 @@ It must include the database FASTA file as well as the <code>.map</code> and
         # Base required attributes #
         self.short_name = short_name
         self.long_name = long_name
-        # Determine where the actual files will be located on disk #
-        # Check if the user has set an environment variable #
-        if base_dir is None:
-            base_dir = os.environ.get(self.environ_var, self.default_dir)
         # If the user specifies a base_dir no need to download #
         if base_dir is not None:
             self.downloaded = True
+        # If the user doesn&#39;t specify a path then we should
+        # determine where the actual files will be located on disk and
+        # check if the user has set an environment variable
+        if base_dir is None:
+            base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to DirectoryPath
         self.base_dir = DirectoryPath(base_dir)
 
@@ -398,12 +403,12 @@ It must include the database FASTA file as well as the <code>.map</code> and
         &#34;&#34;&#34;
         return self.short_name
 
-    @property_cached
+    @property
     def tarball(self):
         &#34;&#34;&#34;Determine where the database `.tar.gz` will be located on disk.&#34;&#34;&#34;
         return self.base_dir + self.short_name + &#39;.tar.gz&#39;
 
-    @property_cached
+    @property
     def path(self):
         &#34;&#34;&#34;The path to the FASTA file.&#34;&#34;&#34;
         return self.base_dir + self.short_name + &#39;/&#39; + \
@@ -418,7 +423,7 @@ It must include the database FASTA file as well as the <code>.map</code> and
         # Check if the tree is there and not empty #
         return bool(self.path.replace_extension(&#39;tre&#39;))
 
-    @property_cached
+    @property
     def url(self):
         &#34;&#34;&#34;
         Retrieve the URL of the database file to download by first downloading
@@ -455,6 +460,9 @@ It must include the database FASTA file as well as the <code>.map</code> and
         # Remove macOS attribute files that get bundled in the tar #
         for path in self.base_dir.flat_files:
             if path.name.startswith(&#34;._&#34;): path.remove()
+        # Check it worked #
+        del self.downloaded
+        assert self.downloaded
 
     #--------------------------- Specific Indexes ----------------------------#
     @property_cached
@@ -700,27 +708,11 @@ Example: 51 -&gt; (Proteobacteria, 0.8)</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __get__(self, instance, owner):
-    &#34;&#34;&#34;
-    If you see the current source code in a seemingly unrelated part of
-    an auto-generated documentation, it means the program making the
-    documentation was unable to correctly traverse a decorated property.
-    &#34;&#34;&#34;
-    # For debugging purposes #
-    if False: print(&#34;-&gt; property cached `%s`&#34; % instance)
-    # If called from a class #
-    if instance is None: return self
-    # Does a cache exist for this instance? #
-    self.check_cache(instance)
-    # Is the answer in the cache? #
-    if self.name in instance.__cache__: return instance.__cache__[self.name]
-    # If not we will compute it #
-    if inspect.isgeneratorfunction(self.func): result = tuple(self.func(instance))
-    else:                                      result = self.func(instance)
-    # Let&#39;s store the answer for later #
-    instance.__cache__[self.name] = result
-    # Return #
-    return result</code></pre>
+<pre><code class="python">@property
+def path(self):
+    &#34;&#34;&#34;The path to the FASTA file.&#34;&#34;&#34;
+    return self.base_dir + self.short_name + &#39;/&#39; + \
+           self.short_name + &#39;.fasta&#39;</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.rank_names"><code class="name">var <span class="ident">rank_names</span></code></dt>
@@ -767,27 +759,10 @@ def tag(self):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __get__(self, instance, owner):
-    &#34;&#34;&#34;
-    If you see the current source code in a seemingly unrelated part of
-    an auto-generated documentation, it means the program making the
-    documentation was unable to correctly traverse a decorated property.
-    &#34;&#34;&#34;
-    # For debugging purposes #
-    if False: print(&#34;-&gt; property cached `%s`&#34; % instance)
-    # If called from a class #
-    if instance is None: return self
-    # Does a cache exist for this instance? #
-    self.check_cache(instance)
-    # Is the answer in the cache? #
-    if self.name in instance.__cache__: return instance.__cache__[self.name]
-    # If not we will compute it #
-    if inspect.isgeneratorfunction(self.func): result = tuple(self.func(instance))
-    else:                                      result = self.func(instance)
-    # Let&#39;s store the answer for later #
-    instance.__cache__[self.name] = result
-    # Return #
-    return result</code></pre>
+<pre><code class="python">@property
+def tarball(self):
+    &#34;&#34;&#34;Determine where the database `.tar.gz` will be located on disk.&#34;&#34;&#34;
+    return self.base_dir + self.short_name + &#39;.tar.gz&#39;</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.tree"><code class="name">var <span class="ident">tree</span></code></dt>
@@ -830,27 +805,13 @@ a metadata file (see the <code>Metadata</code> class above).</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __get__(self, instance, owner):
+<pre><code class="python">@property
+def url(self):
     &#34;&#34;&#34;
-    If you see the current source code in a seemingly unrelated part of
-    an auto-generated documentation, it means the program making the
-    documentation was unable to correctly traverse a decorated property.
+    Retrieve the URL of the database file to download by first downloading
+    a metadata file (see the `Metadata` class above).
     &#34;&#34;&#34;
-    # For debugging purposes #
-    if False: print(&#34;-&gt; property cached `%s`&#34; % instance)
-    # If called from a class #
-    if instance is None: return self
-    # Does a cache exist for this instance? #
-    self.check_cache(instance)
-    # Is the answer in the cache? #
-    if self.name in instance.__cache__: return instance.__cache__[self.name]
-    # If not we will compute it #
-    if inspect.isgeneratorfunction(self.func): result = tuple(self.func(instance))
-    else:                                      result = self.func(instance)
-    # Let&#39;s store the answer for later #
-    instance.__cache__[self.name] = result
-    # Return #
-    return result</code></pre>
+    return metadata.db_urls[self.short_name][&#39;url&#39;]</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.vsearch_db"><code class="name">var <span class="ident">vsearch_db</span></code></dt>
@@ -924,7 +885,10 @@ similarity search.</p></div>
     self.tarball.remove()
     # Remove macOS attribute files that get bundled in the tar #
     for path in self.base_dir.flat_files:
-        if path.name.startswith(&#34;._&#34;): path.remove()</code></pre>
+        if path.name.startswith(&#34;._&#34;): path.remove()
+    # Check it worked #
+    del self.downloaded
+    assert self.downloaded</code></pre>
 </details>
 </dd>
 </dl>
