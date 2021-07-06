@@ -80,10 +80,12 @@ You should now be using the latest version of python.
  * [NCBI BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) providing the executable ``blastn``.
  * [VSEARCH](https://github.com/torognes/vsearch) providing the executable ``vsearch``.
 
-### Step 6: Running `crest4` without `bin/`
+### Step 6: Running `crest4` on the CLI
 
 Since `crest4` is now installed from source, there is no executable on the `$PATH` that can be run directly.
 
 Instead, to launch `crest4` from the command line, one must proceed as so and add a `python3 -m` suffix to each command:
 
     $ python3 -m crest4 -f ~/test/sequences.fasta -d silvamod138 -t 4
+
+You do not need to run the `setup.py` script at any moment.
