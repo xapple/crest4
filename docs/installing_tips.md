@@ -8,7 +8,37 @@ Otherwise, if you are using an old version of macOS that doesn't ship with the l
 
     $ brew install python@3.9
 
-Finally, if you are using an old version of Linux that doesn't have a very recent python, you can install your own version of python in your home directory without administrator privileges. To do this we suggest using this excellent project: https://github.com/yyuu/pyenv
+Finally, if you are using an old version of Linux that doesn't have a very recent python, you can install your own version of python in your home directory without administrator privileges. 
+
+To do this there are two possible roads. Go with `conda` or go with `pyenv`
+
+
+## Installing python with `conda`
+
+To install miniconda by following these instructions:
+
+https://conda.io/projects/conda/en/latest/user-guide/install/index.html
+
+If you are using Linux this boils down to downloading an `.sh` file and running it.
+
+Then you follow the interactive instructions on the terminal. Once the installation is finished, you relaunch a new shell. Finally, you can create a new environment called `myenv` by typing the following command:
+
+    $ conda create -n myenv python=3.9
+
+To activate this environment, type:
+
+    $ conda activate myenv
+
+You should now be using the latest version of python.
+
+To check the version of python simply type:
+
+    $ python3 -V
+
+
+## Installing python with `pyenv`
+
+This project enables you to install your own python version in your home directory: https://github.com/yyuu/pyenv
 
 To install it you may use this sister project: https://github.com/yyuu/pyenv-installer
 
@@ -29,6 +59,7 @@ Finally, relaunch your shell for changes to take effect and type these commands 
     $ pyenv install 3.9.5
     $ pyenv global 3.9.5
     $ pyenv rehash
+
 
 ## Obtaining `pip3`
 

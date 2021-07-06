@@ -66,6 +66,7 @@ If you wish to install `crest4` from the repository source code you can follow [
 
 ### Troubleshooting
 
+* If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#installing-python-with-conda).
 * If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#obtaining-pip3).
 * If you do not have `python3` on your system or have an outdated version, you can refer to [this other section](docs/installing_tips.md#obtaining-python3).
 * If you can't run the `crest4` command after a successful installation, make sure that the python bin directory is in your path. This is usually `$HOME/.local/bin/` for Ubuntu.
