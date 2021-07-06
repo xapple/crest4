@@ -22,3 +22,5 @@
 # The results of the pytest cases #
 search.hits
 assignments.txt
+otus_by_rank.csv
+otus_cumulative.csv

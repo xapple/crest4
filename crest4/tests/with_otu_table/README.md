@@ -1,0 +1,1 @@
+This test is the same as `ncbi_two_sequences` but adds an OTU table in order to generate the extra outputs.

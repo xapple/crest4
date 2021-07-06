@@ -1,7 +1,7 @@
 [![PyPI version](https://badge.fury.io/py/crest4.svg)](https://badge.fury.io/py/crest4)
 ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
 
-# CREST version 4.0.33
+# CREST version 4.1.0
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
 
@@ -168,6 +168,18 @@ Optional arguments:
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
 
+  --otu_table OTU_TABLE, -u OTU_TABLE
+                        Optionally, one can specify the path to an OTU table in
+                        CSV or TSV format when running `crest4`. If this option
+                        is used, then two extra output files are generated.
+                        First, a table summarizing the assignment counts per
+                        taxa.
+                        Second, a table propagating the sequence counts upwards
+                        in a cumulative fashion.
+                        The sequence names in the OTU table should be rows and
+                        should match the names in the FASTA file. The column
+                        names are samples names.
+
 Other arguments:
   --version, -v         Show program's version number and exit.
   --help, -h            Show this help message and exit.
@@ -253,19 +265,19 @@ Only the first action is set to be run automatically on each commit to the maste
 
 ### Distributing the package
 
-Instructions for distributing `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi).
+Instructions for distributing and uploading `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi).
 
-Instructions for distributing `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
+Instructions for distributing and uploading `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
 
 Two scripts that automate these processes can be found in the following repository:
 
-<https://github.com/xapple/bumphub>
+https://github.com/xapple/bumphub
 
 ### Developer documentation
 
 The internal documentation of the `crest4` python package is available at:
 
-<http://xapple.github.io/crest4/crest4>
+http://xapple.github.io/crest4/crest4
 
 This documentation is simply generated from the source code with this command:
 

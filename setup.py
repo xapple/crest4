@@ -13,7 +13,7 @@ with open(readme_path, encoding='utf-8') as handle: readme = handle.read()
 # Call setup #
 setup(
     name             = 'crest4',
-    version          = '4.0.33',
+    version          = '4.1.0',
     description      = 'The `crest4` python package can automatically assign '
                        'taxonomic names to DNA sequences obtained from '
                        'environmental sequencing.',
@@ -26,7 +26,7 @@ setup(
     install_requires = ['autopaths>=1.5.0', 'optmagic>=1.0.8',
                         'plumbing>=2.10.4', 'fasta>=2.2.11',
                         'seqsearch>=2.1.2', 'biopython', 'rich', 'ete3',
-                        'pytest'],
+                        'pandas', 'pytest'],
     python_requires  = ">=3.8",
     entry_points     = {"console_scripts": ["crest4 = crest4.__main__:main"]},
     long_description = readme,

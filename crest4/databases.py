@@ -100,12 +100,12 @@ class CrestDatabase:
         # Base required attributes #
         self.short_name = short_name
         self.long_name = long_name
-        # If the user specifies a base_dir no need to download #
+        # If the user specifies a base_dir, then no need to download #
         if base_dir is not None:
             self.downloaded = True
-        # If the user doesn't specify a base_dir path then we should
+        # If the user doesn't specify a base_dir path, then we should
         # determine where the actual files will be located on disk and
-        # check if the user has set an environment variable
+        # check if the user has set the special environment variable.
         if base_dir is None:
             base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to a DirectoryPath #
@@ -267,15 +267,17 @@ class CrestDatabase:
     #--------------------------- Extra information ----------------------------#
     @property
     def rank_names(self):
-        return ['Domain',         # 1
-                'Superkingdom',   # 2
-                'Kingdom',        # 3   (This is also called Superphylum)
-                'Phylum',         # 4
-                'Class',          # 5
-                'Order',          # 6
-                'Family',         # 7
-                'Genus',          # 8
-                'Species']        # 9
+        return ['Root',           # 0
+                'Genome',         # 1 (This is for instance mitochondria)
+                'Domain',         # 2
+                'Superkingdom',   # 3
+                'Kingdom',        # 4 (This is also called Superphylum)
+                'Phylum',         # 5
+                'Class',          # 6
+                'Order',          # 7
+                'Family',         # 8
+                'Genus',          # 9
+                'Species']        # 10
 
 ###############################################################################
 class Silvamod128(CrestDatabase):

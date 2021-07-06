@@ -12,8 +12,10 @@ Created in May 2021.
 import os, multiprocessing
 
 # Internal modules #
+import crest4
 import crest4.databases
 from crest4.query import Query
+from crest4.databases import CrestDatabase
 
 # First party modules #
 from plumbing.cache      import property_cached
@@ -47,6 +49,7 @@ class Classify:
                  min_score   = None,
                  score_drop  = 2.0,
                  min_smlrty  = True,
+                 otu_table   = None,
                  ):
         """
         Args:
@@ -106,6 +109,17 @@ class Classify:
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
+
+            otu_table: Optionally, one can specify the path to an OTU table in
+                       CSV or TSV format when running `crest4`. If this option
+                       is used, then two extra output files are generated.
+                       First, a table summarizing the assignment counts per
+                       taxa.
+                       Second, a table propagating the sequence counts upwards
+                       in a cumulative fashion.
+                       The sequence names in the OTU table should be rows and
+                       should match the names in the FASTA file. The column
+                       names are samples names.
         """
         # Save attributes #
         self.fasta       = fasta
@@ -117,6 +131,7 @@ class Classify:
         self.min_score   = min_score
         self.score_drop  = score_drop
         self.min_smlrty  = min_smlrty
+        self.otu_table   = otu_table
         # Assign default values and change others #
         self.transform()
         # Validate attributes #
@@ -156,6 +171,10 @@ class Classify:
                 self.min_score = 155
             if self.search_algo == 'vsearch':
                 self.min_score = 0.75
+        # The OTU table is a file somewhere if passed #
+        if self.otu_table is not None:
+            self.otu_table = FilePath(self.otu_table)
+            self.otu_table.must_exist()
 
     def validate(self):
         """
@@ -286,12 +305,28 @@ class Classify:
         # Return #
         return self.output_dir + "assignments.txt"
 
+    @property_cached
+    def otu_info(self):
+        """An object giving access to the OTU table information and methods."""
+        from crest4.otu_tables import InfoFromTableOTUs
+        return InfoFromTableOTUs(self, self.otu_table)
+
     def __call__(self):
         """Generate outputs."""
+        # Intro message #
+        print('Running crest4 v.' + crest4.__version__)
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
+        # Special case where an OTU table was passed #
+        if self.otu_table:
+            otus_by_rank    = self.output_dir + 'otus_by_rank.csv'
+            otus_cumulative = self.output_dir + 'otus_cumulative.csv'
+            self.otu_info(cumulative=False).to_csv(otus_by_rank,
+                                                   index=False)
+            self.otu_info(cumulative=True).to_csv(otus_cumulative,
+                                                  index=False)
         # Print a success message #
-        msg = "Classification ran successfully. Results are placed in '%s'"
+        msg = "Classification ran successfully. Results are placed in '%s'."
         print(msg % self.out_file)
         # Return #
         return self.out_file
