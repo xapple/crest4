@@ -30,10 +30,20 @@ class CrestMetadata:
     """
     The databases that `crest4` needs are slightly too large to be distributed
     with the source tarball on PyPI. Therefore, we host them on a separate
-    server. Over the course of years however these servers might be shutdown.
-    To avoid this inconvenience, instead of hard-coding the server address we
-    maintain a metadata file, that contains the up-to-date URLs of the databases
-    to download. A good read on this subject is the following:
+    server. Currently this is S3 on AWS.
+
+    Over the course of years however these servers might be shutdown.
+    To avoid this inconvenience, instead of hard-coding the server address here
+    in the source file, we instead maintain a metadata file.
+
+    This metadata file contains the up-to-date URLs of the databases
+    to download. It is placed in the github repository and only the location
+    of the metadata file is hardcoded into the source code.
+
+    This enables updating the URLs without having to issue a new release of
+    `crest4`.
+
+    A good read on this subject is the following:
 
     https://www.dampfkraft.com/code/distributing-large-files-with-pypi.html
     """
@@ -96,12 +106,12 @@ class CrestDatabase:
         # If the user specifies a base_dir no need to download #
         if base_dir is not None:
             self.downloaded = True
-        # If the user doesn't specify a path then we should
+        # If the user doesn't specify a base_dir path then we should
         # determine where the actual files will be located on disk and
         # check if the user has set an environment variable
         if base_dir is None:
             base_dir = os.environ.get(self.environ_var, self.default_dir)
-        # Convert to DirectoryPath
+        # Convert to a DirectoryPath #
         self.base_dir = DirectoryPath(base_dir)
 
     def __repr__(self):
