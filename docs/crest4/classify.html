@@ -47,8 +47,10 @@ Created in May 2021.
 import os, multiprocessing
 
 # Internal modules #
+import crest4
 import crest4.databases
 from crest4.query import Query
+from crest4.databases import CrestDatabase
 
 # First party modules #
 from plumbing.cache      import property_cached
@@ -82,6 +84,7 @@ class Classify:
                  min_score   = None,
                  score_drop  = 2.0,
                  min_smlrty  = True,
+                 otu_table   = None,
                  ):
         &#34;&#34;&#34;
         Args:
@@ -141,6 +144,17 @@ class Classify:
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
+
+            otu_table: Optionally, one can specify the path to an OTU table in
+                       CSV or TSV format when running `crest4`. If this option
+                       is used, then two extra output files are generated.
+                       First, a table summarizing the assignment counts per
+                       taxa.
+                       Second, a table propagating the sequence counts upwards
+                       in a cumulative fashion.
+                       The sequence names in the OTU table should be rows and
+                       should match the names in the FASTA file. The column
+                       names are samples names.
         &#34;&#34;&#34;
         # Save attributes #
         self.fasta       = fasta
@@ -152,6 +166,7 @@ class Classify:
         self.min_score   = min_score
         self.score_drop  = score_drop
         self.min_smlrty  = min_smlrty
+        self.otu_table   = otu_table
         # Assign default values and change others #
         self.transform()
         # Validate attributes #
@@ -191,6 +206,10 @@ class Classify:
                 self.min_score = 155
             if self.search_algo == &#39;vsearch&#39;:
                 self.min_score = 0.75
+        # The OTU table is a file somewhere if passed #
+        if self.otu_table is not None:
+            self.otu_table = FilePath(self.otu_table)
+            self.otu_table.must_exist()
 
     def validate(self):
         &#34;&#34;&#34;
@@ -321,12 +340,28 @@ class Classify:
         # Return #
         return self.output_dir + &#34;assignments.txt&#34;
 
+    @property_cached
+    def otu_info(self):
+        &#34;&#34;&#34;An object giving access to the OTU table information and methods.&#34;&#34;&#34;
+        from crest4.otu_tables import InfoFromTableOTUs
+        return InfoFromTableOTUs(self, self.otu_table)
+
     def __call__(self):
         &#34;&#34;&#34;Generate outputs.&#34;&#34;&#34;
+        # Intro message #
+        print(&#39;Running crest4 v.&#39; + crest4.__version__)
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
+        # Special case where an OTU table was passed #
+        if self.otu_table:
+            otus_by_rank    = self.output_dir + &#39;otus_by_rank.csv&#39;
+            otus_cumulative = self.output_dir + &#39;otus_cumulative.csv&#39;
+            self.otu_info(cumulative=False).to_csv(otus_by_rank,
+                                                   index=False)
+            self.otu_info(cumulative=True).to_csv(otus_cumulative,
+                                                  index=False)
         # Print a success message #
-        msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;&#34;
+        msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;.&#34;
         print(msg % self.out_file)
         # Return #
         return self.out_file</code></pre>
@@ -343,7 +378,7 @@ class Classify:
 <dl>
 <dt id="crest4.classify.Classify"><code class="flex name class">
 <span>class <span class="ident">Classify</span></span>
-<span>(</span><span>fasta, search_algo='blast', num_threads=1, search_db='silvamod138', output_dir=None, search_hits=None, min_score=None, score_drop=2.0, min_smlrty=True)</span>
+<span>(</span><span>fasta, search_algo='blast', num_threads=1, search_db='silvamod138', output_dir=None, search_hits=None, min_score=None, score_drop=2.0, min_smlrty=True, otu_table=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This is the main object offered by the <code><a title="crest4" href="index.html">crest4</a></code> package.
@@ -412,6 +447,17 @@ on or off. Pass the value <code>False</code> to turn it off.
 The minimum similarity filter prevents classification
 to higher ranks when a minimum rank-identity is not met.
 By default <code>True</code>.</dd>
+<dt><strong><code>otu_table</code></strong></dt>
+<dd>Optionally, one can specify the path to an OTU table in
+CSV or TSV format when running <code><a title="crest4" href="index.html">crest4</a></code>. If this option
+is used, then two extra output files are generated.
+First, a table summarizing the assignment counts per
+taxa.
+Second, a table propagating the sequence counts upwards
+in a cumulative fashion.
+The sequence names in the OTU table should be rows and
+should match the names in the FASTA file. The column
+names are samples names.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -441,6 +487,7 @@ By default <code>True</code>.</dd>
                  min_score   = None,
                  score_drop  = 2.0,
                  min_smlrty  = True,
+                 otu_table   = None,
                  ):
         &#34;&#34;&#34;
         Args:
@@ -500,6 +547,17 @@ By default <code>True</code>.</dd>
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
+
+            otu_table: Optionally, one can specify the path to an OTU table in
+                       CSV or TSV format when running `crest4`. If this option
+                       is used, then two extra output files are generated.
+                       First, a table summarizing the assignment counts per
+                       taxa.
+                       Second, a table propagating the sequence counts upwards
+                       in a cumulative fashion.
+                       The sequence names in the OTU table should be rows and
+                       should match the names in the FASTA file. The column
+                       names are samples names.
         &#34;&#34;&#34;
         # Save attributes #
         self.fasta       = fasta
@@ -511,6 +569,7 @@ By default <code>True</code>.</dd>
         self.min_score   = min_score
         self.score_drop  = score_drop
         self.min_smlrty  = min_smlrty
+        self.otu_table   = otu_table
         # Assign default values and change others #
         self.transform()
         # Validate attributes #
@@ -550,6 +609,10 @@ By default <code>True</code>.</dd>
                 self.min_score = 155
             if self.search_algo == &#39;vsearch&#39;:
                 self.min_score = 0.75
+        # The OTU table is a file somewhere if passed #
+        if self.otu_table is not None:
+            self.otu_table = FilePath(self.otu_table)
+            self.otu_table.must_exist()
 
     def validate(self):
         &#34;&#34;&#34;
@@ -680,12 +743,28 @@ By default <code>True</code>.</dd>
         # Return #
         return self.output_dir + &#34;assignments.txt&#34;
 
+    @property_cached
+    def otu_info(self):
+        &#34;&#34;&#34;An object giving access to the OTU table information and methods.&#34;&#34;&#34;
+        from crest4.otu_tables import InfoFromTableOTUs
+        return InfoFromTableOTUs(self, self.otu_table)
+
     def __call__(self):
         &#34;&#34;&#34;Generate outputs.&#34;&#34;&#34;
+        # Intro message #
+        print(&#39;Running crest4 v.&#39; + crest4.__version__)
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
+        # Special case where an OTU table was passed #
+        if self.otu_table:
+            otus_by_rank    = self.output_dir + &#39;otus_by_rank.csv&#39;
+            otus_cumulative = self.output_dir + &#39;otus_cumulative.csv&#39;
+            self.otu_info(cumulative=False).to_csv(otus_by_rank,
+                                                   index=False)
+            self.otu_info(cumulative=True).to_csv(otus_cumulative,
+                                                  index=False)
         # Print a success message #
-        msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;&#34;
+        msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;.&#34;
         print(msg % self.out_file)
         # Return #
         return self.out_file</code></pre>
@@ -695,6 +774,36 @@ By default <code>True</code>.</dd>
 <dt id="crest4.classify.Classify.database"><code class="name">var <span class="ident">database</span></code></dt>
 <dd>
 <div class="desc"><p>Retrieve the database object that the user has selected.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, instance, owner):
+    &#34;&#34;&#34;
+    If you see the current source code in a seemingly unrelated part of
+    an auto-generated documentation, it means the program making the
+    documentation was unable to correctly traverse a decorated property.
+    &#34;&#34;&#34;
+    # For debugging purposes #
+    if False: print(&#34;-&gt; property cached `%s`&#34; % instance)
+    # If called from a class #
+    if instance is None: return self
+    # Does a cache exist for this instance? #
+    self.check_cache(instance)
+    # Is the answer in the cache? #
+    if self.name in instance.__cache__: return instance.__cache__[self.name]
+    # If not we will compute it #
+    if inspect.isgeneratorfunction(self.func): result = tuple(self.func(instance))
+    else:                                      result = self.func(instance)
+    # Let&#39;s store the answer for later #
+    instance.__cache__[self.name] = result
+    # Return #
+    return result</code></pre>
+</details>
+</dd>
+<dt id="crest4.classify.Classify.otu_info"><code class="name">var <span class="ident">otu_info</span></code></dt>
+<dd>
+<div class="desc"><p>An object giving access to the OTU table information and methods.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -943,7 +1052,11 @@ needed and will convert others to proper types.</p></div>
         if self.search_algo == &#39;blast&#39;:
             self.min_score = 155
         if self.search_algo == &#39;vsearch&#39;:
-            self.min_score = 0.75</code></pre>
+            self.min_score = 0.75
+    # The OTU table is a file somewhere if passed #
+    if self.otu_table is not None:
+        self.otu_table = FilePath(self.otu_table)
+        self.otu_table.must_exist()</code></pre>
 </details>
 </dd>
 <dt id="crest4.classify.Classify.validate"><code class="name flex">
@@ -1019,6 +1132,7 @@ the user are illegal.</p></div>
 <h4><code><a title="crest4.classify.Classify" href="#crest4.classify.Classify">Classify</a></code></h4>
 <ul class="two-column">
 <li><code><a title="crest4.classify.Classify.database" href="#crest4.classify.Classify.database">database</a></code></li>
+<li><code><a title="crest4.classify.Classify.otu_info" href="#crest4.classify.Classify.otu_info">otu_info</a></code></li>
 <li><code><a title="crest4.classify.Classify.out_file" href="#crest4.classify.Classify.out_file">out_file</a></code></li>
 <li><code><a title="crest4.classify.Classify.queries" href="#crest4.classify.Classify.queries">queries</a></code></li>
 <li><code><a title="crest4.classify.Classify.queries_by_id" href="#crest4.classify.Classify.queries_by_id">queries_by_id</a></code></li>

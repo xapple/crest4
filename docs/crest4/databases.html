@@ -65,26 +65,33 @@ class CrestMetadata:
     &#34;&#34;&#34;
     The databases that `crest4` needs are slightly too large to be distributed
     with the source tarball on PyPI. Therefore, we host them on a separate
-    server. Over the course of years however these servers might be shutdown.
-    To avoid this inconvenience, instead of hard-coding the server address we
-    maintain a metadata file, that contains the up-to-date URLs of the databases
-    to download. A good read on this subject is the following:
+    server. Currently this is S3 on AWS.
+
+    Over the course of years however these servers might be shutdown.
+    To avoid this inconvenience, instead of hard-coding the server address here
+    in the source file, we instead maintain a metadata file.
+
+    This metadata file contains the up-to-date URLs of the databases
+    to download. It is placed in the github repository and only the location
+    of the metadata file is hardcoded into the source code.
+
+    This enables updating the URLs without having to issue a new release of
+    `crest4`.
+
+    A good read on this subject is the following:
 
     https://www.dampfkraft.com/code/distributing-large-files-with-pypi.html
     &#34;&#34;&#34;
 
     # The location of the metadata file is hardcoded #
-    base_url  = &#34;https://gist.githubusercontent.com/xapple/&#34;
+    base_url  = &#34;https://raw.githubusercontent.com/xapple/&#34;
+    repo_path = &#34;crest4/master/crest4/crest4_db_urls.json&#34;
 
-    # The hash never changes after creation #
-    gist_hash = &#34;a6961fe5a52f87746b9ab0d66c672871&#34;
-    file_name = &#34;crest4_db_urls.json&#34;
-
-    # This will always retrieve the raw content of the latest gist version #
-    metadata_url = base_url + gist_hash + &#39;/raw/&#39; + file_name
+    # This will always retrieve the raw content of the latest version #
+    metadata_url = base_url + repo_path
 
     # To see the HTML version on github simply head to this address instead:
-    # https://gist.github.com/xapple/a6961fe5a52f87746b9ab0d66c672871
+    # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached
     def db_urls(self):
@@ -128,15 +135,15 @@ class CrestDatabase:
         # Base required attributes #
         self.short_name = short_name
         self.long_name = long_name
-        # If the user specifies a base_dir no need to download #
+        # If the user specifies a base_dir, then no need to download #
         if base_dir is not None:
             self.downloaded = True
-        # If the user doesn&#39;t specify a path then we should
+        # If the user doesn&#39;t specify a base_dir path, then we should
         # determine where the actual files will be located on disk and
-        # check if the user has set an environment variable
+        # check if the user has set the special environment variable.
         if base_dir is None:
             base_dir = os.environ.get(self.environ_var, self.default_dir)
-        # Convert to DirectoryPath
+        # Convert to a DirectoryPath #
         self.base_dir = DirectoryPath(base_dir)
 
     def __repr__(self):
@@ -295,15 +302,17 @@ class CrestDatabase:
     #--------------------------- Extra information ----------------------------#
     @property
     def rank_names(self):
-        return [&#39;Domain&#39;,         # 1
-                &#39;Superkingdom&#39;,   # 2
-                &#39;Kingdom&#39;,        # 3   (This is also called Superphylum)
-                &#39;Phylum&#39;,         # 4
-                &#39;Class&#39;,          # 5
-                &#39;Order&#39;,          # 6
-                &#39;Family&#39;,         # 7
-                &#39;Genus&#39;,          # 8
-                &#39;Species&#39;]        # 9
+        return [&#39;Root&#39;,           # 0
+                &#39;Genome&#39;,         # 1 (This is for instance mitochondria)
+                &#39;Domain&#39;,         # 2
+                &#39;Superkingdom&#39;,   # 3
+                &#39;Kingdom&#39;,        # 4 (This is also called Superphylum)
+                &#39;Phylum&#39;,         # 5
+                &#39;Class&#39;,          # 6
+                &#39;Order&#39;,          # 7
+                &#39;Family&#39;,         # 8
+                &#39;Genus&#39;,          # 9
+                &#39;Species&#39;]        # 10
 
 ###############################################################################
 class Silvamod128(CrestDatabase):
@@ -380,15 +389,15 @@ It must include the database FASTA file as well as the <code>.map</code> and
         # Base required attributes #
         self.short_name = short_name
         self.long_name = long_name
-        # If the user specifies a base_dir no need to download #
+        # If the user specifies a base_dir, then no need to download #
         if base_dir is not None:
             self.downloaded = True
-        # If the user doesn&#39;t specify a path then we should
+        # If the user doesn&#39;t specify a base_dir path, then we should
         # determine where the actual files will be located on disk and
-        # check if the user has set an environment variable
+        # check if the user has set the special environment variable.
         if base_dir is None:
             base_dir = os.environ.get(self.environ_var, self.default_dir)
-        # Convert to DirectoryPath
+        # Convert to a DirectoryPath #
         self.base_dir = DirectoryPath(base_dir)
 
     def __repr__(self):
@@ -547,15 +556,17 @@ It must include the database FASTA file as well as the <code>.map</code> and
     #--------------------------- Extra information ----------------------------#
     @property
     def rank_names(self):
-        return [&#39;Domain&#39;,         # 1
-                &#39;Superkingdom&#39;,   # 2
-                &#39;Kingdom&#39;,        # 3   (This is also called Superphylum)
-                &#39;Phylum&#39;,         # 4
-                &#39;Class&#39;,          # 5
-                &#39;Order&#39;,          # 6
-                &#39;Family&#39;,         # 7
-                &#39;Genus&#39;,          # 8
-                &#39;Species&#39;]        # 9</code></pre>
+        return [&#39;Root&#39;,           # 0
+                &#39;Genome&#39;,         # 1 (This is for instance mitochondria)
+                &#39;Domain&#39;,         # 2
+                &#39;Superkingdom&#39;,   # 3
+                &#39;Kingdom&#39;,        # 4 (This is also called Superphylum)
+                &#39;Phylum&#39;,         # 5
+                &#39;Class&#39;,          # 6
+                &#39;Order&#39;,          # 7
+                &#39;Family&#39;,         # 8
+                &#39;Genus&#39;,          # 9
+                &#39;Species&#39;]        # 10</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -724,15 +735,17 @@ def path(self):
 </summary>
 <pre><code class="python">@property
 def rank_names(self):
-    return [&#39;Domain&#39;,         # 1
-            &#39;Superkingdom&#39;,   # 2
-            &#39;Kingdom&#39;,        # 3   (This is also called Superphylum)
-            &#39;Phylum&#39;,         # 4
-            &#39;Class&#39;,          # 5
-            &#39;Order&#39;,          # 6
-            &#39;Family&#39;,         # 7
-            &#39;Genus&#39;,          # 8
-            &#39;Species&#39;]        # 9</code></pre>
+    return [&#39;Root&#39;,           # 0
+            &#39;Genome&#39;,         # 1 (This is for instance mitochondria)
+            &#39;Domain&#39;,         # 2
+            &#39;Superkingdom&#39;,   # 3
+            &#39;Kingdom&#39;,        # 4 (This is also called Superphylum)
+            &#39;Phylum&#39;,         # 5
+            &#39;Class&#39;,          # 6
+            &#39;Order&#39;,          # 7
+            &#39;Family&#39;,         # 8
+            &#39;Genus&#39;,          # 9
+            &#39;Species&#39;]        # 10</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.tag"><code class="name">var <span class="ident">tag</span></code></dt>
@@ -899,10 +912,16 @@ similarity search.</p></div>
 <dd>
 <div class="desc"><p>The databases that <code><a title="crest4" href="index.html">crest4</a></code> needs are slightly too large to be distributed
 with the source tarball on PyPI. Therefore, we host them on a separate
-server. Over the course of years however these servers might be shutdown.
-To avoid this inconvenience, instead of hard-coding the server address we
-maintain a metadata file, that contains the up-to-date URLs of the databases
-to download. A good read on this subject is the following:</p>
+server. Currently this is S3 on AWS.</p>
+<p>Over the course of years however these servers might be shutdown.
+To avoid this inconvenience, instead of hard-coding the server address here
+in the source file, we instead maintain a metadata file.</p>
+<p>This metadata file contains the up-to-date URLs of the databases
+to download. It is placed in the github repository and only the location
+of the metadata file is hardcoded into the source code.</p>
+<p>This enables updating the URLs without having to issue a new release of
+<code><a title="crest4" href="index.html">crest4</a></code>.</p>
+<p>A good read on this subject is the following:</p>
 <p><a href="https://www.dampfkraft.com/code/distributing-large-files-with-pypi.html">https://www.dampfkraft.com/code/distributing-large-files-with-pypi.html</a></p></div>
 <details class="source">
 <summary>
@@ -912,26 +931,33 @@ to download. A good read on this subject is the following:</p>
     &#34;&#34;&#34;
     The databases that `crest4` needs are slightly too large to be distributed
     with the source tarball on PyPI. Therefore, we host them on a separate
-    server. Over the course of years however these servers might be shutdown.
-    To avoid this inconvenience, instead of hard-coding the server address we
-    maintain a metadata file, that contains the up-to-date URLs of the databases
-    to download. A good read on this subject is the following:
+    server. Currently this is S3 on AWS.
+
+    Over the course of years however these servers might be shutdown.
+    To avoid this inconvenience, instead of hard-coding the server address here
+    in the source file, we instead maintain a metadata file.
+
+    This metadata file contains the up-to-date URLs of the databases
+    to download. It is placed in the github repository and only the location
+    of the metadata file is hardcoded into the source code.
+
+    This enables updating the URLs without having to issue a new release of
+    `crest4`.
+
+    A good read on this subject is the following:
 
     https://www.dampfkraft.com/code/distributing-large-files-with-pypi.html
     &#34;&#34;&#34;
 
     # The location of the metadata file is hardcoded #
-    base_url  = &#34;https://gist.githubusercontent.com/xapple/&#34;
+    base_url  = &#34;https://raw.githubusercontent.com/xapple/&#34;
+    repo_path = &#34;crest4/master/crest4/crest4_db_urls.json&#34;
 
-    # The hash never changes after creation #
-    gist_hash = &#34;a6961fe5a52f87746b9ab0d66c672871&#34;
-    file_name = &#34;crest4_db_urls.json&#34;
-
-    # This will always retrieve the raw content of the latest gist version #
-    metadata_url = base_url + gist_hash + &#39;/raw/&#39; + file_name
+    # This will always retrieve the raw content of the latest version #
+    metadata_url = base_url + repo_path
 
     # To see the HTML version on github simply head to this address instead:
-    # https://gist.github.com/xapple/a6961fe5a52f87746b9ab0d66c672871
+    # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached
     def db_urls(self):
@@ -954,15 +980,11 @@ to download. A good read on this subject is the following:</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="crest4.databases.CrestMetadata.file_name"><code class="name">var <span class="ident">file_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="crest4.databases.CrestMetadata.gist_hash"><code class="name">var <span class="ident">gist_hash</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="crest4.databases.CrestMetadata.metadata_url"><code class="name">var <span class="ident">metadata_url</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="crest4.databases.CrestMetadata.repo_path"><code class="name">var <span class="ident">repo_path</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1155,9 +1177,8 @@ It must include the database FASTA file as well as the <code>.map</code> and
 <ul class="">
 <li><code><a title="crest4.databases.CrestMetadata.base_url" href="#crest4.databases.CrestMetadata.base_url">base_url</a></code></li>
 <li><code><a title="crest4.databases.CrestMetadata.db_urls" href="#crest4.databases.CrestMetadata.db_urls">db_urls</a></code></li>
-<li><code><a title="crest4.databases.CrestMetadata.file_name" href="#crest4.databases.CrestMetadata.file_name">file_name</a></code></li>
-<li><code><a title="crest4.databases.CrestMetadata.gist_hash" href="#crest4.databases.CrestMetadata.gist_hash">gist_hash</a></code></li>
 <li><code><a title="crest4.databases.CrestMetadata.metadata_url" href="#crest4.databases.CrestMetadata.metadata_url">metadata_url</a></code></li>
+<li><code><a title="crest4.databases.CrestMetadata.repo_path" href="#crest4.databases.CrestMetadata.repo_path">repo_path</a></code></li>
 </ul>
 </li>
 <li>
