@@ -66,7 +66,7 @@ If you wish to install `crest4` from the repository source code you can follow [
 
 ### Troubleshooting
 
-* If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#installing-python-with-conda).
+* If you do not have `conda` on your system you can refer to [this section](docs/installing_tips.md#installing-python-with-conda).
 * If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#obtaining-pip3).
 * If you do not have `python3` on your system or have an outdated version, you can refer to [this other section](docs/installing_tips.md#obtaining-python3).
 * If you can't run the `crest4` command after a successful installation, make sure that the python bin directory is in your path. This is usually `$HOME/.local/bin/` for Ubuntu.
@@ -227,7 +227,7 @@ The `silvamod138` database uses a similar process but with a more recent version
 
 The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, provided the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant Silvamod128 database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
 
-In addition to the lowest common ancestor classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.map` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
+In addition to the lowest common ancestor classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.names` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
 
 When using amplicon sequences, we strongly recommend preparing the sequences by performing a noise reduction step as well as applying chimera removal. This can be achieved with various third party software such as: VSEARCH, UPARSE, DADA2, SWARM, etc.
 
@@ -237,7 +237,7 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 
 It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation are available in this other git repository:
 
-<https://github.com/xapple/crest4_utils>
+https://github.com/xapple/crest4_utils
 
 ### Continuous testing
 
@@ -250,6 +250,16 @@ The repository for `crest4` comes along with five different GitHub actions for C
 * Test conda release on macOS - ![conda macOS](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
 
 Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite for both python 3.8 and python 3.9 on different operating systems.
+
+### Distributing the package
+
+Instructions for distributing `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi).
+
+Instructions for distributing `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
+
+Two scripts that automate these processes can be found in the following repository:
+
+<https://github.com/xapple/bumphub>
 
 ### Developer documentation
 
