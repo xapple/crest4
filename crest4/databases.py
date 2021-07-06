@@ -49,17 +49,14 @@ class CrestMetadata:
     """
 
     # The location of the metadata file is hardcoded #
-    base_url  = "https://gist.githubusercontent.com/xapple/"
+    base_url  = "https://raw.githubusercontent.com/xapple/"
+    repo_path = "crest4/master/crest4/crest4_db_urls.json"
 
-    # The hash never changes after creation #
-    gist_hash = "a6961fe5a52f87746b9ab0d66c672871"
-    file_name = "crest4_db_urls.json"
-
-    # This will always retrieve the raw content of the latest gist version #
-    metadata_url = base_url + gist_hash + '/raw/' + file_name
+    # This will always retrieve the raw content of the latest version #
+    metadata_url = base_url + repo_path
 
     # To see the HTML version on github simply head to this address instead:
-    # https://gist.github.com/xapple/a6961fe5a52f87746b9ab0d66c672871
+    # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached
     def db_urls(self):
