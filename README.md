@@ -233,11 +233,11 @@ The equivalent VSEARCH command is the following:
 
 The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. This database was last released in September 2016.
 
-The `silvamod138` database uses a similar process but with a more recent version of the database. More specifically it is based on SILVA v138 PR2 release v4.13.
+The `silvamod138` database uses a similar process and was derived by manual curation of the [SILVA NR SSU Ref v.138](https://www.arb-silva.de) for Bacteria, Archaea, Metazoa and Fungi. For other eukaryotes (protists), the [PR2 v4.13 database](https://pr2-database.org/) was used. The SILVA database used was last release in August 2020 and PR2 database in March 2021.
 
 ### Classification algorithm
 
-The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, provided the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant Silvamod128 database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
+The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, provided the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant `silvamod128` database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
 
 In addition to the lowest common ancestor classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.names` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
 
@@ -265,9 +265,9 @@ Only the first action is set to be run automatically on each commit to the maste
 
 ### Distributing the package
 
-Instructions for distributing and uploading `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi).
+* Instructions for distributing and uploading `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi).
 
-Instructions for distributing and uploading `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
+* Instructions for distributing and uploading `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
 
 Two scripts that automate these processes can be found in the following repository:
 
