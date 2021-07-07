@@ -265,9 +265,9 @@ Only the first action is set to be run automatically on each commit to the maste
 
 ### Distributing the package
 
-* Instructions for distributing and uploading `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi).
+* Instructions for distributing and uploading `crest4` on PyPI so that it can be installed by `pip` can [be found here](https://packaging.python.org/guides/distributing-packages-using-setuptools/#uploading-your-project-to-pypi). The current uploaded version is [listed here](https://pypi.org/project/crest4/).
 
-* Instructions for distributing and uploading `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
+* Instructions for distributing and uploading `crest4` on anaconda so that it can be installed by `conda` can [be found here](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html). The current uploaded version is [listed here](https://anaconda.org/xapple/crest4).
 
 Two scripts that automate these processes can be found in the following repository:
 
