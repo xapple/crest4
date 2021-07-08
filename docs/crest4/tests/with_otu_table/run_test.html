@@ -41,6 +41,7 @@ import inspect
 from autopaths import Path
 
 # Third party modules #
+import pytest
 
 # Internal modules #
 from crest4 import Classify
@@ -50,13 +51,30 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_with_otu_table():
+def test_with_bad_otu_table():
     # The input fasta #
     fasta = this_dir.find(&#39;*.fasta&#39;)
     # The input table #
-    otu_table = this_dir.find(&#39;*.tsv&#39;)
+    otu_table = this_dir.find(&#39;*bad.tsv&#39;)
     # The output directory #
-    output_dir = this_dir + &#39;results/&#39;
+    output_dir = this_dir + &#39;results_bad/&#39;
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 num_threads = True,
+                 otu_table   = otu_table)
+    # It should complain when we run it #
+    with pytest.raises(ValueError): c()
+
+###############################################################################
+def test_with_good_otu_table():
+    # The input fasta #
+    fasta = this_dir.find(&#39;*.fasta&#39;)
+    # The input table #
+    otu_table = this_dir.find(&#39;*good.tsv&#39;)
+    # The output directory #
+    output_dir = this_dir + &#39;results_good/&#39;
     output_dir.remove()
     # Create object #
     c = Classify(fasta       = fasta,
@@ -74,7 +92,10 @@ def test_with_otu_table():
 
 ###############################################################################
 if __name__ == &#39;__main__&#39;:
-    classify = test_with_otu_table()</code></pre>
+    # The bad case #
+    test_with_bad_otu_table()
+    # The good case #
+    classify = test_with_good_otu_table()</code></pre>
 </details>
 </section>
 <section>
@@ -84,8 +105,8 @@ if __name__ == &#39;__main__&#39;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="crest4.tests.with_otu_table.run_test.test_with_otu_table"><code class="name flex">
-<span>def <span class="ident">test_with_otu_table</span></span>(<span>)</span>
+<dt id="crest4.tests.with_otu_table.run_test.test_with_bad_otu_table"><code class="name flex">
+<span>def <span class="ident">test_with_bad_otu_table</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -93,13 +114,39 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_with_otu_table():
+<pre><code class="python">def test_with_bad_otu_table():
     # The input fasta #
     fasta = this_dir.find(&#39;*.fasta&#39;)
     # The input table #
-    otu_table = this_dir.find(&#39;*.tsv&#39;)
+    otu_table = this_dir.find(&#39;*bad.tsv&#39;)
     # The output directory #
-    output_dir = this_dir + &#39;results/&#39;
+    output_dir = this_dir + &#39;results_bad/&#39;
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 num_threads = True,
+                 otu_table   = otu_table)
+    # It should complain when we run it #
+    with pytest.raises(ValueError): c()</code></pre>
+</details>
+</dd>
+<dt id="crest4.tests.with_otu_table.run_test.test_with_good_otu_table"><code class="name flex">
+<span>def <span class="ident">test_with_good_otu_table</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_with_good_otu_table():
+    # The input fasta #
+    fasta = this_dir.find(&#39;*.fasta&#39;)
+    # The input table #
+    otu_table = this_dir.find(&#39;*good.tsv&#39;)
+    # The output directory #
+    output_dir = this_dir + &#39;results_good/&#39;
     output_dir.remove()
     # Create object #
     c = Classify(fasta       = fasta,
@@ -134,7 +181,8 @@ if __name__ == &#39;__main__&#39;:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="crest4.tests.with_otu_table.run_test.test_with_otu_table" href="#crest4.tests.with_otu_table.run_test.test_with_otu_table">test_with_otu_table</a></code></li>
+<li><code><a title="crest4.tests.with_otu_table.run_test.test_with_bad_otu_table" href="#crest4.tests.with_otu_table.run_test.test_with_bad_otu_table">test_with_bad_otu_table</a></code></li>
+<li><code><a title="crest4.tests.with_otu_table.run_test.test_with_good_otu_table" href="#crest4.tests.with_otu_table.run_test.test_with_good_otu_table">test_with_good_otu_table</a></code></li>
 </ul>
 </li>
 </ul>

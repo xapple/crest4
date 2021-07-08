@@ -83,7 +83,12 @@ class InfoFromTableOTUs:
     @property_cached
     def otus_df(self):
         &#34;&#34;&#34;Load the otu_table file as a pandas `DataFrame`.&#34;&#34;&#34;
-        return pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        # Load from a text file #
+        df = pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        # We only want the very first part of the IDs #
+        df.index = df.index.map(lambda s: s.split()[0])
+        # Return #
+        return df
 
     @property_cached
     def otus_by_rank(self):
@@ -95,7 +100,23 @@ class InfoFromTableOTUs:
         &#34;&#34;&#34;The first output file where cumulativeness is turned on.&#34;&#34;&#34;
         return self(cumulative=True)
 
+    def check_id_match(self):
+        &#34;&#34;&#34;
+        Check that all the IDs in the OTU table given by the user match the
+        ones in the FASTA file.
+        &#34;&#34;&#34;
+        for i, otu_counts in self.otus_df.iterrows():
+            # The name or id of the current OTU #
+            name = otu_counts.name
+            if name not in self.classify.queries_by_id:
+                msg = &#34;The sequence named &#39;%s&#39; in the table located at &#39;%s&#39;&#34; \
+                      &#34; does not appear in the FASTA file provided at &#39;%s&#39;.&#34;
+                msg = msg % (name, self.otu_table, self.classify.fasta)
+                raise ValueError(msg)
+
     def __call__(self, cumulative=False):
+        # Let&#39;s first check all the IDs are found #
+        self.check_id_match()
         # An empty pandas Series with each sample name and just zeros #
         empty_samples = pandas.Series(0, index=self.otus_df.columns)
         # Build a empty new dataframe from a dictionary of empty series #
@@ -184,7 +205,12 @@ from the <code>Classify</code> object it will produce two extra output files.</p
     @property_cached
     def otus_df(self):
         &#34;&#34;&#34;Load the otu_table file as a pandas `DataFrame`.&#34;&#34;&#34;
-        return pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        # Load from a text file #
+        df = pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        # We only want the very first part of the IDs #
+        df.index = df.index.map(lambda s: s.split()[0])
+        # Return #
+        return df
 
     @property_cached
     def otus_by_rank(self):
@@ -196,7 +222,23 @@ from the <code>Classify</code> object it will produce two extra output files.</p
         &#34;&#34;&#34;The first output file where cumulativeness is turned on.&#34;&#34;&#34;
         return self(cumulative=True)
 
+    def check_id_match(self):
+        &#34;&#34;&#34;
+        Check that all the IDs in the OTU table given by the user match the
+        ones in the FASTA file.
+        &#34;&#34;&#34;
+        for i, otu_counts in self.otus_df.iterrows():
+            # The name or id of the current OTU #
+            name = otu_counts.name
+            if name not in self.classify.queries_by_id:
+                msg = &#34;The sequence named &#39;%s&#39; in the table located at &#39;%s&#39;&#34; \
+                      &#34; does not appear in the FASTA file provided at &#39;%s&#39;.&#34;
+                msg = msg % (name, self.otu_table, self.classify.fasta)
+                raise ValueError(msg)
+
     def __call__(self, cumulative=False):
+        # Let&#39;s first check all the IDs are found #
+        self.check_id_match()
         # An empty pandas Series with each sample name and just zeros #
         empty_samples = pandas.Series(0, index=self.otus_df.columns)
         # Build a empty new dataframe from a dictionary of empty series #
@@ -357,6 +399,34 @@ appropriate separator character. By default we will return a tab.</p></div>
 </details>
 </dd>
 </dl>
+<h3>Methods</h3>
+<dl>
+<dt id="crest4.otu_tables.InfoFromTableOTUs.check_id_match"><code class="name flex">
+<span>def <span class="ident">check_id_match</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check that all the IDs in the OTU table given by the user match the
+ones in the FASTA file.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_id_match(self):
+    &#34;&#34;&#34;
+    Check that all the IDs in the OTU table given by the user match the
+    ones in the FASTA file.
+    &#34;&#34;&#34;
+    for i, otu_counts in self.otus_df.iterrows():
+        # The name or id of the current OTU #
+        name = otu_counts.name
+        if name not in self.classify.queries_by_id:
+            msg = &#34;The sequence named &#39;%s&#39; in the table located at &#39;%s&#39;&#34; \
+                  &#34; does not appear in the FASTA file provided at &#39;%s&#39;.&#34;
+            msg = msg % (name, self.otu_table, self.classify.fasta)
+            raise ValueError(msg)</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -377,6 +447,7 @@ appropriate separator character. By default we will return a tab.</p></div>
 <li>
 <h4><code><a title="crest4.otu_tables.InfoFromTableOTUs" href="#crest4.otu_tables.InfoFromTableOTUs">InfoFromTableOTUs</a></code></h4>
 <ul class="">
+<li><code><a title="crest4.otu_tables.InfoFromTableOTUs.check_id_match" href="#crest4.otu_tables.InfoFromTableOTUs.check_id_match">check_id_match</a></code></li>
 <li><code><a title="crest4.otu_tables.InfoFromTableOTUs.format" href="#crest4.otu_tables.InfoFromTableOTUs.format">format</a></code></li>
 <li><code><a title="crest4.otu_tables.InfoFromTableOTUs.otus_by_rank" href="#crest4.otu_tables.InfoFromTableOTUs.otus_by_rank">otus_by_rank</a></code></li>
 <li><code><a title="crest4.otu_tables.InfoFromTableOTUs.otus_cumulative" href="#crest4.otu_tables.InfoFromTableOTUs.otus_cumulative">otus_cumulative</a></code></li>
