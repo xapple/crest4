@@ -12,6 +12,7 @@ import inspect
 from autopaths import Path
 
 # Third party modules #
+import pytest
 
 # Internal modules #
 from crest4 import Classify
@@ -21,13 +22,30 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_with_otu_table():
+def test_with_bad_otu_table():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The input table #
-    otu_table = this_dir.find('*.tsv')
+    otu_table = this_dir.find('*bad.tsv')
     # The output directory #
-    output_dir = this_dir + 'results/'
+    output_dir = this_dir + 'results_bad/'
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 num_threads = True,
+                 otu_table   = otu_table)
+    # It should complain when we run it #
+    with pytest.raises(ValueError): c()
+
+###############################################################################
+def test_with_good_otu_table():
+    # The input fasta #
+    fasta = this_dir.find('*.fasta')
+    # The input table #
+    otu_table = this_dir.find('*good.tsv')
+    # The output directory #
+    output_dir = this_dir + 'results_good/'
     output_dir.remove()
     # Create object #
     c = Classify(fasta       = fasta,
@@ -45,4 +63,5 @@ def test_with_otu_table():
 
 ###############################################################################
 if __name__ == '__main__':
-    classify = test_with_otu_table()
+    classify = test_with_bad_otu_table()
+    classify = test_with_good_otu_table()

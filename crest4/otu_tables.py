@@ -48,7 +48,12 @@ class InfoFromTableOTUs:
     @property_cached
     def otus_df(self):
         """Load the otu_table file as a pandas `DataFrame`."""
-        return pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        # Load from a text file #
+        df = pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        # We only want the very first part of the IDs #
+        df.index = df.index.map(lambda s: s.split()[0])
+        # Return #
+        return df
 
     @property_cached
     def otus_by_rank(self):
@@ -60,7 +65,23 @@ class InfoFromTableOTUs:
         """The first output file where cumulativeness is turned on."""
         return self(cumulative=True)
 
+    def check_id_match(self):
+        """
+        Check that all the IDs in the OTU table given by the user match the
+        ones in the FASTA file.
+        """
+        for i, otu_counts in self.otus_df.iterrows():
+            # The name or id of the current OTU #
+            name = otu_counts.name
+            if name not in self.classify.queries_by_id:
+                msg = "The sequence named '%s' in the table located at '%s'" \
+                      " does not appear in the FASTA file provided at '%s'."
+                msg = msg % (name, self.otu_table, self.classify.fasta)
+                raise ValueError(msg)
+
     def __call__(self, cumulative=False):
+        # Let's first check all the IDs are found #
+        self.check_id_match()
         # An empty pandas Series with each sample name and just zeros #
         empty_samples = pandas.Series(0, index=self.otus_df.columns)
         # Build a empty new dataframe from a dictionary of empty series #

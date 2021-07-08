@@ -1,0 +1,4 @@
+#OTU ID	river	lake	ocean
+Different name	50	100	0
+Missing ID	10	50	200
+Does not match the FASTA	1	2	3
