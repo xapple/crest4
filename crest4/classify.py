@@ -245,9 +245,11 @@ class Classify:
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == 'blast':
             params = {'-outfmt': '7 qseqid sseqid bitscore length nident'}
-        # In case the user chose VSEARCH we specify the minimum identify #
+        # In case the user chose VSEARCH we specify the minimum identify
+        # and the minimum sequence match length
         if self.search_algo == 'vsearch':
-            params = {'-id': self.min_score}
+            params = {'--id':      self.min_score,
+                      '--mincols': 25}
         # Build the object
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
@@ -282,7 +284,16 @@ class Classify:
         # Check if the search has been done already #
         if not self.seqsearch: self.search()
         # Iterate on the sequence search results #
-        return [Query(self, query) for query in self.seqsearch.results]
+        result = [Query(self, query) for query in self.seqsearch.results]
+        # VSEARCH entirely forgets about sequences that had no hits #
+        if self.search_algo == 'vsearch':
+            reported_names = set(query.name for query in result)
+            for seq in self.fasta:
+                if seq.id not in reported_names:
+                    q = type('FakeQuery', (), {'hits': [], 'id': seq.id})
+                    result.append(Query(self, q))
+        # Return #
+        return result
 
     @property_cached
     def queries_by_id(self):
@@ -321,10 +332,8 @@ class Classify:
         if self.otu_table:
             otus_by_rank    = self.output_dir + 'otus_by_rank.csv'
             otus_cumulative = self.output_dir + 'otus_cumulative.csv'
-            self.otu_info(cumulative=False).to_csv(otus_by_rank,
-                                                   index=False)
-            self.otu_info(cumulative=True).to_csv(otus_cumulative,
-                                                  index=False)
+            self.otu_info(cumulative=False).to_csv(otus_by_rank, index=False)
+            self.otu_info(cumulative=True).to_csv(otus_cumulative, index=False)
         # Print a success message #
         msg = "Classification ran successfully. Results are placed in '%s'."
         print(msg % self.out_file)

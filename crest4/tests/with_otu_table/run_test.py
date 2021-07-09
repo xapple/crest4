@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Script to run the `ncbi_two_sequences` integration test.
+Script to run the `with_otu_table` integration test.
 """
 
 # Built-in modules #
@@ -63,5 +63,7 @@ def test_with_good_otu_table():
 
 ###############################################################################
 if __name__ == '__main__':
-    classify = test_with_bad_otu_table()
+    # The bad case #
+    test_with_bad_otu_table()
+    # The good case #
     classify = test_with_good_otu_table()

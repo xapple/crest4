@@ -29,10 +29,10 @@ def test_cmd_line_tool():
     # Call command line tool #
     import sh
     this_python = sh.Command(sys.executable)
-    result = this_python('-m',             'crest4',
-                         '--fasta',        fasta,
-                         '--output_dir',   output_dir,
-                         '--num_threads',  'True')
+    result = this_python('-m',            'crest4',
+                         '--fasta',       fasta,
+                         '--output_dir',  output_dir,
+                         '--num_threads', 'True')
     # Check that the results were created #
     created_file = output_dir + 'assignments.txt'
     assert created_file
