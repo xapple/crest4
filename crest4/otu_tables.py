@@ -95,22 +95,22 @@ class InfoFromTableOTUs:
             # By default the root is at the end
             tax = list(reversed(tax))
             # Make a string #
-            tax_name = ' / '.join(tax)
+            tax_name = '; '.join(tax)
             # Add the current counts to that particular taxonomy #
             result[tax_name] += otu_counts
             # If we have the cumulative option then propagate up the tree #
             if cumulative:
                 for step in range(1, len(tax)):
-                    tax_name = ' / '.join(tax[0:-step])
+                    tax_name = '; '.join(tax[0:-step])
                     result[tax_name] += otu_counts
         # Convert to a DataFrame #
         result = pandas.DataFrame(result).T
         # Have the assignment as a separate column #
         result = result.reset_index()
         result = result.rename(columns = {'index': 'taxonomy'})
-        # Add the rank column that tells you if it's a genus or a family #
+        # Add the rank column that tells the user if it's a genus or a family #
         rank_names  = self.classify.database.rank_names
-        tax_to_rank = lambda t: rank_names[len(t.split('/')) - 1]
+        tax_to_rank = lambda t: rank_names[len(t.split(';')) - 1]
         ranks       = result.taxonomy.apply(tax_to_rank)
         result.insert(loc=0, column='rank', value=ranks)
         # Sort the table by the taxonomy string #

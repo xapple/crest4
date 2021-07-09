@@ -147,7 +147,7 @@ class Query:
         the full assigned taxonomy along with the original name of the
         sequence classified.
         """
-        # Make a comma separated string #
-        tax = ','.join(reversed(self.taxonomy))
+        # Make a semi colon separated string #
+        tax = '; '.join(reversed(self.taxonomy))
         # Add the name of the query to the beginning line #
         return self.name + '\t' + tax + '\n'

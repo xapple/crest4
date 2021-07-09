@@ -330,10 +330,12 @@ class Classify:
         self.out_file.writelines(query.tax_string for query in self.queries)
         # Special case where an OTU table was passed #
         if self.otu_table:
-            otus_by_rank    = self.output_dir + 'otus_by_rank.csv'
-            otus_cumulative = self.output_dir + 'otus_cumulative.csv'
-            self.otu_info(cumulative=False).to_csv(otus_by_rank, index=False)
-            self.otu_info(cumulative=True).to_csv(otus_cumulative, index=False)
+            path_by_rank    = self.output_dir + 'otus_by_rank.tsv'
+            path_cumulative = self.output_dir + 'otus_cumulative.tsv'
+            otus_by_rank    = self.otu_info.otus_by_rank
+            otus_cumulative = self.otu_info.otus_cumulative
+            otus_by_rank.to_csv(path_by_rank, index=False, sep='\t')
+            otus_cumulative.to_csv(path_cumulative, index=False, sep='\t')
         # Print a success message #
         msg = "Classification ran successfully. Results are placed in '%s'."
         print(msg % self.out_file)
