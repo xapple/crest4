@@ -182,8 +182,8 @@ class Query:
         the full assigned taxonomy along with the original name of the
         sequence classified.
         &#34;&#34;&#34;
-        # Make a comma separated string #
-        tax = &#39;,&#39;.join(reversed(self.taxonomy))
+        # Make a semi colon separated string #
+        tax = &#39;; &#39;.join(reversed(self.taxonomy))
         # Add the name of the query to the beginning line #
         return self.name + &#39;\t&#39; + tax + &#39;\n&#39;</code></pre>
 </details>
@@ -347,8 +347,8 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p>
         the full assigned taxonomy along with the original name of the
         sequence classified.
         &#34;&#34;&#34;
-        # Make a comma separated string #
-        tax = &#39;,&#39;.join(reversed(self.taxonomy))
+        # Make a semi colon separated string #
+        tax = &#39;; &#39;.join(reversed(self.taxonomy))
         # Add the name of the query to the beginning line #
         return self.name + &#39;\t&#39; + tax + &#39;\n&#39;</code></pre>
 </details>

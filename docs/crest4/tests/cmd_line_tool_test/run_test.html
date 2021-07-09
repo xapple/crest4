@@ -58,10 +58,10 @@ def test_cmd_line_tool():
     # Call command line tool #
     import sh
     this_python = sh.Command(sys.executable)
-    result = this_python(&#39;-m&#39;,             &#39;crest4&#39;,
-                         &#39;--fasta&#39;,        fasta,
-                         &#39;--output_dir&#39;,   output_dir,
-                         &#39;--num_threads&#39;,  &#39;True&#39;)
+    result = this_python(&#39;-m&#39;,            &#39;crest4&#39;,
+                         &#39;--fasta&#39;,       fasta,
+                         &#39;--output_dir&#39;,  output_dir,
+                         &#39;--num_threads&#39;, &#39;True&#39;)
     # Check that the results were created #
     created_file = output_dir + &#39;assignments.txt&#39;
     assert created_file
@@ -98,10 +98,10 @@ if __name__ == &#39;__main__&#39;:
     # Call command line tool #
     import sh
     this_python = sh.Command(sys.executable)
-    result = this_python(&#39;-m&#39;,             &#39;crest4&#39;,
-                         &#39;--fasta&#39;,        fasta,
-                         &#39;--output_dir&#39;,   output_dir,
-                         &#39;--num_threads&#39;,  &#39;True&#39;)
+    result = this_python(&#39;-m&#39;,            &#39;crest4&#39;,
+                         &#39;--fasta&#39;,       fasta,
+                         &#39;--output_dir&#39;,  output_dir,
+                         &#39;--num_threads&#39;, &#39;True&#39;)
     # Check that the results were created #
     created_file = output_dir + &#39;assignments.txt&#39;
     assert created_file

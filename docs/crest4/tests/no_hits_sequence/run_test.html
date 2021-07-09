@@ -50,11 +50,11 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_no_hits_sequence():
+def test_no_hits_blast():
     # The input fasta #
     fasta = this_dir.find(&#39;*.fasta&#39;)
     # The output directory #
-    output_dir = this_dir + &#39;results/&#39;
+    output_dir = this_dir + &#39;results_blast/&#39;
     output_dir.remove()
     # Create object #
     c = Classify(fasta       = fasta,
@@ -70,8 +70,29 @@ def test_no_hits_sequence():
     return c
 
 ###############################################################################
+def test_no_hits_vsearch():
+    # The input fasta #
+    fasta = this_dir.find(&#39;*.fasta&#39;)
+    # The output directory #
+    output_dir = this_dir + &#39;results_vsearch/&#39;
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 search_algo = &#39;vsearch&#39;,
+                 num_threads = True)
+    # Run it #
+    c()
+    # Check there was no hits for the second sequence #
+    query = c.queries_by_id[&#39;homopolymer&#39;]
+    assert query.tax_string == &#34;homopolymer\tNo hits\n&#34;
+    # Return #
+    return c
+
+###############################################################################
 if __name__ == &#39;__main__&#39;:
-    classify = test_no_hits_sequence()</code></pre>
+    classify = test_no_hits_blast()
+    classify = test_no_hits_vsearch()</code></pre>
 </details>
 </section>
 <section>
@@ -81,8 +102,8 @@ if __name__ == &#39;__main__&#39;:
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="crest4.tests.no_hits_sequence.run_test.test_no_hits_sequence"><code class="name flex">
-<span>def <span class="ident">test_no_hits_sequence</span></span>(<span>)</span>
+<dt id="crest4.tests.no_hits_sequence.run_test.test_no_hits_blast"><code class="name flex">
+<span>def <span class="ident">test_no_hits_blast</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -90,11 +111,11 @@ if __name__ == &#39;__main__&#39;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def test_no_hits_sequence():
+<pre><code class="python">def test_no_hits_blast():
     # The input fasta #
     fasta = this_dir.find(&#39;*.fasta&#39;)
     # The output directory #
-    output_dir = this_dir + &#39;results/&#39;
+    output_dir = this_dir + &#39;results_blast/&#39;
     output_dir.remove()
     # Create object #
     c = Classify(fasta       = fasta,
@@ -106,6 +127,35 @@ if __name__ == &#39;__main__&#39;:
     expected = &#34;homopolymer\tNo hits&#34;
     got = c.out_file.lines[1]
     assert got == expected
+    # Return #
+    return c</code></pre>
+</details>
+</dd>
+<dt id="crest4.tests.no_hits_sequence.run_test.test_no_hits_vsearch"><code class="name flex">
+<span>def <span class="ident">test_no_hits_vsearch</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_no_hits_vsearch():
+    # The input fasta #
+    fasta = this_dir.find(&#39;*.fasta&#39;)
+    # The output directory #
+    output_dir = this_dir + &#39;results_vsearch/&#39;
+    output_dir.remove()
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 search_algo = &#39;vsearch&#39;,
+                 num_threads = True)
+    # Run it #
+    c()
+    # Check there was no hits for the second sequence #
+    query = c.queries_by_id[&#39;homopolymer&#39;]
+    assert query.tax_string == &#34;homopolymer\tNo hits\n&#34;
     # Return #
     return c</code></pre>
 </details>
@@ -128,7 +178,8 @@ if __name__ == &#39;__main__&#39;:
 </li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="crest4.tests.no_hits_sequence.run_test.test_no_hits_sequence" href="#crest4.tests.no_hits_sequence.run_test.test_no_hits_sequence">test_no_hits_sequence</a></code></li>
+<li><code><a title="crest4.tests.no_hits_sequence.run_test.test_no_hits_blast" href="#crest4.tests.no_hits_sequence.run_test.test_no_hits_blast">test_no_hits_blast</a></code></li>
+<li><code><a title="crest4.tests.no_hits_sequence.run_test.test_no_hits_vsearch" href="#crest4.tests.no_hits_sequence.run_test.test_no_hits_vsearch">test_no_hits_vsearch</a></code></li>
 </ul>
 </li>
 </ul>

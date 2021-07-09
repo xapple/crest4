@@ -280,9 +280,11 @@ class Classify:
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == &#39;blast&#39;:
             params = {&#39;-outfmt&#39;: &#39;7 qseqid sseqid bitscore length nident&#39;}
-        # In case the user chose VSEARCH we specify the minimum identify #
+        # In case the user chose VSEARCH we specify the minimum identify
+        # and the minimum sequence match length
         if self.search_algo == &#39;vsearch&#39;:
-            params = {&#39;-id&#39;: self.min_score}
+            params = {&#39;--id&#39;:      self.min_score,
+                      &#39;--mincols&#39;: 25}
         # Build the object
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
@@ -317,7 +319,16 @@ class Classify:
         # Check if the search has been done already #
         if not self.seqsearch: self.search()
         # Iterate on the sequence search results #
-        return [Query(self, query) for query in self.seqsearch.results]
+        result = [Query(self, query) for query in self.seqsearch.results]
+        # VSEARCH entirely forgets about sequences that had no hits #
+        if self.search_algo == &#39;vsearch&#39;:
+            reported_names = set(query.name for query in result)
+            for seq in self.fasta:
+                if seq.id not in reported_names:
+                    q = type(&#39;FakeQuery&#39;, (), {&#39;hits&#39;: [], &#39;id&#39;: seq.id})
+                    result.append(Query(self, q))
+        # Return #
+        return result
 
     @property_cached
     def queries_by_id(self):
@@ -354,12 +365,12 @@ class Classify:
         self.out_file.writelines(query.tax_string for query in self.queries)
         # Special case where an OTU table was passed #
         if self.otu_table:
-            otus_by_rank    = self.output_dir + &#39;otus_by_rank.csv&#39;
-            otus_cumulative = self.output_dir + &#39;otus_cumulative.csv&#39;
-            self.otu_info(cumulative=False).to_csv(otus_by_rank,
-                                                   index=False)
-            self.otu_info(cumulative=True).to_csv(otus_cumulative,
-                                                  index=False)
+            path_by_rank    = self.output_dir + &#39;otus_by_rank.tsv&#39;
+            path_cumulative = self.output_dir + &#39;otus_cumulative.tsv&#39;
+            otus_by_rank    = self.otu_info.otus_by_rank
+            otus_cumulative = self.otu_info.otus_cumulative
+            otus_by_rank.to_csv(path_by_rank, index=False, sep=&#39;\t&#39;)
+            otus_cumulative.to_csv(path_cumulative, index=False, sep=&#39;\t&#39;)
         # Print a success message #
         msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;.&#34;
         print(msg % self.out_file)
@@ -683,9 +694,11 @@ names are samples names.</dd>
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == &#39;blast&#39;:
             params = {&#39;-outfmt&#39;: &#39;7 qseqid sseqid bitscore length nident&#39;}
-        # In case the user chose VSEARCH we specify the minimum identify #
+        # In case the user chose VSEARCH we specify the minimum identify
+        # and the minimum sequence match length
         if self.search_algo == &#39;vsearch&#39;:
-            params = {&#39;-id&#39;: self.min_score}
+            params = {&#39;--id&#39;:      self.min_score,
+                      &#39;--mincols&#39;: 25}
         # Build the object
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
@@ -720,7 +733,16 @@ names are samples names.</dd>
         # Check if the search has been done already #
         if not self.seqsearch: self.search()
         # Iterate on the sequence search results #
-        return [Query(self, query) for query in self.seqsearch.results]
+        result = [Query(self, query) for query in self.seqsearch.results]
+        # VSEARCH entirely forgets about sequences that had no hits #
+        if self.search_algo == &#39;vsearch&#39;:
+            reported_names = set(query.name for query in result)
+            for seq in self.fasta:
+                if seq.id not in reported_names:
+                    q = type(&#39;FakeQuery&#39;, (), {&#39;hits&#39;: [], &#39;id&#39;: seq.id})
+                    result.append(Query(self, q))
+        # Return #
+        return result
 
     @property_cached
     def queries_by_id(self):
@@ -757,12 +779,12 @@ names are samples names.</dd>
         self.out_file.writelines(query.tax_string for query in self.queries)
         # Special case where an OTU table was passed #
         if self.otu_table:
-            otus_by_rank    = self.output_dir + &#39;otus_by_rank.csv&#39;
-            otus_cumulative = self.output_dir + &#39;otus_cumulative.csv&#39;
-            self.otu_info(cumulative=False).to_csv(otus_by_rank,
-                                                   index=False)
-            self.otu_info(cumulative=True).to_csv(otus_cumulative,
-                                                  index=False)
+            path_by_rank    = self.output_dir + &#39;otus_by_rank.tsv&#39;
+            path_cumulative = self.output_dir + &#39;otus_cumulative.tsv&#39;
+            otus_by_rank    = self.otu_info.otus_by_rank
+            otus_cumulative = self.otu_info.otus_cumulative
+            otus_by_rank.to_csv(path_by_rank, index=False, sep=&#39;\t&#39;)
+            otus_cumulative.to_csv(path_cumulative, index=False, sep=&#39;\t&#39;)
         # Print a success message #
         msg = &#34;Classification ran successfully. Results are placed in &#39;%s&#39;.&#34;
         print(msg % self.out_file)
