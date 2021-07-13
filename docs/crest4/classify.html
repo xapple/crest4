@@ -106,8 +106,8 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `silvamod138` or `silvamod128`. No other values
-                       are currently supported. By default `silvamod138`.
+                       Either `silvamod138`, `silvamod128` or &#39;bold&#39;. No other
+                       values are currently supported. By default `silvamod138`.
                        Optionally the user can provide his own custom database
                        by specifying the full path to a directory containing
                        all required files under `search_db`. See README.
@@ -229,7 +229,7 @@ class Classify:
             msg = &#34;The search algorithm &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_algo)
         # Check the search database #
-        if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;):
+        if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
         # Check the minimum score value above zero #
@@ -420,8 +420,8 @@ we will run as many processes as there are CPUs but
 no more than 32.</dd>
 <dt><strong><code>search_db</code></strong></dt>
 <dd>The database used for the sequence similarity search.
-Either <code>silvamod138</code> or <code>silvamod128</code>. No other values
-are currently supported. By default <code>silvamod138</code>.
+Either <code>silvamod138</code>, <code>silvamod128</code> or 'bold'. No other
+values are currently supported. By default <code>silvamod138</code>.
 Optionally the user can provide his own custom database
 by specifying the full path to a directory containing
 all required files under <code>search_db</code>. See README.</dd>
@@ -520,8 +520,8 @@ names are samples names.</dd>
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `silvamod138` or `silvamod128`. No other values
-                       are currently supported. By default `silvamod138`.
+                       Either `silvamod138`, `silvamod128` or &#39;bold&#39;. No other
+                       values are currently supported. By default `silvamod138`.
                        Optionally the user can provide his own custom database
                        by specifying the full path to a directory containing
                        all required files under `search_db`. See README.
@@ -643,7 +643,7 @@ names are samples names.</dd>
             msg = &#34;The search algorithm &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_algo)
         # Check the search database #
-        if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;):
+        if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
         # Check the minimum score value above zero #
@@ -1109,7 +1109,7 @@ the user are illegal.</p></div>
         msg = &#34;The search algorithm &#39;%s&#39; is not supported.&#34;
         raise ValueError(msg % self.search_algo)
     # Check the search database #
-    if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;):
+    if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
         msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
         raise ValueError(msg % self.search_db)
     # Check the minimum score value above zero #

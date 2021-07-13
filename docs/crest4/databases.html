@@ -97,7 +97,7 @@ class CrestMetadata:
     def db_urls(self):
         &#34;&#34;&#34;
         Once the `Metadata` object is created simply access it like this:
-        &gt;&gt;&gt; print(metadata.db_urls[&#39;silvamod&#39;][&#39;url&#39;])
+        &gt;&gt;&gt; print(metadata.db_urls[&#39;silvamod138&#39;][&#39;url&#39;])
         &#34;&#34;&#34;
         # Download the gist #
         content = retrieve_from_url(self.metadata_url)
@@ -284,7 +284,7 @@ class CrestDatabase:
     @property_cached
     def acc_to_node(self):
         &#34;&#34;&#34;
-        Using the `.map` file, we return a dictionary linking accession numbers
+        Using the `.map` file, we return a dictionary linking accession strings
         to node numbers.
         Example: HQ191339 -&gt; 28386
         &#34;&#34;&#34;
@@ -315,30 +315,15 @@ class CrestDatabase:
                 &#39;Species&#39;]        # 10
 
 ###############################################################################
-class Silvamod128(CrestDatabase):
-    &#34;&#34;&#34;
-    Represents the old silvamod database.
-    &#34;&#34;&#34;
-
-    short_name = &#39;silvamod128&#39;
-    long_name  = &#39;Silva version 128 modified for CREST&#39;
-
-###############################################################################
-class Silvamod138(CrestDatabase):
-    &#34;&#34;&#34;
-    Represents the new silvamod database.
-    &#34;&#34;&#34;
-
-    short_name = &#39;silvamod138&#39;
-    long_name  = &#39;Silva version 138 modified for CREST&#39;
-
-###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
+silvamod138 = CrestDatabase(&#39;silvamod138&#39;,
+                            &#39;Silva version 138 modified for CREST&#39;)
+
 silvamod128 = CrestDatabase(&#39;silvamod128&#39;,
                             &#39;Silva version 128 modified for CREST&#39;)
 
-silvamod138 = CrestDatabase(&#39;silvamod138&#39;,
-                            &#39;Silva version 138 modified for CREST&#39;)</code></pre>
+bold        = CrestDatabase(&#39;bold&#39;,
+                            &#39;The BOLD database modified for CREST&#39;)</code></pre>
 </details>
 </section>
 <section>
@@ -538,7 +523,7 @@ It must include the database FASTA file as well as the <code>.map</code> and
     @property_cached
     def acc_to_node(self):
         &#34;&#34;&#34;
-        Using the `.map` file, we return a dictionary linking accession numbers
+        Using the `.map` file, we return a dictionary linking accession strings
         to node numbers.
         Example: HQ191339 -&gt; 28386
         &#34;&#34;&#34;
@@ -568,11 +553,6 @@ It must include the database FASTA file as well as the <code>.map</code> and
                 &#39;Genus&#39;,          # 9
                 &#39;Species&#39;]        # 10</code></pre>
 </details>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></li>
-<li><a title="crest4.databases.Silvamod138" href="#crest4.databases.Silvamod138">Silvamod138</a></li>
-</ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="crest4.databases.CrestDatabase.default_dir"><code class="name">var <span class="ident">default_dir</span></code></dt>
@@ -588,7 +568,7 @@ It must include the database FASTA file as well as the <code>.map</code> and
 <dl>
 <dt id="crest4.databases.CrestDatabase.acc_to_node"><code class="name">var <span class="ident">acc_to_node</span></code></dt>
 <dd>
-<div class="desc"><p>Using the <code>.map</code> file, we return a dictionary linking accession numbers
+<div class="desc"><p>Using the <code>.map</code> file, we return a dictionary linking accession strings
 to node numbers.
 Example: HQ191339 -&gt; 28386</p></div>
 <details class="source">
@@ -963,7 +943,7 @@ of the metadata file is hardcoded into the source code.</p>
     def db_urls(self):
         &#34;&#34;&#34;
         Once the `Metadata` object is created simply access it like this:
-        &gt;&gt;&gt; print(metadata.db_urls[&#39;silvamod&#39;][&#39;url&#39;])
+        &gt;&gt;&gt; print(metadata.db_urls[&#39;silvamod138&#39;][&#39;url&#39;])
         &#34;&#34;&#34;
         # Download the gist #
         content = retrieve_from_url(self.metadata_url)
@@ -994,7 +974,7 @@ of the metadata file is hardcoded into the source code.</p>
 <dt id="crest4.databases.CrestMetadata.db_urls"><code class="name">var <span class="ident">db_urls</span></code></dt>
 <dd>
 <div class="desc"><p>Once the <code>Metadata</code> object is created simply access it like this:</p>
-<pre><code class="language-python-repl">&gt;&gt;&gt; print(metadata.db_urls['silvamod']['url'])
+<pre><code class="language-python-repl">&gt;&gt;&gt; print(metadata.db_urls['silvamod138']['url'])
 </code></pre></div>
 <details class="source">
 <summary>
@@ -1024,118 +1004,6 @@ of the metadata file is hardcoded into the source code.</p>
 </details>
 </dd>
 </dl>
-</dd>
-<dt id="crest4.databases.Silvamod128"><code class="flex name class">
-<span>class <span class="ident">Silvamod128</span></span>
-<span>(</span><span>short_name, long_name, base_dir=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Represents the old silvamod database.</p>
-<p>The user can specify a path pointing to a directory that contains all
-the required files, and having the same prefix as the directory name.
-It must include the database FASTA file as well as the <code>.map</code> and
-<code>.names</code> file.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Silvamod128(CrestDatabase):
-    &#34;&#34;&#34;
-    Represents the old silvamod database.
-    &#34;&#34;&#34;
-
-    short_name = &#39;silvamod128&#39;
-    long_name  = &#39;Silva version 128 modified for CREST&#39;</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="crest4.databases.Silvamod128.long_name"><code class="name">var <span class="ident">long_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="crest4.databases.Silvamod128.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></b></code>:
-<ul class="hlist">
-<li><code><a title="crest4.databases.CrestDatabase.acc_to_node" href="#crest4.databases.CrestDatabase.acc_to_node">acc_to_node</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.blast_db" href="#crest4.databases.CrestDatabase.blast_db">blast_db</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.download" href="#crest4.databases.CrestDatabase.download">download</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.downloaded" href="#crest4.databases.CrestDatabase.downloaded">downloaded</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.path" href="#crest4.databases.CrestDatabase.path">path</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tag" href="#crest4.databases.CrestDatabase.tag">tag</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.vsearch_db" href="#crest4.databases.CrestDatabase.vsearch_db">vsearch_db</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="crest4.databases.Silvamod138"><code class="flex name class">
-<span>class <span class="ident">Silvamod138</span></span>
-<span>(</span><span>short_name, long_name, base_dir=None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Represents the new silvamod database.</p>
-<p>The user can specify a path pointing to a directory that contains all
-the required files, and having the same prefix as the directory name.
-It must include the database FASTA file as well as the <code>.map</code> and
-<code>.names</code> file.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Silvamod138(CrestDatabase):
-    &#34;&#34;&#34;
-    Represents the new silvamod database.
-    &#34;&#34;&#34;
-
-    short_name = &#39;silvamod138&#39;
-    long_name  = &#39;Silva version 138 modified for CREST&#39;</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="crest4.databases.Silvamod138.long_name"><code class="name">var <span class="ident">long_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="crest4.databases.Silvamod138.short_name"><code class="name">var <span class="ident">short_name</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="crest4.databases.CrestDatabase" href="#crest4.databases.CrestDatabase">CrestDatabase</a></b></code>:
-<ul class="hlist">
-<li><code><a title="crest4.databases.CrestDatabase.acc_to_node" href="#crest4.databases.CrestDatabase.acc_to_node">acc_to_node</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.blast_db" href="#crest4.databases.CrestDatabase.blast_db">blast_db</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.download" href="#crest4.databases.CrestDatabase.download">download</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.downloaded" href="#crest4.databases.CrestDatabase.downloaded">downloaded</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.node_to_name" href="#crest4.databases.CrestDatabase.node_to_name">node_to_name</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.path" href="#crest4.databases.CrestDatabase.path">path</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tag" href="#crest4.databases.CrestDatabase.tag">tag</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tarball" href="#crest4.databases.CrestDatabase.tarball">tarball</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.tree" href="#crest4.databases.CrestDatabase.tree">tree</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.url" href="#crest4.databases.CrestDatabase.url">url</a></code></li>
-<li><code><a title="crest4.databases.CrestDatabase.vsearch_db" href="#crest4.databases.CrestDatabase.vsearch_db">vsearch_db</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 </dl>
 </section>
@@ -1179,20 +1047,6 @@ It must include the database FASTA file as well as the <code>.map</code> and
 <li><code><a title="crest4.databases.CrestMetadata.db_urls" href="#crest4.databases.CrestMetadata.db_urls">db_urls</a></code></li>
 <li><code><a title="crest4.databases.CrestMetadata.metadata_url" href="#crest4.databases.CrestMetadata.metadata_url">metadata_url</a></code></li>
 <li><code><a title="crest4.databases.CrestMetadata.repo_path" href="#crest4.databases.CrestMetadata.repo_path">repo_path</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="crest4.databases.Silvamod128" href="#crest4.databases.Silvamod128">Silvamod128</a></code></h4>
-<ul class="">
-<li><code><a title="crest4.databases.Silvamod128.long_name" href="#crest4.databases.Silvamod128.long_name">long_name</a></code></li>
-<li><code><a title="crest4.databases.Silvamod128.short_name" href="#crest4.databases.Silvamod128.short_name">short_name</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="crest4.databases.Silvamod138" href="#crest4.databases.Silvamod138">Silvamod138</a></code></h4>
-<ul class="">
-<li><code><a title="crest4.databases.Silvamod138.long_name" href="#crest4.databases.Silvamod138.long_name">long_name</a></code></li>
-<li><code><a title="crest4.databases.Silvamod138.short_name" href="#crest4.databases.Silvamod138.short_name">short_name</a></code></li>
 </ul>
 </li>
 </ul>
