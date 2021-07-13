@@ -124,8 +124,8 @@ Optional arguments:
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either `silvamod138` or `silvamod128`. No other values
-                        are currently supported. By default `silvamod138`.
+                        Either `silvamod138`, `silvamod128` or 'bold'. No other
+                        values are currently supported. By default `silvamod138`.
                         Optionally the user can provide his own custom database
                         by specifying the full path to a directory containing
                         all required files under `search_db`. See README.

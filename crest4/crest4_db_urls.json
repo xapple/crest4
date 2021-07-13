@@ -1,12 +1,16 @@
 {"crest4_databases":
     {
+        "silvamod138": {
+            "title": "SilvaMod v138",
+            "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod138.tar.gz"
+        },
         "silvamod128": {
             "title": "SilvaMod v128",
             "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod128.tar.gz"
         },
-        "silvamod138": { 
-            "title": "SilvaMod v138",
-            "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod138.tar.gz"
+        "bold": {
+            "title": "BOLD",
+            "url": "https://crest4.s3-eu-west-1.amazonaws.com/bold.tar.gz"
         }
     }
 }

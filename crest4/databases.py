@@ -62,7 +62,7 @@ class CrestMetadata:
     def db_urls(self):
         """
         Once the `Metadata` object is created simply access it like this:
-        >>> print(metadata.db_urls['silvamod']['url'])
+        >>> print(metadata.db_urls['silvamod138']['url'])
         """
         # Download the gist #
         content = retrieve_from_url(self.metadata_url)
@@ -249,7 +249,7 @@ class CrestDatabase:
     @property_cached
     def acc_to_node(self):
         """
-        Using the `.map` file, we return a dictionary linking accession numbers
+        Using the `.map` file, we return a dictionary linking accession strings
         to node numbers.
         Example: HQ191339 -> 28386
         """
@@ -280,27 +280,12 @@ class CrestDatabase:
                 'Species']        # 10
 
 ###############################################################################
-class Silvamod128(CrestDatabase):
-    """
-    Represents the old silvamod database.
-    """
-
-    short_name = 'silvamod128'
-    long_name  = 'Silva version 128 modified for CREST'
-
-###############################################################################
-class Silvamod138(CrestDatabase):
-    """
-    Represents the new silvamod database.
-    """
-
-    short_name = 'silvamod138'
-    long_name  = 'Silva version 138 modified for CREST'
-
-###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
+silvamod138 = CrestDatabase('silvamod138',
+                            'Silva version 138 modified for CREST')
+
 silvamod128 = CrestDatabase('silvamod128',
                             'Silva version 128 modified for CREST')
 
-silvamod138 = CrestDatabase('silvamod138',
-                            'Silva version 138 modified for CREST')
+bold        = CrestDatabase('bold',
+                            'The BOLD database modified for CREST')
