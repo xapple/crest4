@@ -230,10 +230,9 @@ The equivalent VSEARCH command is the following:
 ## More information
 
 ### Classification databases
+The `silvamod138` database uses a similar process and was derived by manual curation of the [SILVA NR SSU Ref v.138](https://www.arb-silva.de) for Bacteria, Archaea, Metazoa and Fungi. For other eukaryotes (protists), the [PR2 v4.13 database](https://pr2-database.org/) was used. The SILVA database used was last release in August 2020 and PR2 database in March 2021.
 
 The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. This database was last released in September 2016.
-
-The `silvamod138` database uses a similar process and was derived by manual curation of the [SILVA NR SSU Ref v.138](https://www.arb-silva.de) for Bacteria, Archaea, Metazoa and Fungi. For other eukaryotes (protists), the [PR2 v4.13 database](https://pr2-database.org/) was used. The SILVA database used was last release in August 2020 and PR2 database in March 2021.
 
 ### Classification algorithm
 
