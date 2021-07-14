@@ -160,7 +160,6 @@ class Classify:
         # The search hits is a file somewhere if passed #
         if self.search_hits is not None:
             self.search_hits = FilePath(self.search_hits)
-            self.search_hits.must_exist()
         # Default for the search hits file if not passed #
         if self.search_hits is None:
             self.search_hits = FilePath(self.output_dir + 'search.hits')
@@ -282,7 +281,7 @@ class Classify:
         inputted. Use these objects to access the taxonomic assignments.
         """
         # Check if the search has been done already #
-        if not self.seqsearch: self.search()
+        if not self.search_hits: self.search()
         # Iterate on the sequence search results #
         result = [Query(self, query) for query in self.seqsearch.results]
         # VSEARCH entirely forgets about sequences that had no hits #
