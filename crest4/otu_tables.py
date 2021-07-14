@@ -62,7 +62,7 @@ class InfoFromTableOTUs:
 
     @property_cached
     def otus_cumulative(self):
-        """The first output file where cumulativeness is turned on."""
+        """The second output file where cumulativeness is turned on."""
         return self(cumulative=True)
 
     def check_id_match(self):
@@ -92,7 +92,7 @@ class InfoFromTableOTUs:
             otu_name = otu_counts.name
             # Get the assignment of current OTU from our classification #
             tax = self.classify.queries_by_id[otu_name].taxonomy
-            # By default the root is at the end
+            # By default the root is at the end #
             tax = list(reversed(tax))
             # Make a string #
             tax_name = '; '.join(tax)
@@ -105,7 +105,7 @@ class InfoFromTableOTUs:
                     result[tax_name] += otu_counts
         # Convert to a DataFrame #
         result = pandas.DataFrame(result).T
-        # Have the assignment as a separate column #
+        # Have the assignment as a separate column and not as an index #
         result = result.reset_index()
         result = result.rename(columns = {'index': 'taxonomy'})
         # Add the rank column that tells the user if it's a genus or a family #
