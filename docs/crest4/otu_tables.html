@@ -56,8 +56,8 @@ import pandas
 class InfoFromTableOTUs:
     &#34;&#34;&#34;
     This class accepts a path to an OTU table as input.
-    It will parse the table and along with the taxonomic assignments
-    from the `Classify` object it will produce two extra output files.
+    It will parse the table, along with the taxonomic assignments
+    from the `Classify` object, and it will produce two extra output files.
     &#34;&#34;&#34;
 
     def __init__(self, classify, otu_table):
@@ -97,7 +97,7 @@ class InfoFromTableOTUs:
 
     @property_cached
     def otus_cumulative(self):
-        &#34;&#34;&#34;The first output file where cumulativeness is turned on.&#34;&#34;&#34;
+        &#34;&#34;&#34;The second output file where cumulativeness is turned on.&#34;&#34;&#34;
         return self(cumulative=True)
 
     def check_id_match(self):
@@ -127,7 +127,7 @@ class InfoFromTableOTUs:
             otu_name = otu_counts.name
             # Get the assignment of current OTU from our classification #
             tax = self.classify.queries_by_id[otu_name].taxonomy
-            # By default the root is at the end
+            # By default the root is at the end #
             tax = list(reversed(tax))
             # Make a string #
             tax_name = &#39;; &#39;.join(tax)
@@ -140,7 +140,7 @@ class InfoFromTableOTUs:
                     result[tax_name] += otu_counts
         # Convert to a DataFrame #
         result = pandas.DataFrame(result).T
-        # Have the assignment as a separate column #
+        # Have the assignment as a separate column and not as an index #
         result = result.reset_index()
         result = result.rename(columns = {&#39;index&#39;: &#39;taxonomy&#39;})
         # Add the rank column that tells the user if it&#39;s a genus or a family #
@@ -169,8 +169,8 @@ class InfoFromTableOTUs:
 </code></dt>
 <dd>
 <div class="desc"><p>This class accepts a path to an OTU table as input.
-It will parse the table and along with the taxonomic assignments
-from the <code>Classify</code> object it will produce two extra output files.</p></div>
+It will parse the table, along with the taxonomic assignments
+from the <code>Classify</code> object, and it will produce two extra output files.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -178,8 +178,8 @@ from the <code>Classify</code> object it will produce two extra output files.</p
 <pre><code class="python">class InfoFromTableOTUs:
     &#34;&#34;&#34;
     This class accepts a path to an OTU table as input.
-    It will parse the table and along with the taxonomic assignments
-    from the `Classify` object it will produce two extra output files.
+    It will parse the table, along with the taxonomic assignments
+    from the `Classify` object, and it will produce two extra output files.
     &#34;&#34;&#34;
 
     def __init__(self, classify, otu_table):
@@ -219,7 +219,7 @@ from the <code>Classify</code> object it will produce two extra output files.</p
 
     @property_cached
     def otus_cumulative(self):
-        &#34;&#34;&#34;The first output file where cumulativeness is turned on.&#34;&#34;&#34;
+        &#34;&#34;&#34;The second output file where cumulativeness is turned on.&#34;&#34;&#34;
         return self(cumulative=True)
 
     def check_id_match(self):
@@ -249,7 +249,7 @@ from the <code>Classify</code> object it will produce two extra output files.</p
             otu_name = otu_counts.name
             # Get the assignment of current OTU from our classification #
             tax = self.classify.queries_by_id[otu_name].taxonomy
-            # By default the root is at the end
+            # By default the root is at the end #
             tax = list(reversed(tax))
             # Make a string #
             tax_name = &#39;; &#39;.join(tax)
@@ -262,7 +262,7 @@ from the <code>Classify</code> object it will produce two extra output files.</p
                     result[tax_name] += otu_counts
         # Convert to a DataFrame #
         result = pandas.DataFrame(result).T
-        # Have the assignment as a separate column #
+        # Have the assignment as a separate column and not as an index #
         result = result.reset_index()
         result = result.rename(columns = {&#39;index&#39;: &#39;taxonomy&#39;})
         # Add the rank column that tells the user if it&#39;s a genus or a family #
@@ -340,7 +340,7 @@ appropriate separator character. By default we will return a tab.</p></div>
 </dd>
 <dt id="crest4.otu_tables.InfoFromTableOTUs.otus_cumulative"><code class="name">var <span class="ident">otus_cumulative</span></code></dt>
 <dd>
-<div class="desc"><p>The first output file where cumulativeness is turned on.</p></div>
+<div class="desc"><p>The second output file where cumulativeness is turned on.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>

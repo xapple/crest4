@@ -140,7 +140,7 @@ class Classify:
                         By default `2.0`.
 
             min_smlrty: Determines if the minimum similarity filter is turned
-                        on or off. Pass the value `False` to turn it off.
+                        on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
@@ -195,7 +195,6 @@ class Classify:
         # The search hits is a file somewhere if passed #
         if self.search_hits is not None:
             self.search_hits = FilePath(self.search_hits)
-            self.search_hits.must_exist()
         # Default for the search hits file if not passed #
         if self.search_hits is None:
             self.search_hits = FilePath(self.output_dir + &#39;search.hits&#39;)
@@ -206,6 +205,8 @@ class Classify:
                 self.min_score = 155
             if self.search_algo == &#39;vsearch&#39;:
                 self.min_score = 0.75
+        # Turn off the minimum similarity filter if the user passed any value #
+        if self.min_smlrty is not True: self.min_smlrty = False
         # The OTU table is a file somewhere if passed #
         if self.otu_table is not None:
             self.otu_table = FilePath(self.otu_table)
@@ -232,11 +233,11 @@ class Classify:
         if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
-        # Check the minimum score value above zero #
+        # Check the minimum score value is above zero #
         if self.min_score &lt; 0.0:
             msg = &#34;The minimum score cannot be smaller than zero (&#39;%s&#39;).&#34;
             raise ValueError(msg % self.min_score)
-        # Check the minimum score value below zero #
+        # Check the minimum score value is below one #
         if self.min_score &gt; 1.0:
             if self.search_algo == &#39;vsearch&#39;:
                 msg = &#34;The minimum score cannot be more than 1.0 when&#34; \
@@ -285,7 +286,7 @@ class Classify:
         if self.search_algo == &#39;vsearch&#39;:
             params = {&#39;--id&#39;:      self.min_score,
                       &#39;--mincols&#39;: 25}
-        # Build the object
+        # Build and return the object #
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
                          seq_type    = &#39;nucl&#39;,
@@ -317,10 +318,12 @@ class Classify:
         inputted. Use these objects to access the taxonomic assignments.
         &#34;&#34;&#34;
         # Check if the search has been done already #
-        if not self.seqsearch: self.search()
+        if not self.search_hits: self.search()
         # Iterate on the sequence search results #
         result = [Query(self, query) for query in self.seqsearch.results]
-        # VSEARCH entirely forgets about sequences that had no hits #
+        # VSEARCH entirely forgets about sequences that had no hits.
+        # Instead of still listing them in the output like BLAST.
+        # So we have to add them back to the list in this awkward manner
         if self.search_algo == &#39;vsearch&#39;:
             reported_names = set(query.name for query in result)
             for seq in self.fasta:
@@ -454,7 +457,7 @@ of the best hit. Any hit below the following value:
 By default <code>2.0</code>.</dd>
 <dt><strong><code>min_smlrty</code></strong></dt>
 <dd>Determines if the minimum similarity filter is turned
-on or off. Pass the value <code>False</code> to turn it off.
+on or off. Pass any value like <code>False</code> to turn it off.
 The minimum similarity filter prevents classification
 to higher ranks when a minimum rank-identity is not met.
 By default <code>True</code>.</dd>
@@ -554,7 +557,7 @@ names are samples names.</dd>
                         By default `2.0`.
 
             min_smlrty: Determines if the minimum similarity filter is turned
-                        on or off. Pass the value `False` to turn it off.
+                        on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
@@ -609,7 +612,6 @@ names are samples names.</dd>
         # The search hits is a file somewhere if passed #
         if self.search_hits is not None:
             self.search_hits = FilePath(self.search_hits)
-            self.search_hits.must_exist()
         # Default for the search hits file if not passed #
         if self.search_hits is None:
             self.search_hits = FilePath(self.output_dir + &#39;search.hits&#39;)
@@ -620,6 +622,8 @@ names are samples names.</dd>
                 self.min_score = 155
             if self.search_algo == &#39;vsearch&#39;:
                 self.min_score = 0.75
+        # Turn off the minimum similarity filter if the user passed any value #
+        if self.min_smlrty is not True: self.min_smlrty = False
         # The OTU table is a file somewhere if passed #
         if self.otu_table is not None:
             self.otu_table = FilePath(self.otu_table)
@@ -646,11 +650,11 @@ names are samples names.</dd>
         if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
-        # Check the minimum score value above zero #
+        # Check the minimum score value is above zero #
         if self.min_score &lt; 0.0:
             msg = &#34;The minimum score cannot be smaller than zero (&#39;%s&#39;).&#34;
             raise ValueError(msg % self.min_score)
-        # Check the minimum score value below zero #
+        # Check the minimum score value is below one #
         if self.min_score &gt; 1.0:
             if self.search_algo == &#39;vsearch&#39;:
                 msg = &#34;The minimum score cannot be more than 1.0 when&#34; \
@@ -699,7 +703,7 @@ names are samples names.</dd>
         if self.search_algo == &#39;vsearch&#39;:
             params = {&#39;--id&#39;:      self.min_score,
                       &#39;--mincols&#39;: 25}
-        # Build the object
+        # Build and return the object #
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
                          seq_type    = &#39;nucl&#39;,
@@ -731,10 +735,12 @@ names are samples names.</dd>
         inputted. Use these objects to access the taxonomic assignments.
         &#34;&#34;&#34;
         # Check if the search has been done already #
-        if not self.seqsearch: self.search()
+        if not self.search_hits: self.search()
         # Iterate on the sequence search results #
         result = [Query(self, query) for query in self.seqsearch.results]
-        # VSEARCH entirely forgets about sequences that had no hits #
+        # VSEARCH entirely forgets about sequences that had no hits.
+        # Instead of still listing them in the output like BLAST.
+        # So we have to add them back to the list in this awkward manner
         if self.search_algo == &#39;vsearch&#39;:
             reported_names = set(query.name for query in result)
             for seq in self.fasta:
@@ -1064,7 +1070,6 @@ needed and will convert others to proper types.</p></div>
     # The search hits is a file somewhere if passed #
     if self.search_hits is not None:
         self.search_hits = FilePath(self.search_hits)
-        self.search_hits.must_exist()
     # Default for the search hits file if not passed #
     if self.search_hits is None:
         self.search_hits = FilePath(self.output_dir + &#39;search.hits&#39;)
@@ -1075,6 +1080,8 @@ needed and will convert others to proper types.</p></div>
             self.min_score = 155
         if self.search_algo == &#39;vsearch&#39;:
             self.min_score = 0.75
+    # Turn off the minimum similarity filter if the user passed any value #
+    if self.min_smlrty is not True: self.min_smlrty = False
     # The OTU table is a file somewhere if passed #
     if self.otu_table is not None:
         self.otu_table = FilePath(self.otu_table)
@@ -1112,11 +1119,11 @@ the user are illegal.</p></div>
     if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
         msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
         raise ValueError(msg % self.search_db)
-    # Check the minimum score value above zero #
+    # Check the minimum score value is above zero #
     if self.min_score &lt; 0.0:
         msg = &#34;The minimum score cannot be smaller than zero (&#39;%s&#39;).&#34;
         raise ValueError(msg % self.min_score)
-    # Check the minimum score value below zero #
+    # Check the minimum score value is below one #
     if self.min_score &gt; 1.0:
         if self.search_algo == &#39;vsearch&#39;:
             msg = &#34;The minimum score cannot be more than 1.0 when&#34; \
