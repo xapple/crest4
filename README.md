@@ -163,7 +163,7 @@ Optional arguments:
 
   --min_smlrty MIN_SMLRTY, -i MIN_SMLRTY
                         Determines if the minimum similarity filter is turned
-                        on or off. Pass the value `False` to turn it off.
+                        on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.

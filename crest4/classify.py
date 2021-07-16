@@ -105,7 +105,7 @@ class Classify:
                         By default `2.0`.
 
             min_smlrty: Determines if the minimum similarity filter is turned
-                        on or off. Pass the value `False` to turn it off.
+                        on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
                         By default `True`.
@@ -170,6 +170,8 @@ class Classify:
                 self.min_score = 155
             if self.search_algo == 'vsearch':
                 self.min_score = 0.75
+        # Turn off the minimum similarity filter if the user passed any value #
+        if self.min_smlrty is not True: self.min_smlrty = False
         # The OTU table is a file somewhere if passed #
         if self.otu_table is not None:
             self.otu_table = FilePath(self.otu_table)
