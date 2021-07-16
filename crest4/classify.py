@@ -196,11 +196,11 @@ class Classify:
         if self.search_db not in ('silvamod128', 'silvamod138', 'bold'):
             msg = "The search database '%s' is not supported."
             raise ValueError(msg % self.search_db)
-        # Check the minimum score value above zero #
+        # Check the minimum score value is above zero #
         if self.min_score < 0.0:
             msg = "The minimum score cannot be smaller than zero ('%s')."
             raise ValueError(msg % self.min_score)
-        # Check the minimum score value below zero #
+        # Check the minimum score value is below one #
         if self.min_score > 1.0:
             if self.search_algo == 'vsearch':
                 msg = "The minimum score cannot be more than 1.0 when" \
@@ -249,7 +249,7 @@ class Classify:
         if self.search_algo == 'vsearch':
             params = {'--id':      self.min_score,
                       '--mincols': 25}
-        # Build the object
+        # Build and return the object #
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
                          seq_type    = 'nucl',
@@ -284,7 +284,9 @@ class Classify:
         if not self.search_hits: self.search()
         # Iterate on the sequence search results #
         result = [Query(self, query) for query in self.seqsearch.results]
-        # VSEARCH entirely forgets about sequences that had no hits #
+        # VSEARCH entirely forgets about sequences that had no hits.
+        # Instead of still listing them in the output like BLAST.
+        # So we have to add them back to the list in this awkward manner
         if self.search_algo == 'vsearch':
             reported_names = set(query.name for query in result)
             for seq in self.fasta:

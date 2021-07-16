@@ -21,8 +21,8 @@ import pandas
 class InfoFromTableOTUs:
     """
     This class accepts a path to an OTU table as input.
-    It will parse the table and along with the taxonomic assignments
-    from the `Classify` object it will produce two extra output files.
+    It will parse the table, along with the taxonomic assignments
+    from the `Classify` object, and it will produce two extra output files.
     """
 
     def __init__(self, classify, otu_table):

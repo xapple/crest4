@@ -224,9 +224,7 @@ class CrestDatabase:
         1 and 32477.
         """
         # Load the tree with ete3 #
-        tree = Tree(self.path.replace_extension('tre'), format=8)
-        # Add information from the `map` file #
-        return tree
+        return Tree(self.path.replace_extension('tre'), format=8)
 
     @property_cached
     def node_to_name(self):

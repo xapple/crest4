@@ -135,7 +135,7 @@ class Query:
         get_tax = lambda node: self.db.node_to_name[node.name][0]
         # The taxonomic name of the current node #
         name = get_tax(self.assigned_node)
-        # Traverse the tree up to the root
+        # Traverse the tree up to the root #
         tree_path = self.assigned_node.iter_ancestors()
         # Get name of every parent along the way #
         return [name] + [get_tax(parent) for parent in tree_path]
