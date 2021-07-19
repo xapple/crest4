@@ -92,9 +92,9 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod138 is the default reference database. To use another database, e.g., Silvamod128, the `-d` option must be specified followed by the database name:
+Silvamod138 is the default reference database. To use another database, e.g., bold, the `-d` option must be specified followed by the database name:
 
-    crest4 -f sequences.fasta -d silvamod128
+    crest4 -f sequences.fasta -d bold
 
 ### All options
 
@@ -124,7 +124,7 @@ Optional arguments:
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either `silvamod138`, `silvamod128` or 'bold'. No other
+                        Either `silvamod138`, `silvamod128` or `bold`. No other
                         values are currently supported. By default `silvamod138`.
                         Optionally the user can provide his own custom database
                         by specifying the full path to a directory containing
@@ -218,13 +218,13 @@ In such a case you just need to copy the hits file that was generated back to yo
 
 To create the hits file on a different server you should call the `blastn` executable with the following options:
 
-    blastn -query sequences.fasta -db ~/.crest4/silvamod128/silvamod128.fasta -num_alignments 100 -outfmt "7 qseqid sseqid bitscore length nident" -out seq_search.hits
+    blastn -query sequences.fasta -db ~/.crest4/silvamod138/silvamod138.fasta -num_alignments 100 -outfmt "7 qseqid sseqid bitscore length nident" -out seq_search.hits
 
 We also recommend that you use `-num_threads` to enable multi-threading and speed up the alignments.
 
 The equivalent VSEARCH command is the following:
 
-    vsearch --usearch_global sequences.fasta -db ~/.crest4/silvamod128/silvamod128.udb -blast6out seq_search.hits -threads 32 -id 0.75 -maxaccepts 100
+    vsearch --usearch_global sequences.fasta -db ~/.crest4/silvamod138/silvamod138.udb -blast6out seq_search.hits -threads 32 -id 0.75 -maxaccepts 100
 
 
 ## More information
