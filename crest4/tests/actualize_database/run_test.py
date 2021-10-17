@@ -6,6 +6,7 @@ Script to run the `actualize_database` unittest.
 """
 
 # Built-in modules #
+import os
 
 # First party modules #
 
