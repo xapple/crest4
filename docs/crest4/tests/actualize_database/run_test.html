@@ -42,7 +42,7 @@ import os
 # Third party modules #
 
 # Internal modules #
-from crest4.databases import metadata, silvamod138, bold, CrestDatabase
+from crest4.databases import metadata, silvamod138, CrestDatabase
 
 ###############################################################################
 def test_download_metadata():
@@ -63,10 +63,10 @@ if __name__ == &#39;__main__&#39;:
     print(&#34;Default directory: &#34;,      CrestDatabase.default_dir)
     print(&#34;Environment variable: &#34;,   CrestDatabase.environ_var)
     print(&#34;Environment value: &#34;,      os.environ.get(CrestDatabase.environ_var))
-    print(&#34;Database path: &#34;,          bold.path)
-    print(&#34;Database exists: &#34;,        bold.path.exists)
-    print(&#34;Database downloaded: &#34;,    bold.downloaded)
-    print(&#34;Database URL: &#34;,           bold.url)
+    print(&#34;Silvamod138 path: &#34;,       silvamod138.path)
+    print(&#34;Silvamod138 exists: &#34;,     silvamod138.path.exists)
+    print(&#34;Silvamod138 downloaded: &#34;, silvamod138.downloaded)
+    print(&#34;Silvamod138 URL: &#34;,        silvamod138.url)
     # Run the three tests #
     test_download_metadata()
     test_blast_index()

@@ -205,6 +205,12 @@ class Classify:
                 self.min_score = 155
             if self.search_algo == &#39;vsearch&#39;:
                 self.min_score = 0.75
+        # The score drop has to be a float not a string #
+        try:
+            self.score_drop = float(self.score_drop)
+        except ValueError:
+            msg = &#34;The score drop value must be numerical (not &#39;%s&#39;).&#34;
+            raise ValueError(msg % self.score_drop)
         # Turn off the minimum similarity filter if the user passed any value #
         if self.min_smlrty is not True: self.min_smlrty = False
         # The OTU table is a file somewhere if passed #
@@ -622,6 +628,12 @@ names are samples names.</dd>
                 self.min_score = 155
             if self.search_algo == &#39;vsearch&#39;:
                 self.min_score = 0.75
+        # The score drop has to be a float not a string #
+        try:
+            self.score_drop = float(self.score_drop)
+        except ValueError:
+            msg = &#34;The score drop value must be numerical (not &#39;%s&#39;).&#34;
+            raise ValueError(msg % self.score_drop)
         # Turn off the minimum similarity filter if the user passed any value #
         if self.min_smlrty is not True: self.min_smlrty = False
         # The OTU table is a file somewhere if passed #
@@ -1080,6 +1092,12 @@ needed and will convert others to proper types.</p></div>
             self.min_score = 155
         if self.search_algo == &#39;vsearch&#39;:
             self.min_score = 0.75
+    # The score drop has to be a float not a string #
+    try:
+        self.score_drop = float(self.score_drop)
+    except ValueError:
+        msg = &#34;The score drop value must be numerical (not &#39;%s&#39;).&#34;
+        raise ValueError(msg % self.score_drop)
     # Turn off the minimum similarity filter if the user passed any value #
     if self.min_smlrty is not True: self.min_smlrty = False
     # The OTU table is a file somewhere if passed #
