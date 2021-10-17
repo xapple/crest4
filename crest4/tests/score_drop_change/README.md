@@ -1,0 +1,1 @@
+This test runs the algorithm normally but specifies a custom value for the `score_drop` through a standard shell call.
