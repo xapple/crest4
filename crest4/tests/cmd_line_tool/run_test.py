@@ -26,9 +26,10 @@ def test_cmd_line_tool():
     # The output directory #
     output_dir = this_dir + 'results/'
     output_dir.remove()
-    # Call command line tool #
+    # Get the path of the current python executable #
     import sh
     this_python = sh.Command(sys.executable)
+    # Call via the command line tool #
     result = this_python('-m',            'crest4',
                          '--fasta',       fasta,
                          '--output_dir',  output_dir,
