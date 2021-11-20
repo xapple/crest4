@@ -10,7 +10,7 @@ Otherwise, if you are using an old version of macOS that doesn't ship with the l
 
 Finally, if you are using an old version of Linux that doesn't have a very recent python, you can install your own version of python in your home directory without administrator privileges.
 
-To do this there are two possible roads. Go with `conda` or go with `pyenv`
+To do this there are two possible roads. Go with `conda` or go with `pyenv`. See below for more information.
 
 
 ## Installing python with `conda`
