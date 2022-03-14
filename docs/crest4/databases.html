@@ -310,7 +310,11 @@ class CrestDatabase:
                 &#39;Order&#39;,          # 7
                 &#39;Family&#39;,         # 8
                 &#39;Genus&#39;,          # 9
-                &#39;Species&#39;]        # 10
+                &#39;Species&#39;,        # 10
+                &#39;Strain&#39;,         # 11
+                &#39;Strain&#39;,         # 12
+                &#39;Strain&#39;,         # 13 (There is a problem with too many ranks in 
+                &#39;Strain&#39;]         # 14 some databases requiring this)
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
@@ -547,7 +551,11 @@ It must include the database FASTA file as well as the <code>.map</code> and
                 &#39;Order&#39;,          # 7
                 &#39;Family&#39;,         # 8
                 &#39;Genus&#39;,          # 9
-                &#39;Species&#39;]        # 10</code></pre>
+                &#39;Species&#39;,        # 10
+                &#39;Strain&#39;,         # 11
+                &#39;Strain&#39;,         # 12
+                &#39;Strain&#39;,         # 13 (There is a problem with too many ranks in 
+                &#39;Strain&#39;]         # 14 some databases requiring this)</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -721,7 +729,11 @@ def rank_names(self):
             &#39;Order&#39;,          # 7
             &#39;Family&#39;,         # 8
             &#39;Genus&#39;,          # 9
-            &#39;Species&#39;]        # 10</code></pre>
+            &#39;Species&#39;,        # 10
+            &#39;Strain&#39;,         # 11
+            &#39;Strain&#39;,         # 12
+            &#39;Strain&#39;,         # 13 (There is a problem with too many ranks in 
+            &#39;Strain&#39;]         # 14 some databases requiring this)</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.tag"><code class="name">var <span class="ident">tag</span></code></dt>
