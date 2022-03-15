@@ -30,7 +30,7 @@ class CrestMetadata:
     """
     The databases that `crest4` needs are slightly too large to be distributed
     with the source tarball on PyPI. Therefore, we host them on a separate
-    server. Currently this is S3 on AWS.
+    server. Currently, this is S3 on AWS.
 
     Over the course of years however these servers might be shutdown.
     To avoid this inconvenience, instead of hard-coding the server address here
@@ -278,8 +278,8 @@ class CrestDatabase:
                 'Species',        # 10
                 'Strain',         # 11
                 'Strain',         # 12
-                'Strain',         # 13 (There is a problem with too many ranks in 
-                'Strain']         # 14 some databases requiring this)
+                'Strain',         # 13 (There is a problem with too many ranks
+                'Strain']         # 14  in some databases requiring this)
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #

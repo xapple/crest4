@@ -272,6 +272,14 @@ Two scripts that automate these processes can be found in the following reposito
 
 https://github.com/xapple/bumphub
 
+### Updating the databases
+
+The location of the database files that `crest4` will download upon first run can easily be updated by editing this file:
+
+* https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
+
+Once that file is updated, all downloads will now point to the new URLs, without even needing to redistribute a new version of `crest4`. This is possible as the JSON file is checked before initiating any new download.
+
 ### Developer documentation
 
 The internal documentation of the `crest4` python package is available at:
