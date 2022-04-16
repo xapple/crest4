@@ -15,7 +15,9 @@ from optmagic import OptMagic
 from crest4 import Classify
 
 # The main function to run when we are called #
-def main(): return OptMagic(Classify)()
+def main():
+    magic = OptMagic(Classify)
+    return magic()
 
 # Execute when run, not when imported #
 if __name__ == "__main__": main()

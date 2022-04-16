@@ -37,7 +37,7 @@ class CrestMetadata:
     in the source file, we instead maintain a metadata file.
 
     This metadata file contains the up-to-date URLs of the databases
-    to download. It is placed in the github repository and only the location
+    to download. It is placed in the GitHub repository and only the location
     of the metadata file is hardcoded into the source code.
 
     This enables updating the URLs without having to issue a new release of
@@ -55,7 +55,7 @@ class CrestMetadata:
     # This will always retrieve the raw content of the latest version #
     metadata_url = base_url + repo_path
 
-    # To see the HTML version on github simply head to this address instead:
+    # To see the HTML version on GitHub simply head to this address instead:
     # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached
@@ -219,7 +219,7 @@ class CrestDatabase:
     @property_cached
     def tree(self):
         """
-        Using the `.tre` file, we return a N-ary tree in memory.
+        Using the `.tre` file, we return an N-ary tree in memory.
         Every node is characterised by a number. For instance between
         1 and 32477.
         """
