@@ -265,9 +265,9 @@ class CrestDatabase:
     #--------------------------- Extra information ----------------------------#
     @property
     def rank_names(self):
-        return ['Root',           # 0
-                'Genome',         # 1 (This is for instance mitochondria)
-                'Domain',         # 2
+        return ['Root',           # 0 (This is life itself)
+                'Genome',         # 1 (This is for instance 'mitochondria')
+                'Domain',         # 2 (This is Bacteria, Archaea or Eucarya)
                 'Superkingdom',   # 3
                 'Kingdom',        # 4 (This is also called Superphylum)
                 'Phylum',         # 5
