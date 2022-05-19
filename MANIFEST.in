@@ -8,3 +8,4 @@ exclude crest4/tests/long_otus_confident/*
 include crest4/tests/precomputed_hits/precomputed.hits
 include crest4/tests/with_otu_table/otu_table_bad.tsv
 include crest4/tests/with_otu_table/otu_table_good.tsv
+include crest4/tests/custom_database/custom/*
