@@ -1,0 +1,1 @@
+This test specifies a directory path in the `--search_db` parameter instead of one of the pre-built databases.
