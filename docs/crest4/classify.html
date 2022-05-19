@@ -8,7 +8,8 @@
 <meta name="description" content="Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
-Created in May 2021." />
+Created in May 2021.
+Last Updated in May 2022." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -28,7 +29,8 @@ Created in May 2021." />
 <p>Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
-Created in May 2021.</p>
+Created in May 2021.
+Last Updated in May 2022.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -41,6 +43,7 @@ Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
 Created in May 2021.
+Last Updated in May 2022.
 &#34;&#34;&#34;
 
 # Built-in modules #
@@ -59,6 +62,9 @@ from fasta               import FASTA
 from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
+# Constants #
+all_db_choices = (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;)
+
 ###############################################################################
 class Classify:
     &#34;&#34;&#34;
@@ -67,9 +73,9 @@ class Classify:
     obtained from environmental sequencing.
 
     After creating a new instance of a `Classify` object, you can simply call
-    it to have it process your input data and generate the assignments output
-    file. Examples are included in the README.md file of this package or
-    directly on the github page at:
+    it to have it processes your input data and generate the assignments
+    output file. Examples are included in the README.md file of this package
+    or directly on the GitHub page at:
 
     https://github.com/xapple/crest4/
     &#34;&#34;&#34;
@@ -143,7 +149,7 @@ class Classify:
                         on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
-                        By default `True`.
+                        The default is `True`.
 
             otu_table: Optionally, one can specify the path to an OTU table in
                        CSV or TSV format when running `crest4`. If this option
@@ -188,6 +194,8 @@ class Classify:
                 self.num_threads = 1
             elif self.num_threads.lower() == &#39;true&#39;:
                 self.num_threads = min(multiprocessing.cpu_count(), 32)
+        # The database is always a string #
+        self.search_db = str(self.search_db)
         # Default for the output directory #
         if self.output_dir is None:
             self.output_dir = self.fasta + &#39;.crest4/&#39;
@@ -236,7 +244,8 @@ class Classify:
             msg = &#34;The search algorithm &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_algo)
         # Check the search database #
-        if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
+        if self.search_db not in all_db_choices and \
+          not os.path.exists(self.search_db):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
         # Check the minimum score value is above zero #
@@ -265,10 +274,12 @@ class Classify:
     @property_cached
     def database(self):
         &#34;&#34;&#34;Retrieve the database object that the user has selected.&#34;&#34;&#34;
-        if &#39;/&#39; in self.search_db:
+        if self.search_db not in all_db_choices and \
+          os.path.exists(self.search_db):
             short_name = os.path.basename(os.path.dirname(self.search_db))
-            long_name  = &#34;Custom user provided database &#39;%s&#39;.&#34; % short_name
-            return CrestDatabase(short_name, long_name, self.search_db)
+            long_name  = &#34;Custom user-provided database &#39;%s&#39;.&#34; % short_name
+            return CrestDatabase(short_name, long_name,
+                                 self.search_db + &#39;/../&#39;)
         else:
             return getattr(crest4.databases, self.search_db)
 
@@ -405,9 +416,9 @@ class Classify:
 It enables you to automatically assign taxonomic names to DNA sequences
 obtained from environmental sequencing.</p>
 <p>After creating a new instance of a <code><a title="crest4.classify.Classify" href="#crest4.classify.Classify">Classify</a></code> object, you can simply call
-it to have it process your input data and generate the assignments output
-file. Examples are included in the README.md file of this package or
-directly on the github page at:</p>
+it to have it processes your input data and generate the assignments
+output file. Examples are included in the README.md file of this package
+or directly on the GitHub page at:</p>
 <p><a href="https://github.com/xapple/crest4/">https://github.com/xapple/crest4/</a></p>
 <h2 id="args">Args</h2>
 <dl>
@@ -466,7 +477,7 @@ By default <code>2.0</code>.</dd>
 on or off. Pass any value like <code>False</code> to turn it off.
 The minimum similarity filter prevents classification
 to higher ranks when a minimum rank-identity is not met.
-By default <code>True</code>.</dd>
+The default is <code>True</code>.</dd>
 <dt><strong><code>otu_table</code></strong></dt>
 <dd>Optionally, one can specify the path to an OTU table in
 CSV or TSV format when running <code><a title="crest4" href="index.html">crest4</a></code>. If this option
@@ -490,9 +501,9 @@ names are samples names.</dd>
     obtained from environmental sequencing.
 
     After creating a new instance of a `Classify` object, you can simply call
-    it to have it process your input data and generate the assignments output
-    file. Examples are included in the README.md file of this package or
-    directly on the github page at:
+    it to have it processes your input data and generate the assignments
+    output file. Examples are included in the README.md file of this package
+    or directly on the GitHub page at:
 
     https://github.com/xapple/crest4/
     &#34;&#34;&#34;
@@ -566,7 +577,7 @@ names are samples names.</dd>
                         on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
-                        By default `True`.
+                        The default is `True`.
 
             otu_table: Optionally, one can specify the path to an OTU table in
                        CSV or TSV format when running `crest4`. If this option
@@ -611,6 +622,8 @@ names are samples names.</dd>
                 self.num_threads = 1
             elif self.num_threads.lower() == &#39;true&#39;:
                 self.num_threads = min(multiprocessing.cpu_count(), 32)
+        # The database is always a string #
+        self.search_db = str(self.search_db)
         # Default for the output directory #
         if self.output_dir is None:
             self.output_dir = self.fasta + &#39;.crest4/&#39;
@@ -659,7 +672,8 @@ names are samples names.</dd>
             msg = &#34;The search algorithm &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_algo)
         # Check the search database #
-        if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
+        if self.search_db not in all_db_choices and \
+          not os.path.exists(self.search_db):
             msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
             raise ValueError(msg % self.search_db)
         # Check the minimum score value is above zero #
@@ -688,10 +702,12 @@ names are samples names.</dd>
     @property_cached
     def database(self):
         &#34;&#34;&#34;Retrieve the database object that the user has selected.&#34;&#34;&#34;
-        if &#39;/&#39; in self.search_db:
+        if self.search_db not in all_db_choices and \
+          os.path.exists(self.search_db):
             short_name = os.path.basename(os.path.dirname(self.search_db))
-            long_name  = &#34;Custom user provided database &#39;%s&#39;.&#34; % short_name
-            return CrestDatabase(short_name, long_name, self.search_db)
+            long_name  = &#34;Custom user-provided database &#39;%s&#39;.&#34; % short_name
+            return CrestDatabase(short_name, long_name,
+                                 self.search_db + &#39;/../&#39;)
         else:
             return getattr(crest4.databases, self.search_db)
 
@@ -1075,6 +1091,8 @@ needed and will convert others to proper types.</p></div>
             self.num_threads = 1
         elif self.num_threads.lower() == &#39;true&#39;:
             self.num_threads = min(multiprocessing.cpu_count(), 32)
+    # The database is always a string #
+    self.search_db = str(self.search_db)
     # Default for the output directory #
     if self.output_dir is None:
         self.output_dir = self.fasta + &#39;.crest4/&#39;
@@ -1134,7 +1152,8 @@ the user are illegal.</p></div>
         msg = &#34;The search algorithm &#39;%s&#39; is not supported.&#34;
         raise ValueError(msg % self.search_algo)
     # Check the search database #
-    if self.search_db not in (&#39;silvamod128&#39;, &#39;silvamod138&#39;, &#39;bold&#39;):
+    if self.search_db not in all_db_choices and \
+      not os.path.exists(self.search_db):
         msg = &#34;The search database &#39;%s&#39; is not supported.&#34;
         raise ValueError(msg % self.search_db)
     # Check the minimum score value is above zero #

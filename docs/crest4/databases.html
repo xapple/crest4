@@ -65,14 +65,14 @@ class CrestMetadata:
     &#34;&#34;&#34;
     The databases that `crest4` needs are slightly too large to be distributed
     with the source tarball on PyPI. Therefore, we host them on a separate
-    server. Currently this is S3 on AWS.
+    server. Currently, this is S3 on AWS.
 
     Over the course of years however these servers might be shutdown.
     To avoid this inconvenience, instead of hard-coding the server address here
     in the source file, we instead maintain a metadata file.
 
     This metadata file contains the up-to-date URLs of the databases
-    to download. It is placed in the github repository and only the location
+    to download. It is placed in the GitHub repository and only the location
     of the metadata file is hardcoded into the source code.
 
     This enables updating the URLs without having to issue a new release of
@@ -90,7 +90,7 @@ class CrestMetadata:
     # This will always retrieve the raw content of the latest version #
     metadata_url = base_url + repo_path
 
-    # To see the HTML version on github simply head to this address instead:
+    # To see the HTML version on GitHub simply head to this address instead:
     # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached
@@ -145,6 +145,8 @@ class CrestDatabase:
             base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to a DirectoryPath #
         self.base_dir = DirectoryPath(base_dir)
+        # And make it absolute #
+        self.base_dir = DirectoryPath(self.base_dir.absolute_path)
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -254,7 +256,7 @@ class CrestDatabase:
     @property_cached
     def tree(self):
         &#34;&#34;&#34;
-        Using the `.tre` file, we return a N-ary tree in memory.
+        Using the `.tre` file, we return an N-ary tree in memory.
         Every node is characterised by a number. For instance between
         1 and 32477.
         &#34;&#34;&#34;
@@ -297,12 +299,12 @@ class CrestDatabase:
         # Create a dictionary #
         with open(path, &#39;rt&#39;) as handle: return dict(parse_lines(handle))
 
-    #--------------------------- Extra information ----------------------------#
+    #--------------------------- Extra information ---------------------------#
     @property
     def rank_names(self):
-        return [&#39;Root&#39;,           # 0
-                &#39;Genome&#39;,         # 1 (This is for instance mitochondria)
-                &#39;Domain&#39;,         # 2
+        return [&#39;Root&#39;,           # 0 (This is life itself)
+                &#39;Genome&#39;,         # 1 (This is for instance &#39;mitochondria&#39;)
+                &#39;Domain&#39;,         # 2 (This is Bacteria, Archaea or Eucarya)
                 &#39;Superkingdom&#39;,   # 3
                 &#39;Kingdom&#39;,        # 4 (This is also called Superphylum)
                 &#39;Phylum&#39;,         # 5
@@ -313,8 +315,8 @@ class CrestDatabase:
                 &#39;Species&#39;,        # 10
                 &#39;Strain&#39;,         # 11
                 &#39;Strain&#39;,         # 12
-                &#39;Strain&#39;,         # 13 (There is a problem with too many ranks in 
-                &#39;Strain&#39;]         # 14 some databases requiring this)
+                &#39;Strain&#39;,         # 13 (There is a problem with too many ranks
+                &#39;Strain&#39;]         # 14  in some databases requiring this)
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
@@ -386,6 +388,8 @@ It must include the database FASTA file as well as the <code>.map</code> and
             base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to a DirectoryPath #
         self.base_dir = DirectoryPath(base_dir)
+        # And make it absolute #
+        self.base_dir = DirectoryPath(self.base_dir.absolute_path)
 
     def __repr__(self):
         &#34;&#34;&#34;A simple representation of this object to avoid memory addresses.&#34;&#34;&#34;
@@ -495,7 +499,7 @@ It must include the database FASTA file as well as the <code>.map</code> and
     @property_cached
     def tree(self):
         &#34;&#34;&#34;
-        Using the `.tre` file, we return a N-ary tree in memory.
+        Using the `.tre` file, we return an N-ary tree in memory.
         Every node is characterised by a number. For instance between
         1 and 32477.
         &#34;&#34;&#34;
@@ -538,12 +542,12 @@ It must include the database FASTA file as well as the <code>.map</code> and
         # Create a dictionary #
         with open(path, &#39;rt&#39;) as handle: return dict(parse_lines(handle))
 
-    #--------------------------- Extra information ----------------------------#
+    #--------------------------- Extra information ---------------------------#
     @property
     def rank_names(self):
-        return [&#39;Root&#39;,           # 0
-                &#39;Genome&#39;,         # 1 (This is for instance mitochondria)
-                &#39;Domain&#39;,         # 2
+        return [&#39;Root&#39;,           # 0 (This is life itself)
+                &#39;Genome&#39;,         # 1 (This is for instance &#39;mitochondria&#39;)
+                &#39;Domain&#39;,         # 2 (This is Bacteria, Archaea or Eucarya)
                 &#39;Superkingdom&#39;,   # 3
                 &#39;Kingdom&#39;,        # 4 (This is also called Superphylum)
                 &#39;Phylum&#39;,         # 5
@@ -554,8 +558,8 @@ It must include the database FASTA file as well as the <code>.map</code> and
                 &#39;Species&#39;,        # 10
                 &#39;Strain&#39;,         # 11
                 &#39;Strain&#39;,         # 12
-                &#39;Strain&#39;,         # 13 (There is a problem with too many ranks in 
-                &#39;Strain&#39;]         # 14 some databases requiring this)</code></pre>
+                &#39;Strain&#39;,         # 13 (There is a problem with too many ranks
+                &#39;Strain&#39;]         # 14  in some databases requiring this)</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -719,9 +723,9 @@ def path(self):
 </summary>
 <pre><code class="python">@property
 def rank_names(self):
-    return [&#39;Root&#39;,           # 0
-            &#39;Genome&#39;,         # 1 (This is for instance mitochondria)
-            &#39;Domain&#39;,         # 2
+    return [&#39;Root&#39;,           # 0 (This is life itself)
+            &#39;Genome&#39;,         # 1 (This is for instance &#39;mitochondria&#39;)
+            &#39;Domain&#39;,         # 2 (This is Bacteria, Archaea or Eucarya)
             &#39;Superkingdom&#39;,   # 3
             &#39;Kingdom&#39;,        # 4 (This is also called Superphylum)
             &#39;Phylum&#39;,         # 5
@@ -732,8 +736,8 @@ def rank_names(self):
             &#39;Species&#39;,        # 10
             &#39;Strain&#39;,         # 11
             &#39;Strain&#39;,         # 12
-            &#39;Strain&#39;,         # 13 (There is a problem with too many ranks in 
-            &#39;Strain&#39;]         # 14 some databases requiring this)</code></pre>
+            &#39;Strain&#39;,         # 13 (There is a problem with too many ranks
+            &#39;Strain&#39;]         # 14  in some databases requiring this)</code></pre>
 </details>
 </dd>
 <dt id="crest4.databases.CrestDatabase.tag"><code class="name">var <span class="ident">tag</span></code></dt>
@@ -768,7 +772,7 @@ def tarball(self):
 </dd>
 <dt id="crest4.databases.CrestDatabase.tree"><code class="name">var <span class="ident">tree</span></code></dt>
 <dd>
-<div class="desc"><p>Using the <code>.tre</code> file, we return a N-ary tree in memory.
+<div class="desc"><p>Using the <code>.tre</code> file, we return an N-ary tree in memory.
 Every node is characterised by a number. For instance between
 1 and 32477.</p></div>
 <details class="source">
@@ -900,12 +904,12 @@ similarity search.</p></div>
 <dd>
 <div class="desc"><p>The databases that <code><a title="crest4" href="index.html">crest4</a></code> needs are slightly too large to be distributed
 with the source tarball on PyPI. Therefore, we host them on a separate
-server. Currently this is S3 on AWS.</p>
+server. Currently, this is S3 on AWS.</p>
 <p>Over the course of years however these servers might be shutdown.
 To avoid this inconvenience, instead of hard-coding the server address here
 in the source file, we instead maintain a metadata file.</p>
 <p>This metadata file contains the up-to-date URLs of the databases
-to download. It is placed in the github repository and only the location
+to download. It is placed in the GitHub repository and only the location
 of the metadata file is hardcoded into the source code.</p>
 <p>This enables updating the URLs without having to issue a new release of
 <code><a title="crest4" href="index.html">crest4</a></code>.</p>
@@ -919,14 +923,14 @@ of the metadata file is hardcoded into the source code.</p>
     &#34;&#34;&#34;
     The databases that `crest4` needs are slightly too large to be distributed
     with the source tarball on PyPI. Therefore, we host them on a separate
-    server. Currently this is S3 on AWS.
+    server. Currently, this is S3 on AWS.
 
     Over the course of years however these servers might be shutdown.
     To avoid this inconvenience, instead of hard-coding the server address here
     in the source file, we instead maintain a metadata file.
 
     This metadata file contains the up-to-date URLs of the databases
-    to download. It is placed in the github repository and only the location
+    to download. It is placed in the GitHub repository and only the location
     of the metadata file is hardcoded into the source code.
 
     This enables updating the URLs without having to issue a new release of
@@ -944,7 +948,7 @@ of the metadata file is hardcoded into the source code.</p>
     # This will always retrieve the raw content of the latest version #
     metadata_url = base_url + repo_path
 
-    # To see the HTML version on github simply head to this address instead:
+    # To see the HTML version on GitHub simply head to this address instead:
     # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached

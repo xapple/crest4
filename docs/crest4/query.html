@@ -164,7 +164,7 @@ class Query:
              &#39;Terrabacteria&#39;, &#39;Actinobacteria&#39;, &#39;Actinobacteria (class)&#39;,
              &#39;Micrococcales&#39;, &#39;Micrococcaceae&#39;]
         &#34;&#34;&#34;
-        # Check if there was no hits #
+        # Check if there were no hits #
         if self.assigned_node is False: return [&#34;No hits&#34;]
         # Function to get the taxonomy name of a node
         get_tax = lambda node: self.db.node_to_name[node.name][0]
@@ -329,7 +329,7 @@ similarity search and a phylogenetic tree as a N-ary directed graph.</p>
              &#39;Terrabacteria&#39;, &#39;Actinobacteria&#39;, &#39;Actinobacteria (class)&#39;,
              &#39;Micrococcales&#39;, &#39;Micrococcaceae&#39;]
         &#34;&#34;&#34;
-        # Check if there was no hits #
+        # Check if there were no hits #
         if self.assigned_node is False: return [&#34;No hits&#34;]
         # Function to get the taxonomy name of a node
         get_tax = lambda node: self.db.node_to_name[node.name][0]
