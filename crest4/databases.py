@@ -110,6 +110,8 @@ class CrestDatabase:
             base_dir = os.environ.get(self.environ_var, self.default_dir)
         # Convert to a DirectoryPath #
         self.base_dir = DirectoryPath(base_dir)
+        # And make it absolute #
+        self.base_dir = DirectoryPath(self.base_dir.absolute_path)
 
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
@@ -262,7 +264,7 @@ class CrestDatabase:
         # Create a dictionary #
         with open(path, 'rt') as handle: return dict(parse_lines(handle))
 
-    #--------------------------- Extra information ----------------------------#
+    #--------------------------- Extra information ---------------------------#
     @property
     def rank_names(self):
         return ['Root',           # 0 (This is life itself)

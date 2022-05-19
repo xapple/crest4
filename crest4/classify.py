@@ -6,6 +6,7 @@ Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
 Created in May 2021.
+Last Updated in May 2022.
 """
 
 # Built-in modules #
@@ -24,6 +25,9 @@ from fasta               import FASTA
 from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
+# Constants #
+all_db_choices = ('silvamod128', 'silvamod138', 'bold')
+
 ###############################################################################
 class Classify:
     """
@@ -32,9 +36,9 @@ class Classify:
     obtained from environmental sequencing.
 
     After creating a new instance of a `Classify` object, you can simply call
-    it to have it process your input data and generate the assignments output
-    file. Examples are included in the README.md file of this package or
-    directly on the github page at:
+    it to have it processes your input data and generate the assignments
+    output file. Examples are included in the README.md file of this package
+    or directly on the GitHub page at:
 
     https://github.com/xapple/crest4/
     """
@@ -108,7 +112,7 @@ class Classify:
                         on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
-                        By default `True`.
+                        The default is `True`.
 
             otu_table: Optionally, one can specify the path to an OTU table in
                        CSV or TSV format when running `crest4`. If this option
@@ -153,6 +157,8 @@ class Classify:
                 self.num_threads = 1
             elif self.num_threads.lower() == 'true':
                 self.num_threads = min(multiprocessing.cpu_count(), 32)
+        # The database is always a string #
+        self.search_db = str(self.search_db)
         # Default for the output directory #
         if self.output_dir is None:
             self.output_dir = self.fasta + '.crest4/'
@@ -201,7 +207,8 @@ class Classify:
             msg = "The search algorithm '%s' is not supported."
             raise ValueError(msg % self.search_algo)
         # Check the search database #
-        if self.search_db not in ('silvamod128', 'silvamod138', 'bold'):
+        if self.search_db not in all_db_choices and \
+          not os.path.exists(self.search_db):
             msg = "The search database '%s' is not supported."
             raise ValueError(msg % self.search_db)
         # Check the minimum score value is above zero #
@@ -230,10 +237,12 @@ class Classify:
     @property_cached
     def database(self):
         """Retrieve the database object that the user has selected."""
-        if '/' in self.search_db:
+        if self.search_db not in all_db_choices and \
+          os.path.exists(self.search_db):
             short_name = os.path.basename(os.path.dirname(self.search_db))
-            long_name  = "Custom user provided database '%s'." % short_name
-            return CrestDatabase(short_name, long_name, self.search_db)
+            long_name  = "Custom user-provided database '%s'." % short_name
+            return CrestDatabase(short_name, long_name,
+                                 self.search_db + '/../')
         else:
             return getattr(crest4.databases, self.search_db)
 

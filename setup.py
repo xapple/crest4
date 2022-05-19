@@ -23,7 +23,7 @@ setup(
     author_email     = 'anders.lanzen@gmail.com',
     classifiers      = ['Topic :: Scientific/Engineering :: Bio-Informatics'],
     packages         = find_namespace_packages(),
-    install_requires = ['autopaths>=1.5.0', 'optmagic>=1.0.8',
+    install_requires = ['autopaths>=1.5.0', 'optmagic>=1.1.0',
                         'plumbing>=2.10.4', 'fasta>=2.2.11',
                         'seqsearch>=2.1.4', 'biopython', 'rich', 'ete3',
                         'pandas', 'pytest'],

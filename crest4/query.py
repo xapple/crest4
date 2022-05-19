@@ -129,7 +129,7 @@ class Query:
              'Terrabacteria', 'Actinobacteria', 'Actinobacteria (class)',
              'Micrococcales', 'Micrococcaceae']
         """
-        # Check if there was no hits #
+        # Check if there were no hits #
         if self.assigned_node is False: return ["No hits"]
         # Function to get the taxonomy name of a node
         get_tax = lambda node: self.db.node_to_name[node.name][0]
