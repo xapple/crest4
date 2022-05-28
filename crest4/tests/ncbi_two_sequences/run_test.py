@@ -30,6 +30,7 @@ def test_ncbi_two_seqs():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = 'silvamod138',
                  num_threads = True)
     # Run it #
     c()
