@@ -114,7 +114,7 @@ class Query:
             smlrty_min = float(self.db.node_to_name[node.name][1])
             # Check if we are finally above that minimum #
             if similarity > smlrty_min: break
-            # Otherwise go up one level for our classification #
+            # Otherwise, go up one level for our classification #
             node = node.up
         # Return #
         return node
@@ -147,7 +147,7 @@ class Query:
         the full assigned taxonomy along with the original name of the
         sequence classified.
         """
-        # Make a semi colon separated string #
+        # Make a semicolon separated string #
         tax = '; '.join(reversed(self.taxonomy))
         # Add the name of the query to the beginning line #
         return self.name + '\t' + tax + '\n'

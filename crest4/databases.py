@@ -12,7 +12,6 @@ Created in May 2021.
 import os, json
 
 # Internal modules #
-
 import crest4
 
 # First party modules #
@@ -285,6 +284,9 @@ class CrestDatabase:
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
+midori248   = CrestDatabase('midori248',
+                            'The midori248darn database for CREST')
+
 silvamod138 = CrestDatabase('silvamod138',
                             'Silva version 138 modified for CREST')
 

@@ -4,6 +4,10 @@
 """
 The `crest4` python package can automatically assign taxonomic names to
 DNA sequences obtained from environmental sequencing.
+
+The README and source code are located at:
+
+https://github.com/xapple/crest4
 """
 
 # Special variables #

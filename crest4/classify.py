@@ -26,7 +26,7 @@ from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
 # Constants #
-all_db_choices = ('silvamod128', 'silvamod138', 'bold')
+all_db_choices = ('midori248', 'silvamod138', 'silvamod128', 'bold')
 
 ###############################################################################
 class Classify:
@@ -36,9 +36,9 @@ class Classify:
     obtained from environmental sequencing.
 
     After creating a new instance of a `Classify` object, you can simply call
-    it to have it processes your input data and generate the assignments
-    output file. Examples are included in the README.md file of this package
-    or directly on the GitHub page at:
+    it to get your input data processed and the assignments output file
+    generated. Examples are included in the `README.md` file of this package
+    which can directly be seen on the GitHub page at:
 
     https://github.com/xapple/crest4/
     """
@@ -47,7 +47,7 @@ class Classify:
                  fasta,
                  search_algo = 'blast',
                  num_threads = 1,
-                 search_db   = 'silvamod138',
+                 search_db   = 'midori248',
                  output_dir  = None,
                  search_hits = None,
                  min_score   = None,
@@ -75,11 +75,12 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `silvamod138`, `silvamod128` or 'bold'. No other
-                       values are currently supported. By default `silvamod138`.
-                       Optionally the user can provide his own custom database
-                       by specifying the full path to a directory containing
-                       all required files under `search_db`. See README.
+                       Either `midori248`, `silvamod138`, `silvamod128` or
+                       `bold`. No other values are currently supported.
+                       By default, `midori248`. Optionally, the user can
+                       provide a custom database by specifying the full path
+                       to a directory containing all required files under
+                       `search_db`. See the README for more information.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
@@ -89,7 +90,7 @@ class Classify:
             search_hits: The path where the search results will be stored.
                          This defaults to the output directory. However,
                          if the search operation has already been completed
-                         before hand, specify the path here to skip the
+                         beforehand, specify the path here to skip the
                          sequence similarity search step and go directly to
                          the taxonomy step. If a hits file exists in the output
                          directory and this option is not specified, it is
@@ -252,6 +253,7 @@ class Classify:
         """
         An object representing the sequence similarity search.
         Makes use of the `seqsearch` module. For reference:
+
         * Setting `-outfmt` to 5 means XML output.
         * Setting `-outfmt` to 6 means tabular output.
         * Setting `-outfmt` to 7 means tabular output with comments.
