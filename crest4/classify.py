@@ -65,18 +65,18 @@ class Classify:
             search_algo: The algorithm used for the sequence similarity search
                          that will be run to match the sequences against the
                          database chosen. Either `blast` or `vsearch`. No
-                         other values are currently supported. By default
+                         other values are currently supported. By default,
                          `blast`.
 
             num_threads: The number of processors to use for the sequence
-                         similarity search. By default parallelism is turned
+                         similarity search. By default, parallelism is turned
                          off and this value is 1. If you pass the value `True`
                          we will run as many processes as there are CPUs but
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori248`, `silvamod138`, `silvamod128` or
-                       `bold`. No other values are currently supported.
+                       Either `midori248`, `silvamod138`, or `bold`.
+                       No other values are currently supported.
                        By default, `midori248`. Optionally, the user can
                        provide a custom database by specifying the full path
                        to a directory containing all required files under
