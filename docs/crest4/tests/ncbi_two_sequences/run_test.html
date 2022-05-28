@@ -59,6 +59,7 @@ def test_ncbi_two_seqs():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True)
     # Run it #
     c()
@@ -98,6 +99,7 @@ if __name__ == &#39;__main__&#39;:
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True)
     # Run it #
     c()

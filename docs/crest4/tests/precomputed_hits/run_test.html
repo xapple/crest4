@@ -61,9 +61,10 @@ def test_precomputed_hits():
     # Create object #
     c = Classify(fasta       = fasta,
                  search_hits = hits,
+                 search_db   = &#39;silvamod138&#39;,
                  output_dir  = output_dir,
                  num_threads = True)
-    # Patch the search method so it can&#39;t be called #
+    # Patch the search method so that it can&#39;t be called #
     c.search = lambda x: x/0
     # Run it #
     c()
@@ -105,9 +106,10 @@ if __name__ == &#39;__main__&#39;:
     # Create object #
     c = Classify(fasta       = fasta,
                  search_hits = hits,
+                 search_db   = &#39;silvamod138&#39;,
                  output_dir  = output_dir,
                  num_threads = True)
-    # Patch the search method so it can&#39;t be called #
+    # Patch the search method so that it can&#39;t be called #
     c.search = lambda x: x/0
     # Run it #
     c()

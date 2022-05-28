@@ -61,6 +61,7 @@ def test_score_drop_change():
     # Call via the command line tool #
     result = this_python(&#39;-m&#39;,            &#39;crest4&#39;,
                          &#39;--fasta&#39;,       fasta,
+                         &#39;--search_db&#39;,   &#39;silvamod138&#39;,
                          &#39;--output_dir&#39;,  output_dir,
                          &#39;--score_drop&#39;,  &#39;1&#39;)
     # Check that the results were created #
@@ -102,6 +103,7 @@ if __name__ == &#39;__main__&#39;:
     # Call via the command line tool #
     result = this_python(&#39;-m&#39;,            &#39;crest4&#39;,
                          &#39;--fasta&#39;,       fasta,
+                         &#39;--search_db&#39;,   &#39;silvamod138&#39;,
                          &#39;--output_dir&#39;,  output_dir,
                          &#39;--score_drop&#39;,  &#39;1&#39;)
     # Check that the results were created #

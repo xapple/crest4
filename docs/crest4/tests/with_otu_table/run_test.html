@@ -62,6 +62,7 @@ def test_with_bad_otu_table():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True,
                  otu_table   = otu_table)
     # It should complain when we run it #
@@ -79,6 +80,7 @@ def test_with_good_otu_table():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True,
                  otu_table   = otu_table)
     # Run it #
@@ -93,9 +95,9 @@ def test_with_good_otu_table():
 ###############################################################################
 if __name__ == &#39;__main__&#39;:
     # The bad case #
-    test_with_bad_otu_table()
+    classify_bad = test_with_bad_otu_table()
     # The good case #
-    classify = test_with_good_otu_table()</code></pre>
+    classify_good = test_with_good_otu_table()</code></pre>
 </details>
 </section>
 <section>
@@ -125,6 +127,7 @@ if __name__ == &#39;__main__&#39;:
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True,
                  otu_table   = otu_table)
     # It should complain when we run it #
@@ -151,6 +154,7 @@ if __name__ == &#39;__main__&#39;:
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True,
                  otu_table   = otu_table)
     # Run it #

@@ -60,6 +60,7 @@ def test_vsearch(verbose=True):
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
                  search_algo = &#39;vsearch&#39;,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True)
     # Run it #
     c()
@@ -100,6 +101,7 @@ if __name__ == &#39;__main__&#39;:
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
                  search_algo = &#39;vsearch&#39;,
+                 search_db   = &#39;silvamod138&#39;,
                  num_threads = True)
     # Run it #
     c()
