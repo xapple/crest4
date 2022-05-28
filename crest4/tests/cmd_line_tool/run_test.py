@@ -32,6 +32,7 @@ def test_cmd_line_tool():
     # Call via the command line tool #
     result = this_python('-m',            'crest4',
                          '--fasta',       fasta,
+                         '--search_db',   'silvamod138',
                          '--output_dir',  output_dir,
                          '--num_threads', 'True')
     # Check that the results were created #
