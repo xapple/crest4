@@ -292,6 +292,3 @@ silvamod138 = CrestDatabase('silvamod138',
 
 silvamod128 = CrestDatabase('silvamod128',
                             'Silva version 128 modified for CREST')
-
-bold        = CrestDatabase('bold',
-                            'The BOLD database modified for CREST')

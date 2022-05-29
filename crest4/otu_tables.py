@@ -49,7 +49,7 @@ class InfoFromTableOTUs:
     def otus_df(self):
         """Load the otu_table file as a pandas `DataFrame`."""
         # Load from a text file #
-        df = pandas.read_csv(str(self.otu_table), self.format, index_col=0)
+        df = pandas.read_csv(str(self.otu_table), sep=self.format, index_col=0)
         # We only want the very first part of the IDs #
         df.index = df.index.map(lambda s: s.split()[0])
         # Return #

@@ -82,7 +82,7 @@ Bellow are some examples to illustrate the various ways there are to use this pa
 
     crest4 -f sequences.fasta
 
-Simply specifying a FASTA file with the sequences to classify is sufficient, and `crest4` will choose default values for all the parameters automatically. The results produced will be placed in a sub-directory inside the same directory as the FASTA file.
+Simply specifying a FASTA file with the sequences to classify is sufficient, and `crest4` will choose default values for all the parameters automatically. The results produced will be placed in a subdirectory inside the same directory as the FASTA file.
 
 To change the output directory, specify the following option:
 
@@ -92,9 +92,9 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod138 is the default reference database. To use another database, e.g., bold, the `-d` option must be specified followed by the database name:
+Silvamod138 is the default reference database. To use another database, e.g., midori, the `-d` option must be specified followed by the database name:
 
-    crest4 -f sequences.fasta -d bold
+    crest4 -f sequences.fasta -d midori248
 
 ### All options
 
@@ -112,23 +112,24 @@ Optional arguments:
                         The algorithm used for the sequence similarity search
                         that will be run to match the sequences against the
                         database chosen. Either `blast` or `vsearch`. No
-                        other values are currently supported. By default
+                        other values are currently supported. By default,
                         `blast`.
 
   --num_threads NUM, -t NUM
                         The number of processors to use for the sequence
-                        similarity search. By default parallelism is turned
+                        similarity search. By default, parallelism is turned
                         off and this value is 1. If you pass the value `True`
                         we will run as many processes as there are CPUs but
                         no more than 32.
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either `silvamod138`, `silvamod128` or `bold`. No other
-                        values are currently supported. By default `silvamod138`.
-                        Optionally the user can provide his own custom database
-                        by specifying the full path to a directory containing
-                        all required files under `search_db`. See README.
+                        Either `midori248`, `silvamod138`, or `silvamod128`.
+                        No other values are currently supported.
+                        By default, `silvamod138`. Optionally, the user can
+                        provide a custom database by specifying the full path
+                        to a directory containing all required files under
+                        `search_db`. See the README for more information.
 
   --output_dir DIR, -o DIR
                         The directory into which all the classification
@@ -140,7 +141,7 @@ Optional arguments:
                         The path where the search results will be stored.
                         This defaults to the output directory. However,
                         if the search operation has already been completed
-                        before hand, specify the path here to skip the
+                        beforehand, specify the path here to skip the
                         sequence similarity search step and go directly to
                         the taxonomy step. If a hits file exists in the output
                         directory and this option is not specified, it is
@@ -166,7 +167,7 @@ Optional arguments:
                         on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
                         to higher ranks when a minimum rank-identity is not met.
-                        By default `True`.
+                        The default is `True`.
 
   --otu_table OTU_TABLE, -u OTU_TABLE
                         Optionally, one can specify the path to an OTU table in
@@ -246,7 +247,7 @@ For amplicon sequencing experiments with many replicates or similar samples (>~1
 
 ### Custom databases
 
-It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation are available in this other git repository:
+It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation is available in this other git repository:
 
 https://github.com/xapple/crest4_utils
 
