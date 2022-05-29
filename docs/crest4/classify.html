@@ -63,7 +63,7 @@ from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
 # Constants #
-all_db_choices = (&#39;midori248&#39;, &#39;silvamod138&#39;, &#39;silvamod128&#39;, &#39;bold&#39;)
+all_db_choices = (&#39;midori248&#39;, &#39;silvamod138&#39;, &#39;silvamod128&#39;)
 
 ###############################################################################
 class Classify:
@@ -84,7 +84,7 @@ class Classify:
                  fasta,
                  search_algo = &#39;blast&#39;,
                  num_threads = 1,
-                 search_db   = &#39;midori248&#39;,
+                 search_db   = &#39;silvamod138&#39;,
                  output_dir  = None,
                  search_hits = None,
                  min_score   = None,
@@ -112,9 +112,9 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori248`, `silvamod138`, or `bold`.
+                       Either `midori248`, `silvamod138`, or `silvamod128`.
                        No other values are currently supported.
-                       By default, `midori248`. Optionally, the user can
+                       By default, `silvamod138`. Optionally, the user can
                        provide a custom database by specifying the full path
                        to a directory containing all required files under
                        `search_db`. See the README for more information.
@@ -411,7 +411,7 @@ class Classify:
 <dl>
 <dt id="crest4.classify.Classify"><code class="flex name class">
 <span>class <span class="ident">Classify</span></span>
-<span>(</span><span>fasta, search_algo='blast', num_threads=1, search_db='midori248', output_dir=None, search_hits=None, min_score=None, score_drop=2.0, min_smlrty=True, otu_table=None)</span>
+<span>(</span><span>fasta, search_algo='blast', num_threads=1, search_db='silvamod138', output_dir=None, search_hits=None, min_score=None, score_drop=2.0, min_smlrty=True, otu_table=None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>This is the main object offered by the <code><a title="crest4" href="index.html">crest4</a></code> package.
@@ -442,9 +442,9 @@ we will run as many processes as there are CPUs but
 no more than 32.</dd>
 <dt><strong><code>search_db</code></strong></dt>
 <dd>The database used for the sequence similarity search.
-Either <code>midori248</code>, <code>silvamod138</code>, or <code>bold</code>.
+Either <code>midori248</code>, <code>silvamod138</code>, or <code>silvamod128</code>.
 No other values are currently supported.
-By default, <code>midori248</code>. Optionally, the user can
+By default, <code>silvamod138</code>. Optionally, the user can
 provide a custom database by specifying the full path
 to a directory containing all required files under
 <code>search_db</code>. See the README for more information.</dd>
@@ -515,7 +515,7 @@ names are samples names.</dd>
                  fasta,
                  search_algo = &#39;blast&#39;,
                  num_threads = 1,
-                 search_db   = &#39;midori248&#39;,
+                 search_db   = &#39;silvamod138&#39;,
                  output_dir  = None,
                  search_hits = None,
                  min_score   = None,
@@ -543,9 +543,9 @@ names are samples names.</dd>
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori248`, `silvamod138`, or `bold`.
+                       Either `midori248`, `silvamod138`, or `silvamod128`.
                        No other values are currently supported.
-                       By default, `midori248`. Optionally, the user can
+                       By default, `silvamod138`. Optionally, the user can
                        provide a custom database by specifying the full path
                        to a directory containing all required files under
                        `search_db`. See the README for more information.
