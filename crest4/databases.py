@@ -149,6 +149,13 @@ class CrestDatabase:
         Retrieve the URL of the database file to download by first downloading
         a metadata file (see the `Metadata` class above).
         """
+        # Check that the key exists #
+        if self.short_name not in metadata.db_urls:
+            msg = "The database '%s' is not in the list of downloadable" \
+                  " databases. Please update the file `crest4_db_urls.json`" \
+                  " to include it."
+            raise Exception(msg % self.short_name)
+        # Get the URL #
         return metadata.db_urls[self.short_name]['url']
 
     def download(self):
