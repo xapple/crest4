@@ -6,6 +6,7 @@ Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
 Created in May 2021.
+Last updated in January 2023.
 """
 
 # Built-in modules #
@@ -292,3 +293,6 @@ silvamod138 = CrestDatabase('silvamod138',
 
 silvamod128 = CrestDatabase('silvamod128',
                             'Silva version 128 modified for CREST')
+
+silvamod138pr2 = CrestDatabase('silvamod138pr2',
+                               'Silva version 138 PR2 version 2')

@@ -26,7 +26,7 @@ from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
 # Constants #
-all_db_choices = ('midori248', 'silvamod138', 'silvamod128')
+all_db_choices = ('midori248', 'silvamod138', 'silvamod138pr2', 'silvamod128')
 
 ###############################################################################
 class Classify:
@@ -107,7 +107,7 @@ class Classify:
                         to discard based on a drop in percentage from the score
                         of the best hit. Any hit below the following value:
                         "(100 - score_drop)/100 * best_hit_score" is ignored.
-                        By default `2.0`.
+                        By default, `2.0`.
 
             min_smlrty: Determines if the minimum similarity filter is turned
                         on or off. Pass any value like `False` to turn it off.
