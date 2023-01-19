@@ -51,7 +51,7 @@ Since `crest4` is written in python it is compatible with all operating systems:
 
 Once the installation completes you are ready to use the `crest4` executable command from the shell. Please note that the reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
 
-In order to search the reference databases, you will also need either BLAST or VSEARCH installed. These are installed automatically with the `conda` method, but not with the `pip` method. You can obtain these with these commands on Linux:
+In order to search the reference databases, you will also need either BLAST or VSEARCH installed. These can be installed automatically with the `conda` package manager. If you don't use `conda`, you can obtain them with these commands on Linux:
 
     $ sudo apt update
     $ sudo apt install ncbi-blast+
