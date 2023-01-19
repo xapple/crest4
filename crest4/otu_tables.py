@@ -5,7 +5,6 @@
 Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
-Created in May 2021.
 """
 
 # Built-in modules #
