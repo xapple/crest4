@@ -289,4 +289,4 @@ http://xapple.github.io/crest4/crest4
 
 This documentation is simply generated from the source code with this command:
 
-    $ pdoc3 --html --output-dir docs --force crest4
+    $ pdoc --output-dir docs crest4

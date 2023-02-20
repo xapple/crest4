@@ -227,7 +227,7 @@ class CrestDatabase:
     def tree(self):
         """
         Using the `.tre` file, we return an N-ary tree in memory.
-        Every node is characterised by a number. For instance between
+        Every node is characterized by a number. For instance between
         1 and 32477.
         """
         # Load the tree with ete3 #
