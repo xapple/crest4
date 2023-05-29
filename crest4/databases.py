@@ -17,11 +17,6 @@ import crest4
 from autopaths.dir_path import DirectoryPath
 from plumbing.cache     import property_cached
 from plumbing.scraping  import download_from_url, retrieve_from_url
-from seqsearch.search.blast   import BLASTdb
-from seqsearch.search.vsearch import VSEARCHdb
-
-# Third party modules #
-from ete3 import Tree
 
 ###############################################################################
 class CrestMetadata:
@@ -201,6 +196,7 @@ class CrestDatabase:
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
+        from seqsearch.search.blast import BLASTdb
         db = BLASTdb(self.path, seq_type='nucl')
         # Create the database with `mkblastdb` if it's not made already #
         db.create_if_not_exists(verbose=True)
@@ -216,6 +212,7 @@ class CrestDatabase:
         # Download the database if it has not been done already #
         if not self.downloaded: self.download()
         # Create the database object #
+        from seqsearch.search.vsearch import VSEARCHdb
         db = VSEARCHdb(self.path.replace_extension('udb'))
         # Create the database with `vsearch` if it's not made already #
         db.create_if_not_exists(verbose=True)
@@ -231,6 +228,7 @@ class CrestDatabase:
         1 and 32477.
         """
         # Load the tree with ete3 #
+        from ete3 import Tree
         return Tree(self.path.replace_extension('tre'), format=8)
 
     @property_cached

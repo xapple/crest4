@@ -13,9 +13,6 @@ from collections import defaultdict
 # First party modules #
 from plumbing.cache import property_cached
 
-# Third party modules #
-import pandas
-
 ###############################################################################
 class InfoFromTableOTUs:
     """
@@ -48,6 +45,7 @@ class InfoFromTableOTUs:
     def otus_df(self):
         """Load the otu_table file as a pandas `DataFrame`."""
         # Load from a text file #
+        import pandas
         df = pandas.read_csv(str(self.otu_table), sep=self.format, index_col=0)
         # We only want the very first part of the IDs #
         df.index = df.index.map(lambda s: s.split()[0])
@@ -82,6 +80,7 @@ class InfoFromTableOTUs:
         # Let's first check all the IDs are found #
         self.check_id_match()
         # An empty pandas Series with each sample name and just zeros #
+        import pandas
         empty_samples = pandas.Series(0, index=self.otus_df.columns)
         # Build a empty new dataframe from a dictionary of empty series #
         result = defaultdict(lambda: empty_samples.copy())

@@ -21,8 +21,6 @@ from crest4.databases import CrestDatabase
 
 # First party modules #
 from plumbing.cache      import property_cached
-from seqsearch.search    import SeqSearch
-from fasta               import FASTA
 from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
@@ -149,6 +147,7 @@ class Classify:
         """
         # The fasta should be a FASTA object #
         if self.fasta is not None:
+            from fasta import FASTA
             self.fasta = FASTA(self.fasta)
         # Default for the number of threads #
         if not isinstance(self.num_threads, int):
@@ -269,6 +268,7 @@ class Classify:
             params = {'--id':      self.min_score,
                       '--mincols': 25}
         # Build and return the object #
+        from seqsearch.search import SeqSearch
         return SeqSearch(input_fasta = self.fasta,
                          database    = self.database,
                          seq_type    = 'nucl',
