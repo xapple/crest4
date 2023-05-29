@@ -21,7 +21,7 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_vsearch(verbose=True):
+def test_vsearch():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The output directory #

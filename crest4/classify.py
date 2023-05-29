@@ -25,7 +25,8 @@ from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
 # Constants #
-all_db_choices = ('midori248', 'silvamod138', 'silvamod138pr2', 'silvamod128')
+all_db_choices = ('midori248', 'midori253darn', 'silvamod138',
+                  'silvamod138pr2', 'silvamod128')
 
 ###############################################################################
 class Classify:
