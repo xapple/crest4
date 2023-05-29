@@ -11,7 +11,7 @@ https://github.com/xapple/crest4
 """
 
 # Special variables #
-__version__ = '4.2.8'
+__version__ = '4.2.9'
 
 # Constants #
 project_url = 'https://github.com/xapple/crest4'
