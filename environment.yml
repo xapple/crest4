@@ -1,38 +1,17 @@
-name: cdi
+name: crest
 channels:
   - conda-forge
   - bioconda
   - defaults
+  - xapple
 dependencies:
-  - snakemake==7.26.0
-  - motus==3.1.0
-  - kmcp==0.9.1
-  - kraken2==2.1.2
-  - strainge==1.3.7
-  - insilicoseq==1.5.4
-  - fastp==0.23.2
-  - multiqc==1.14
-  - minimap2>=2.1
-  - sh==1.14.3
-  - mappy
-  - pysam
-  - bwa
-  - pandoc
-  - pigz
-  - ipython
-  - numpy
-  - scipy
-  - pandas
-  - seaborn
+  - autopaths==1.5.0
+  - optmagic==1.1.0
+  - plumbing==2.10.4
+  - fasta==2.2.11
+  - seqsearch==2.1.6
   - biopython
-  - retry
-  - requests
-  - pystache
-  - openpyxl
-  - tzlocal
   - rich
-  - brewer2mpl
-  - tqdm
-  - xlrd
-  - parallel
-  - bokeh
+  - ete3
+  - pandas
+  - pytest
