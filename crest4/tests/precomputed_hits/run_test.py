@@ -32,7 +32,6 @@ def test_precomputed_hits():
     # Create object #
     c = Classify(fasta       = fasta,
                  search_hits = hits,
-                 search_db   = 'silvamod138',
                  output_dir  = output_dir,
                  num_threads = True)
     # Patch the search method so that it can't be called #

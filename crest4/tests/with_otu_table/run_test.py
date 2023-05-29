@@ -33,7 +33,6 @@ def test_with_bad_otu_table():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
-                 search_db   = 'silvamod138',
                  num_threads = True,
                  otu_table   = otu_table)
     # It should complain when we run it #
@@ -51,7 +50,6 @@ def test_with_good_otu_table():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
-                 search_db   = 'silvamod138',
                  num_threads = True,
                  otu_table   = otu_table)
     # Run it #

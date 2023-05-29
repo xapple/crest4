@@ -30,7 +30,6 @@ def test_readme_example_seq():
     # Create object #
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
-                 search_db   = 'silvamod138',
                  num_threads = True)
     # Run it #
     c()

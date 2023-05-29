@@ -31,7 +31,6 @@ def test_vsearch(verbose=True):
     c = Classify(fasta       = fasta,
                  output_dir  = output_dir,
                  search_algo = 'vsearch',
-                 search_db   = 'silvamod138',
                  num_threads = True)
     # Run it #
     c()

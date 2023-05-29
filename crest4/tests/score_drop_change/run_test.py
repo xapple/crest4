@@ -32,7 +32,6 @@ def test_score_drop_change():
     # Call via the command line tool #
     result = this_python('-m',            'crest4',
                          '--fasta',       fasta,
-                         '--search_db',   'silvamod138',
                          '--output_dir',  output_dir,
                          '--score_drop',  '1')
     # Check that the results were created #
