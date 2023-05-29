@@ -4,6 +4,10 @@
             "title": "Midori v248",
             "url": "https://crest4.s3-eu-west-1.amazonaws.com/midori248.tar.gz"
         },
+        "midori253darn": {
+            "title": "Midori v253",
+            "url": "https://crest4.s3-eu-west-1.amazonaws.com/midori253darn.tar.gz"
+        },
         "silvamod138": {
             "title": "SilvaMod v138",
             "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod138.tar.gz"
@@ -13,7 +17,7 @@
             "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod128.tar.gz"
         },
         "silvamod138pr2": {
-            "title": "SilvaMod v138 PR2 version 2",
+            "title": "SilvaMod v138 PR2",
             "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod138pr2.tar.gz"
         }
 

@@ -48,7 +48,7 @@ class Classify:
                  fasta,
                  search_algo = 'blast',
                  num_threads = 1,
-                 search_db   = 'silvamod138',
+                 search_db   = 'silvamod138pr2',
                  output_dir  = None,
                  search_hits = None,
                  min_score   = None,
@@ -76,9 +76,8 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori248`, `silvamod138`, or `silvamod128`.
-                       No other values are currently supported.
-                       By default, `silvamod138`. Optionally, the user can
+                       Either `midori253darn`, or `silvamod138pr2`.
+                       By default, `silvamod138pr2`. Optionally, the user can
                        provide a custom database by specifying the full path
                        to a directory containing all required files under
                        `search_db`. See the README for more information.
