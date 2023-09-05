@@ -1,0 +1,1 @@
+This test uses the midori database instead of the default one.
