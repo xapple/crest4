@@ -27,7 +27,7 @@ def test_score_drop_change():
     output_dir = this_dir + 'results/'
     output_dir.remove()
     # Get the path of the current python executable #
-    import sh
+    from crest4 import sh
     this_python = sh.Command(sys.executable)
     # Call via the command line tool #
     result = this_python('-m',            'crest4',
