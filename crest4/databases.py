@@ -288,17 +288,14 @@ class CrestDatabase:
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
-midori248 = CrestDatabase('midori248',
-                          'The midori248darn database for CREST')
-
 midori253darn = CrestDatabase('midori253darn',
-                            'The midori253darn database for CREST')
-
-silvamod138 = CrestDatabase('silvamod138',
-                            'Silva version 138 modified for CREST')
+                              'The midori253darn database for crest4')
 
 silvamod128 = CrestDatabase('silvamod128',
-                            'Silva version 128 modified for CREST')
+                            'Silva version 128 modified for crest4')
+
+mitofish = CrestDatabase('mitofish',
+                         'MitoFish')
 
 silvamod138pr2 = CrestDatabase('silvamod138pr2',
                                'Silva version 138 PR2 version 2')

@@ -7,7 +7,7 @@ GNUv3 Licensed.
 Contact at www.sinclair.bio
 
 Created in May 2021.
-Last updated in January 2023.
+Last updated in September 2023.
 """
 
 # Built-in modules #
@@ -25,8 +25,7 @@ from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
 # Constants #
-all_db_choices = ('midori248', 'midori253darn', 'silvamod138',
-                  'silvamod138pr2', 'silvamod128')
+all_db_choices = ('midori253darn', 'silvamod138pr2', 'silvamod128', 'mitofish')
 
 ###############################################################################
 class Classify:
@@ -75,7 +74,8 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori253darn`, or `silvamod138pr2`.
+                       Either `midori253darn`, `silvamod138pr2`, 'mitofish' or
+                       `silvamod128`.
                        By default, `silvamod138pr2`. Optionally, the user can
                        provide a custom database by specifying the full path
                        to a directory containing all required files under
@@ -111,20 +111,20 @@ class Classify:
             min_smlrty: Determines if the minimum similarity filter is turned
                         on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
-                        to higher ranks when a minimum rank-identity is not met.
-                        The default is `True`.
+                        to higher ranks when a minimum rank-identity is not
+                        met. The default is `True`.
 
-            otu_table: Optionally, one can specify the path to an OTU table in
-                       CSV or TSV format when running `crest4`. If this option
-                       is used, then two extra output files are generated.
-                       First, a table summarizing the assignment counts per
-                       taxa.
-                       Second, a table propagating the sequence counts upwards
+            otu_table: Optionally, one can specify the path to an existing OTU
+                       table in CSV or TSV format when running `crest4`.
+                       The sequence names in the OTU table must be rows and
+                       have to match the names in the FASTA file. The column,
+                       on the other hand, provide your samples names.
+                       When this option is used, then two extra output files
+                       are generated. Firstly, a table summarizing the
+                       assignment counts per taxa. Secondly, a table
+                       propagating the sequence counts upwards
                        in a cumulative fashion.
-                       The sequence names in the OTU table should be rows and
-                       should match the names in the FASTA file. The column
-                       names are samples names.
-        """
+                       """
         # Save attributes #
         self.fasta       = fasta
         self.search_algo = search_algo

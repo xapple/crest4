@@ -124,7 +124,8 @@ Optional arguments:
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either `midori253darn`, or `silvamod138pr2`.
+                        Either `midori253darn`, `silvamod138pr2`, 'mitofish' or
+                        `silvamod128`.
                         By default, `silvamod138pr2`. Optionally, the user can
                         provide a custom database by specifying the full path
                         to a directory containing all required files under
@@ -169,16 +170,16 @@ Optional arguments:
                         The default is `True`.
 
   --otu_table OTU_TABLE, -u OTU_TABLE
-                        Optionally, one can specify the path to an OTU table in
-                        CSV or TSV format when running `crest4`. If this option
-                        is used, then two extra output files are generated.
-                        First, a table summarizing the assignment counts per
-                        taxa.
-                        Second, a table propagating the sequence counts upwards
+                        Optionally, one can specify the path to an existing OTU
+                        table in CSV or TSV format when running `crest4`.
+                        The sequence names in the OTU table must be rows and
+                        have to match the names in the FASTA file. The column,
+                        on the other hand, provide your samples names.
+                        When this option is used, then two extra output files
+                        are generated. Firstly, a table summarizing the
+                        assignment counts per taxa. Secondly, a table
+                        propagating the sequence counts upwards
                         in a cumulative fashion.
-                        The sequence names in the OTU table should be rows and
-                        should match the names in the FASTA file. The column
-                        names are samples names.
 
 Other arguments:
   --version, -v         Show program's version number and exit.
