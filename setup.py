@@ -25,7 +25,7 @@ setup(
     packages         = find_namespace_packages(),
     install_requires = ['autopaths>=1.5.0', 'optmagic>=1.1.0',
                         'plumbing>=2.10.4', 'fasta>=2.2.11',
-                        'seqsearch>=2.2.0', 'biopython', 'rich', 'ete3',
+                        'seqsearch>=2.2.1', 'biopython', 'rich', 'ete3',
                         'pandas', 'pytest'],
     python_requires  = ">=3.8",
     entry_points     = {"console_scripts": ["crest4 = crest4.__main__:main"]},
