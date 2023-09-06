@@ -19,7 +19,7 @@ class Query:
     Takes care of assigning taxonomy by using the results of the sequence
     similarity search and a phylogenetic tree as a N-ary directed graph.
 
-    The query parameter is a object coming from biopython and of type:
+    The query parameter is an object coming from biopython of type:
     'Bio.SearchIO._model.query.QueryResult'
     """
 
