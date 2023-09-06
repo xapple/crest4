@@ -1,7 +1,7 @@
 [![PyPI version](https://badge.fury.io/py/crest4.svg)](https://badge.fury.io/py/crest4)
 ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
 
-# CREST version 4.3.3
+# CREST version 4.3.4
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
 
@@ -33,7 +33,6 @@ If you use CREST in your research, please cite [this publication](https://dx.plo
 
     CREST - Classification Resources for Environmental Sequence Tags, PLoS ONE, 7:e49334
     Lanzén A, Jørgensen SL, Huson D, Gorfer M, Grindhaug SH, Jonassen I, Øvreås L, Urich T (2012)
-
 
 ## Installing
 
