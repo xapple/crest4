@@ -36,7 +36,7 @@ def test_db_mitofish():
     # Run it #
     c()
     # Check that the results are good #
-    assert c.queries_by_id['Test'].taxonomy[0] == "Lorem ipsum"
+    assert c.queries_by_id['Test'].taxonomy[0] == "Luciogobius guttatus"
     # Return #
     return c
 
