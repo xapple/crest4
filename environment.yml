@@ -15,5 +15,5 @@ dependencies:
   - ete3
   - pandas
   - pytest
-  - ncbi-blast+
+  - blast
   - vsearch
