@@ -281,10 +281,7 @@ class CrestDatabase:
                 'Family',         # 8
                 'Genus',          # 9
                 'Species',        # 10
-                'Strain',         # 11
-                'Strain',         # 12
-                'Strain',         # 13 (There is a problem with too many ranks
-                'Strain']         # 14  in some databases requiring this)
+                'Strain']         # 11
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #

@@ -106,10 +106,17 @@ class InfoFromTableOTUs:
         # Have the assignment as a separate column and not as an index #
         result = result.reset_index()
         result = result.rename(columns = {'index': 'taxonomy'})
-        # Add the rank column that tells the user if it's a genus or a family #
+        # Function that takes the length of the taxonomic path and tells
+        # us which rank it represents
         rank_names  = self.classify.database.rank_names
-        tax_to_rank = lambda t: rank_names[len(t.split(';')) - 1]
-        ranks       = result.taxonomy.apply(tax_to_rank)
+        def tax_to_rank(t):
+            # There is a problem with too many ranks in some databases
+            # requiring this.
+            length = len(t.split(';')) - 1
+            if length > len(rank_names) - 1: return "Strain"
+            else: return rank_names[length]
+        # Add the rank column that tells the user if it's a genus or a family #
+        ranks = result.taxonomy.apply(tax_to_rank)
         result.insert(loc=0, column='rank', value=ranks)
         # Sort the table by the taxonomy string #
         result = result.sort_values(by=['taxonomy'])
