@@ -35,7 +35,7 @@ class InfoFromTableOTUs:
     def format(self):
         """
         Automatically detect the format between "TSV" or "CSV" and return the
-        appropriate separator character. By default we will return a tab.
+        appropriate separator character. By default, we will return a tab.
         """
         if self.otu_table.filename.split('.')[-1] == 'csv':
             return ','
@@ -72,8 +72,11 @@ class InfoFromTableOTUs:
             name = otu_counts.name
             if name not in self.classify.queries_by_id:
                 msg = "The sequence named '%s' in the table located at '%s'" \
-                      " does not appear in the FASTA file provided at '%s'."
-                msg = msg % (name, self.otu_table, self.classify.fasta)
+                      " does not appear in the hits file provided at '%s'." \
+                      " This can be due to the original FASTA file not" \
+                      " containing them either, or because the sequence" \
+                      " search was interrupted and a partial output created."
+                msg = msg % (name, self.otu_table, self.classify.search_hits)
                 raise ValueError(msg)
 
     def __call__(self, cumulative=False):
@@ -90,7 +93,7 @@ class InfoFromTableOTUs:
             otu_name = otu_counts.name
             # Get the assignment of current OTU from our classification #
             tax = self.classify.queries_by_id[otu_name].taxonomy
-            # By default the root is at the end #
+            # By default, the root is at the end #
             tax = list(reversed(tax))
             # Make a string #
             tax_name = '; '.join(tax)

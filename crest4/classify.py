@@ -297,7 +297,9 @@ class Classify:
     @property_cached
     def queries(self):
         """
-        A list containing one Query object per sequence that was originally
+        Parses the output of the sequence search program used which returns
+        a list of `QueryResult` objects from the `SearchIO.parse` module.
+        The list contains one Query object per sequence that was originally
         inputted. Use these objects to access the taxonomic assignments.
         """
         # Check if the search has been done already #
@@ -346,7 +348,7 @@ class Classify:
     def __call__(self):
         """Generate outputs."""
         # Intro message #
-        print('Running crest4 v.' + crest4.__version__)
+        print('Running crest4 version ' + crest4.__version__)
         # Iterate #
         self.out_file.writelines(query.tax_string for query in self.queries)
         # Special case where an OTU table was passed #
