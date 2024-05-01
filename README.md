@@ -42,6 +42,10 @@ Since `crest4` is written in python it is compatible with all operating systems:
 
     $ conda install -c bioconda -c conda-forge -c xapple crest4
 
+Or to create a custom environment named `crest` which you activate later:
+
+    $ conda create -n crest -c bioconda -c conda-forge -c xapple crest4
+
 ### Installing via `pip`
 
     $ pip3 install crest4
@@ -96,7 +100,7 @@ To parallelize the sequence similarity search with 32 threads use this option:
 
     crest4 -f sequences.fasta -t 32
 
-Silvamod138 is the default reference database. To use another database, e.g., midori, the `-d` option must be specified followed by the database name:
+Silvamod138pr2 is the default reference database. To use another database, e.g., midori, the `-d` option must be specified followed by the database name:
 
     crest4 -f sequences.fasta -d midori248
 
@@ -223,19 +227,19 @@ In such a case you just need to copy the hits file that was generated back to yo
 
 To create the hits file on a different server you should call the `blastn` executable with the following options:
 
-    blastn -query sequences.fasta -db ~/.crest4/silvamod138/silvamod138.fasta -num_alignments 100 -outfmt "7 qseqid sseqid bitscore length nident" -out seq_search.hits
+    blastn -query sequences.fasta -db ~/.crest4/silvamod138pr2/silvamod138pr2.fasta -num_alignments 100 -outfmt "7 qseqid sseqid bitscore length nident" -out seq_search.hits
 
 We also recommend that you use `-num_threads` to enable multi-threading and speed up the alignments.
 
 The equivalent VSEARCH command is the following:
 
-    vsearch --usearch_global sequences.fasta -db ~/.crest4/silvamod138/silvamod138.udb -blast6out seq_search.hits -threads 32 -id 0.75 -maxaccepts 100
+    vsearch --usearch_global sequences.fasta -db ~/.crest4/silvamod138pr2/silvamod138pr2.udb -blast6out seq_search.hits -threads 32 -id 0.75 -maxaccepts 100
 
 
 ## More information
 
 ### Classification databases
-The `silvamod138` database was derived by manual curation of the [SILVA NR SSU Ref v.138](https://www.arb-silva.de) for Bacteria, Archaea, Metazoa and Fungi. For other eukaryotes (protists), the [PR2 v4.13 database](https://pr2-database.org/) was used. The SILVA database used was last release in August 2020 and PR2 database in March 2021.
+The `silvamod138pr2` database was derived by manual curation of the [SILVA NR SSU Ref v.138](https://www.arb-silva.de) for Bacteria, Archaea, Metazoa and Fungi. For other eukaryotes (protists), the [PR2 v4.13 database](https://pr2-database.org/) was used. The SILVA database used was last release in August 2020 and PR2 database in March 2021.
 
 The `silvamod128` database was derived by manual curation of the [SILVA NR SSU Ref v.128](https://www.arb-silva.de/documentation/release-128/). It supports SSU sequences from bacteria and archaea (16S) as well as eukaryotes (18S), with a high level of manual curation and defined environmental clades. This database was last released in September 2016.
 

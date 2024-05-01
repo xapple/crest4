@@ -86,6 +86,6 @@ Since `crest4` is now installed from source, there is no executable on the `$PAT
 
 Instead, to launch `crest4` from the command line, one must proceed as so and add a `python3 -m` suffix to each command:
 
-    $ python3 -m crest4 -f ~/test/sequences.fasta -d silvamod138 -t 4
+    $ python3 -m crest4 -f ~/test/sequences.fasta -d silvamod138pr2 -t 4
 
 You do not need to run the `setup.py` script at any moment.
