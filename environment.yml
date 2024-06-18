@@ -10,10 +10,10 @@ dependencies:
   - plumbing==2.10.4
   - fasta==2.2.11
   - seqsearch==2.1.6
-  - biopython
-  - rich
-  - ete3
-  - pandas
-  - pytest
-  - blast
-  - vsearch
+  - biopython==1.83
+  - rich==13.7.0
+  - ete3==3.1.3
+  - pandas==2.2.0
+  - pytest==8.1.1
+  - blast>=2.14,<2.15
+  - vsearch==2.27.0
