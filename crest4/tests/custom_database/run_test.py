@@ -21,7 +21,7 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_custom_database():
+def test_custom_dir_path():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The output directory #
@@ -43,5 +43,29 @@ def test_custom_database():
     return c
 
 ###############################################################################
+def test_custom_file_path():
+    # The input fasta #
+    fasta = this_dir.find('*.fasta')
+    # The output directory #
+    output_dir = this_dir + 'results/'
+    output_dir.remove()
+    # The custom database #
+    db_custom_dir = this_dir + 'other_database/custom.fasta'
+    # Create object #
+    c = Classify(fasta       = fasta,
+                 output_dir  = output_dir,
+                 search_db   = db_custom_dir,
+                 num_threads = True)
+    # Run it #
+    c()
+    # Check that the results are good #
+    assert c.queries_by_id['Kocuria'].taxonomy[0] == "Node 1"
+    assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Node 2"
+    # Return #
+    return c
+
+
+###############################################################################
 if __name__ == '__main__':
-    classify = test_custom_database()
+    classify = test_custom_dir_path()
+    classify = test_custom_file_path()

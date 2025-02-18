@@ -1,0 +1,12 @@
+# Blast database files #
+*.fasta.nto
+*.fasta.ndb
+*.fasta.nhr
+*.fasta.nin
+*.fasta.not
+*.fasta.nsq
+*.fasta.ntf
+*.fasta.njs
+
+# Vsearch database files #
+*.udb
