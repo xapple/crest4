@@ -71,7 +71,7 @@ class Query:
             if node is None:
                 msg = "The search hit '%s' was not found in the tree." \
                       " The database '%s' is probably corrupted."
-                raise Exception(msg % (name, self.db.short_name))
+                raise Exception(msg % (name, self.db.dir_name))
             # Add it to the list #
             nodes.add(node)
         # Return #

@@ -14,9 +14,10 @@ import os, json
 import crest4
 
 # First party modules #
-from autopaths.dir_path import DirectoryPath
-from plumbing.cache     import property_cached
-from plumbing.scraping  import download_from_url, retrieve_from_url
+from autopaths.dir_path  import DirectoryPath
+from autopaths.file_path import FilePath
+from plumbing.cache      import property_cached
+from plumbing.scraping   import download_from_url, retrieve_from_url
 
 ###############################################################################
 class CrestMetadata:
@@ -83,28 +84,57 @@ class CrestDatabase:
     # The environment variable that the user can set #
     environ_var = "CREST4_DIR"
 
-    def __init__(self, short_name, long_name, base_dir=None):
+    def __init__(self, *args, **kwargs):
         """
+        Either take one of the built in databases by specifying:
+        * name
+        * desc
+
+        Or bring your own database by specifying:
+        * custom_path
+
         The user can specify a path pointing to a directory that contains all
-        the required files, and having the same prefix as the directory name.
+        the required files.
         It must include the database FASTA file as well as the `.map` and
         `.names` file.
+        Here if the user indicates a file, then take the parent directory.
+        If the user has selected a directory, then use it directly and assume
+        the file has the same name as the directory.
         """
-        # Base required attributes #
-        self.short_name = short_name
-        self.long_name = long_name
-        # If the user specifies a base_dir, then no need to download #
-        if base_dir is not None:
+        # Case where we pick a built-in database #
+        if 'name' in kwargs and 'desc' in kwargs:
+            # The three attributes #
+            self.dir_name  = kwargs['name']
+            self.file_name = kwargs['name']
+            self.desc      = kwargs['desc']
+            # If the user doesn't specify a base_dir path, then we should
+            # determine where the actual files will be located on disk and
+            # check if the user has set the special environment variable.
+            if 'base_dir' not in kwargs:
+                base_dir = os.environ.get(self.environ_var, self.default_dir)
+            else:
+                base_dir = kwargs['base_dir']
+            # Convert to an absolute DirectoryPath #
+            self.base_dir = DirectoryPath(base_dir)
+            self.base_dir = DirectoryPath(self.base_dir.absolute_path)
+        # Case where the user specifies a custom path #
+        elif 'custom_path' in kwargs:
+            # If the user specifies a path, then no need to download #
             self.downloaded = True
-        # If the user doesn't specify a base_dir path, then we should
-        # determine where the actual files will be located on disk and
-        # check if the user has set the special environment variable.
-        if base_dir is None:
-            base_dir = os.environ.get(self.environ_var, self.default_dir)
-        # Convert to a DirectoryPath #
-        self.base_dir = DirectoryPath(base_dir)
-        # And make it absolute #
-        self.base_dir = DirectoryPath(self.base_dir.absolute_path)
+            # Check if it is a file or if it is a directory #
+            custom_path = kwargs['custom_path']
+            if os.path.isfile(custom_path):
+                custom_path = FilePath(custom_path)
+                self.base_dir  = custom_path.directory.directory
+                self.dir_name  = custom_path.directory.name
+                self.file_name = custom_path.prefix
+            else:
+                custom_path = DirectoryPath(custom_path)
+                self.base_dir  = custom_path.directory
+                self.dir_name  = custom_path.name
+                self.file_name = custom_path.name
+            # Set the description #
+            self.desc = "Custom user-provided database '%s'." % self.dir_name
 
     def __repr__(self):
         """A simple representation of this object to avoid memory addresses."""
@@ -116,18 +146,18 @@ class CrestDatabase:
         Some methods will look for the `tag` attribute to print the name of the
         database.
         """
-        return self.short_name
+        return self.dir_name
 
     @property
     def tarball(self):
         """Determine where the database `.tar.gz` will be located on disk."""
-        return self.base_dir + self.short_name + '.tar.gz'
+        return self.base_dir + self.dir_name + '.tar.gz'
 
     @property
     def path(self):
         """The path to the FASTA file."""
-        return self.base_dir + self.short_name + '/' + \
-               self.short_name + '.fasta'
+        return self.base_dir + self.dir_name + '/' + \
+               self.file_name + '.fasta'
 
     @property_cached
     def downloaded(self):
@@ -145,13 +175,13 @@ class CrestDatabase:
         a metadata file (see the `Metadata` class above).
         """
         # Check that the key exists #
-        if self.short_name not in metadata.db_urls:
+        if self.dir_name not in metadata.db_urls:
             msg = "The database '%s' is not in the list of downloadable" \
                   " databases. Please update the file `crest4_db_urls.json`" \
                   " to include it."
-            raise Exception(msg % self.short_name)
+            raise Exception(msg % self.dir_name)
         # Get the URL #
-        return metadata.db_urls[self.short_name]['url']
+        return metadata.db_urls[self.dir_name]['url']
 
     def download(self):
         """
@@ -163,7 +193,7 @@ class CrestDatabase:
                   " depending on your internet connection. Please be" \
                   " patient. The result will be saved to '%s'. You can" \
                   " override this by setting the $%s environment variable."
-        message = message % (self.short_name, self.base_dir, self.environ_var)
+        message = message % (self.dir_name, self.base_dir, self.environ_var)
         # Display the message with style in a box #
         from plumbing.common import rich_panel_print
         rich_panel_print(message, "Large Download")
@@ -174,7 +204,7 @@ class CrestDatabase:
                           user_agent  = "crest4 v" + crest4.__version__,
                           stream      = True,
                           progress    = True,
-                          desc        = self.short_name)
+                          desc        = self.dir_name)
         # Uncompress #
         self.tarball.untargz_to(self.base_dir)
         # Remove tarball #
@@ -285,14 +315,14 @@ class CrestDatabase:
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
-midori253darn = CrestDatabase('midori253darn',
-                              'The midori253darn database for crest4')
+midori253darn = CrestDatabase(name = 'midori253darn',
+                              desc = 'The midori253darn database for crest4')
 
-silvamod128 = CrestDatabase('silvamod128',
-                            'Silva version 128 modified for crest4')
+silvamod128 = CrestDatabase(name = 'silvamod128',
+                            desc = 'Silva version 128 modified for crest4')
 
-mitofish = CrestDatabase('mitofish',
-                         'MitoFish')
+mitofish = CrestDatabase(name = 'mitofish',
+                         desc = 'MitoFish')
 
-silvamod138pr2 = CrestDatabase('silvamod138pr2',
-                               'Silva version 138 PR2 version 2')
+silvamod138pr2 = CrestDatabase(name = 'silvamod138pr2',
+                               desc = 'Silva version 138 PR2 version 2')

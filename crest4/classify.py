@@ -239,19 +239,14 @@ class Classify:
     def database(self):
         """
         Retrieve the database object that the user has selected.
-        If he indicates a file, then take the parent directory. If the user
-        has selected a directory, then use it directly.
+        This can be either one of the standard databases, or a custom
+        specified path.
         """
         if self.search_db not in all_db_choices:
             # Take the absolute path #
             user_path = os.path.abspath(self.search_db)
-            # Check if it is a file or if it is a directory #
-            if os.path.isfile(user_path): db_dir = os.path.dirname(user_path)
-            else:                         db_dir = user_path
             # Make the object #
-            short_name = os.path.basename(db_dir)
-            long_name  = "Custom user-provided database '%s'." % short_name
-            return CrestDatabase(short_name, long_name, db_dir)
+            return CrestDatabase(custom_path=user_path)
         else:
             return getattr(crest4.databases, self.search_db)
 
