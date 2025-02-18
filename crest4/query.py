@@ -83,7 +83,7 @@ class Query:
         This function will return the node in the tree at which the
         sequence was assigned. This could be the root of the tree or any
         other node.
-        This function can also return `False` when there was no results.
+        This function can also return `False` when there are no results.
         """
         # If there are no hits #
         if len(self.nodes) == 0: return False

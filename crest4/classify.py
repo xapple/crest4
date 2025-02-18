@@ -207,11 +207,11 @@ class Classify:
         if self.search_algo not in ('blast', 'vsearch'):
             msg = "The search algorithm '%s' is not supported."
             raise ValueError(msg % self.search_algo)
-        # Check the search database #
-        if self.search_db not in all_db_choices and \
-          not os.path.exists(self.search_db):
-            msg = "The search database '%s' is not supported."
-            raise ValueError(msg % self.search_db)
+        # The search database is a known entry or exists on the filesystem #
+        if self.search_db not in all_db_choices:
+            if not os.path.exists(self.search_db):
+                msg = "The search database '%s' is not supported."
+                raise ValueError(msg % self.search_db)
         # Check the minimum score value is above zero #
         if self.min_score < 0.0:
             msg = "The minimum score cannot be smaller than zero ('%s')."
@@ -237,13 +237,21 @@ class Classify:
 
     @property_cached
     def database(self):
-        """Retrieve the database object that the user has selected."""
-        if self.search_db not in all_db_choices and \
-          os.path.exists(self.search_db):
-            short_name = os.path.basename(os.path.dirname(self.search_db))
+        """
+        Retrieve the database object that the user has selected.
+        If he indicates a file, then take the parent directory. If the user
+        has selected a directory, then use it directly.
+        """
+        if self.search_db not in all_db_choices:
+            # Take the absolute path #
+            user_path = os.path.abspath(self.search_db)
+            # Check if it is a file or if it is a directory #
+            if os.path.isfile(user_path): db_dir = os.path.dirname(user_path)
+            else:                         db_dir = user_path
+            # Make the object #
+            short_name = os.path.basename(db_dir)
             long_name  = "Custom user-provided database '%s'." % short_name
-            return CrestDatabase(short_name, long_name,
-                                 self.search_db + '/../')
+            return CrestDatabase(short_name, long_name, db_dir)
         else:
             return getattr(crest4.databases, self.search_db)
 
