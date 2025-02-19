@@ -156,8 +156,7 @@ class CrestDatabase:
     @property
     def path(self):
         """The path to the FASTA file."""
-        return self.base_dir + self.dir_name + '/' + \
-               self.file_name + '.fasta'
+        return self.base_dir + self.dir_name + '/' + self.file_name + '.fasta'
 
     @property_cached
     def downloaded(self):
@@ -288,6 +287,12 @@ class CrestDatabase:
         """
         # Get the path of the file #
         path = self.path.replace_extension('map')
+        # Check that it exists #
+        if not path.exists:
+            msg = ("The file '%s' does not exist. "
+                   "Contents of the parent directory:\n%s")
+            contents = '\n- '.join(path.directory.flat_files)
+            raise FileNotFoundError(msg % (path, contents))
         # Define how to process each line #
         def parse_lines(lines):
             for line in lines:
