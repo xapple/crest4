@@ -12,3 +12,7 @@ include crest4/tests/custom_database/custom/custom.fasta
 include crest4/tests/custom_database/custom/custom.map
 include crest4/tests/custom_database/custom/custom.names
 include crest4/tests/custom_database/custom/custom.tre
+include crest4/tests/custom_database/other_database/custom.fasta
+include crest4/tests/custom_database/other_database/custom.map
+include crest4/tests/custom_database/other_database/custom.names
+include crest4/tests/custom_database/other_database/custom.tre

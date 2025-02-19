@@ -291,7 +291,7 @@ class CrestDatabase:
         if not path.exists:
             msg = ("The file '%s' does not exist. "
                    "Contents of the parent directory:\n%s")
-            contents = '\n- '.join(path.directory.flat_files)
+            contents = '- ' + '\n- '.join(path.directory.flat_files)
             raise FileNotFoundError(msg % (path, contents))
         # Define how to process each line #
         def parse_lines(lines):
