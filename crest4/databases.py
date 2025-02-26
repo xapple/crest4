@@ -305,16 +305,16 @@ class CrestDatabase:
     #--------------------------- Extra information ---------------------------#
     @property
     def rank_names(self):
-        return ['Root',           # 0 (This is life itself)
-                'Genome',         # 1 (This is for instance 'mitochondria')
+        return ['Root',           # 0 (This is life itself, called 'meta' here)
+                'Genome',         # 1 (e.g. 'Plastid' or 'Main Genome')
                 'Domain',         # 2 (This is Bacteria, Archaea or Eucarya)
-                'Superkingdom',   # 3
-                'Kingdom',        # 4 (This is also called Superphylum)
-                'Phylum',         # 5
-                'Class',          # 6
-                'Order',          # 7
+                'Superkingdom',   # 3 (e.g. 'Bacteria (superkingdom)')
+                'Kingdom',        # 4 (This is also called <Superphylum>)
+                'Phylum',         # 5 (e.g. 'Proteobacteria' or 'Firmicutes')
+                'Class',          # 6 (e.g. 'Bacilli')
+                'Order',          # 7 (e.g. 'Bacillales')
                 'Family',         # 8
-                'Genus',          # 9
+                'Genus',          # 9 (e.g. 'Bacillaceae')
                 'Species',        # 10
                 'Strain']         # 11
 
