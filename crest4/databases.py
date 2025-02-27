@@ -311,12 +311,12 @@ class CrestDatabase:
                 'Superkingdom',   # 3 (e.g. 'Bacteria (superkingdom)')
                 'Kingdom',        # 4 (This is also called <Superphylum>)
                 'Phylum',         # 5 (e.g. 'Proteobacteria' or 'Firmicutes')
-                'Class',          # 6 (e.g. 'Bacilli')
-                'Order',          # 7 (e.g. 'Bacillales')
-                'Family',         # 8
-                'Genus',          # 9 (e.g. 'Bacillaceae')
-                'Species',        # 10
-                'Strain']         # 11
+                'Class',          # 6  (e.g. 'Bacilli')
+                'Order',          # 7  (e.g. 'Bacillales')
+                'Family',         # 8  (e.g. 'Bacillaceae')
+                'Genus',          # 9  (e.g. 'Bacillus')
+                'Species',        # 10 (e.g. 'Bacillus subtilis')
+                'Strain']         # 11 (e.g. 'Bacillus subtilis 168')
 
 ###############################################################################
 # As our databases should only be stored on disk once, so we have singletons #
