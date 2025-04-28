@@ -164,7 +164,7 @@ Contact at <a href="www.sinclair.bio">www.sinclair.bio</a></p>
 </span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The search hit &#39;</span><span class="si">%s</span><span class="s2">&#39; was not found in the tree.&quot;</span> \
 </span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>                      <span class="s2">&quot; The database &#39;</span><span class="si">%s</span><span class="s2">&#39; is probably corrupted.&quot;</span>
-</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">short_name</span><span class="p">))</span>
+</span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">dir_name</span><span class="p">))</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>            <span class="c1"># Add it to the list #</span>
 </span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>            <span class="n">nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 </span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="c1"># Return #</span>
@@ -176,7 +176,7 @@ Contact at <a href="www.sinclair.bio">www.sinclair.bio</a></p>
 </span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a><span class="sd">        This function will return the node in the tree at which the</span>
 </span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">        sequence was assigned. This could be the root of the tree or any</span>
 </span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">        other node.</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        This function can also return `False` when there was no results.</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        This function can also return `False` when there are no results.</span>
 </span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>        <span class="c1"># If there are no hits #</span>
 </span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
@@ -318,7 +318,7 @@ Contact at <a href="www.sinclair.bio">www.sinclair.bio</a></p>
 </span><span id="Query-72"><a href="#Query-72"><span class="linenos"> 72</span></a>            <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="Query-73"><a href="#Query-73"><span class="linenos"> 73</span></a>                <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The search hit &#39;</span><span class="si">%s</span><span class="s2">&#39; was not found in the tree.&quot;</span> \
 </span><span id="Query-74"><a href="#Query-74"><span class="linenos"> 74</span></a>                      <span class="s2">&quot; The database &#39;</span><span class="si">%s</span><span class="s2">&#39; is probably corrupted.&quot;</span>
-</span><span id="Query-75"><a href="#Query-75"><span class="linenos"> 75</span></a>                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">short_name</span><span class="p">))</span>
+</span><span id="Query-75"><a href="#Query-75"><span class="linenos"> 75</span></a>                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">db</span><span class="o">.</span><span class="n">dir_name</span><span class="p">))</span>
 </span><span id="Query-76"><a href="#Query-76"><span class="linenos"> 76</span></a>            <span class="c1"># Add it to the list #</span>
 </span><span id="Query-77"><a href="#Query-77"><span class="linenos"> 77</span></a>            <span class="n">nodes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 </span><span id="Query-78"><a href="#Query-78"><span class="linenos"> 78</span></a>        <span class="c1"># Return #</span>
@@ -330,7 +330,7 @@ Contact at <a href="www.sinclair.bio">www.sinclair.bio</a></p>
 </span><span id="Query-84"><a href="#Query-84"><span class="linenos"> 84</span></a><span class="sd">        This function will return the node in the tree at which the</span>
 </span><span id="Query-85"><a href="#Query-85"><span class="linenos"> 85</span></a><span class="sd">        sequence was assigned. This could be the root of the tree or any</span>
 </span><span id="Query-86"><a href="#Query-86"><span class="linenos"> 86</span></a><span class="sd">        other node.</span>
-</span><span id="Query-87"><a href="#Query-87"><span class="linenos"> 87</span></a><span class="sd">        This function can also return `False` when there was no results.</span>
+</span><span id="Query-87"><a href="#Query-87"><span class="linenos"> 87</span></a><span class="sd">        This function can also return `False` when there are no results.</span>
 </span><span id="Query-88"><a href="#Query-88"><span class="linenos"> 88</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="Query-89"><a href="#Query-89"><span class="linenos"> 89</span></a>        <span class="c1"># If there are no hits #</span>
 </span><span id="Query-90"><a href="#Query-90"><span class="linenos"> 90</span></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">return</span> <span class="kc">False</span>
@@ -518,7 +518,7 @@ sequence got at least one hit in a set.</p>
             <div class="docstring"><p>This function will return the node in the tree at which the
 sequence was assigned. This could be the root of the tree or any
 other node.
-This function can also return <code>False</code> when there was no results.</p>
+This function can also return <code>False</code> when there are no results.</p>
 </div>
 
 
