@@ -12,6 +12,7 @@ import inspect, sys
 from autopaths import Path
 
 # Third party modules #
+import pytest
 
 # Internal modules #
 
@@ -20,7 +21,8 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-def test_score_drop_change():
+@pytest.mark.asyncio
+async def test_score_drop_change():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The output directory #
@@ -30,10 +32,10 @@ def test_score_drop_change():
     from crest4 import sh
     this_python = sh.Command(sys.executable)
     # Call via the command line tool #
-    result = this_python('-m',            'crest4',
-                         '--fasta',       fasta,
-                         '--output_dir',  output_dir,
-                         '--score_drop',  '1')
+    result = await this_python('-m',            'crest4',
+                               '--fasta',       fasta,
+                               '--output_dir',  output_dir,
+                               '--score_drop',  '1')
     # Check that the results were created #
     created_file = output_dir + 'assignments.txt'
     assert created_file
@@ -43,3 +45,5 @@ def test_score_drop_change():
 ###############################################################################
 if __name__ == '__main__':
     command = test_score_drop_change()
+    import asyncio
+    asyncio.run(command)
