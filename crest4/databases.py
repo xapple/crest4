@@ -331,3 +331,8 @@ mitofish = CrestDatabase(name = 'mitofish',
 
 silvamod138pr2 = CrestDatabase(name = 'silvamod138pr2',
                                desc = 'Silva version 138 PR2 version 2')
+
+ssuome = CrestDatabase(name = 'ssuome',
+                       desc = 'Combination of 16S sequences from SILVA(mod)'
+                              ' SSURef v138 and the Eukaryome database'
+                              ' (v1.9.3)')

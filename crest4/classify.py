@@ -25,7 +25,8 @@ from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
 # Constants #
-all_db_choices = ('midori253darn', 'silvamod138pr2', 'silvamod128', 'mitofish')
+all_db_choices = ('midori253darn', 'silvamod138pr2', 'silvamod128', 'mitofish',
+                  'ssuome')
 
 ###############################################################################
 class Classify:
@@ -46,7 +47,7 @@ class Classify:
                  fasta,
                  search_algo = 'blast',
                  num_threads = 1,
-                 search_db   = 'silvamod138pr2',
+                 search_db   = 'ssuome',
                  output_dir  = None,
                  search_hits = None,
                  min_score   = None,
@@ -74,9 +75,9 @@ class Classify:
                          no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori253darn`, `silvamod138pr2`, 'mitofish' or
-                       `silvamod128`.
-                       By default, `silvamod138pr2`. Optionally, the user can
+                       Either `midori253darn`, `silvamod138pr2`, 'mitofish',
+                       `silvamod128` or `ssuome`.
+                       By default, `ssuome`. Optionally, the user can
                        provide a custom database by specifying the full path
                        to a directory containing all required files under
                        `search_db`. See the README for more information.

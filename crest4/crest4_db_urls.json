@@ -15,6 +15,10 @@
         "silvamod138pr2": {
             "title": "SilvaMod v138 PR2",
             "url": "https://crest4.s3-eu-west-1.amazonaws.com/silvamod138pr2.tar.gz"
+        },
+        "ssuome": {
+            "title": "ssuome v1.1",
+            "url": "https://crest4.s3-eu-west-1.amazonaws.com/ssuome.tar.gz"
         }
     }
 }
