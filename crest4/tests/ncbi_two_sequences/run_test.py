@@ -34,8 +34,8 @@ def test_ncbi_two_seqs():
     # Run it #
     c()
     # Check that the results are good #
-    assert c.queries_by_id['Kocuria'].taxonomy[0] == "Kocuria"
-    assert c.queries_by_id['Marmoricola'].taxonomy[0] == "Marmoricola"
+    assert c.queries_by_id['Kocuria'].taxonomy[-10] == "Kocuria"
+    assert c.queries_by_id['Marmoricola'].taxonomy[-10] == "Marmoricola"
     # Return #
     return c
 
