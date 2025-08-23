@@ -5,6 +5,7 @@ channels:
   - defaults
   - xapple
 dependencies:
+  - python=3.10
   - autopaths==1.5.0
   - optmagic==1.1.0
   - plumbing==2.10.4
