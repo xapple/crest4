@@ -24,7 +24,7 @@ jobs:
 
       - name: Install the package from anaconda
         shell: bash -l {0}
-        run: conda install -y -c bioconda -c conda-forge -c xapple crest4
+        run: conda install -y -c bioconda -c conda-forge -c xapple crest4 blast vsearch
 
       - name: Run the pytest suite
         shell: bash -l {0}
