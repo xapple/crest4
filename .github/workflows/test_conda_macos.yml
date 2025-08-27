@@ -1,8 +1,7 @@
 name: Test conda release on macOS
 
 # This workflow will install the latest conda release of the package (not the
-# master branch of the repository) and will run pytest on the two latest
-# python versions.
+# master branch of the repository) and will run pytest on two python versions.
 
 on: workflow_dispatch
 
@@ -11,13 +10,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9']
+        python-version: ['3.12', '3.13']
         os: [macos-latest]
 
     steps:
       - name: Set up Python ${{ matrix.python-version }}
         uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
           auto-update-conda: true
           auto-activate-base: true
           python-version: ${{ matrix.python-version }}

@@ -2,7 +2,7 @@ name: Pytest master branch
 
 # This workflow will run `pytest` on the latest commit of the master
 # branch, after having installed the package with pip.
-# It will run on the latest Ubuntu and on the latest python.
+# It will run on the latest Ubuntu.
 
 on:
   # Trigger the workflow on push or pull request,
@@ -26,16 +26,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.9
+      - name: Set up Python 3.13
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: 3.13
 
       - name: Upgrade pip
         run: python -m pip install --upgrade pip
 
       - name: Install the package from the git repo
-        run: pip install ./
+        run: pip install .[test]
 
       - name: Install BLAST and VSEARCH
         run: sudo apt-get install -y ncbi-blast+ vsearch

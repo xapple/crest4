@@ -1,9 +1,17 @@
 name: Test PyPI release on Ubuntu
 
 # This workflow will install the latest PyPI release of the package (not the
-# master branch of the repository) and will run pytest on the two latest
-# python versions. It will search both in the real PyPI index as well as the
-# test PyPI.
+# master branch of the repository) and will run pytest on two python versions.
+# It will search both in the real PyPI index as well as the test PyPI.
+
+# You can also run it locally with these commands on macOS:
+#
+# brew install act
+# act workflow_dispatch \
+#  --container-architecture linux/amd64 \
+#  -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-22.04 \
+#  -W .github/workflows/test_pypi_ubuntu.yml \
+#  -j build
 
 on: workflow_dispatch
 
@@ -12,7 +20,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9']
+        python-version: ['3.12', '3.13']
         os: [ubuntu-latest]
 
     steps:
@@ -25,7 +33,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install the package from PyPI
-        run: python -m pip install --extra-index-url https://test.pypi.org/simple/ crest4
+        run: python -m pip install --extra-index-url https://test.pypi.org/simple/ crest4[test]
 
       - name: Install BLAST and VSEARCH
         run: sudo apt-get install -y ncbi-blast+ vsearch

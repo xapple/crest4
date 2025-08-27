@@ -1,8 +1,16 @@
 name: Test conda release on Ubuntu
 
 # This workflow will install the latest conda release of the package (not the
-# master branch of the repository) and will run pytest on the two latest
-# python versions.
+# master branch of the repository) and will run pytest on two python versions.
+
+# You can also run it locally with these commands on macOS:
+#
+# brew install act
+# act workflow_dispatch \
+#  --container-architecture linux/amd64 \
+#  -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-22.04 \
+#  -W .github/workflows/test_conda_ubuntu.yml \
+#  -j build
 
 on: workflow_dispatch
 
@@ -11,20 +19,21 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9']
+        python-version: ['3.12', '3.13']
         os: [ubuntu-latest]
 
     steps:
       - name: Set up Python ${{ matrix.python-version }}
         uses: conda-incubator/setup-miniconda@v2
         with:
+          miniconda-version: "latest"
           auto-update-conda: true
           auto-activate-base: true
           python-version: ${{ matrix.python-version }}
 
       - name: Install the package from anaconda
         shell: bash -l {0}
-        run: conda install -y -c bioconda -c conda-forge -c xapple crest4
+        run: conda install -y -c bioconda -c conda-forge -c xapple crest4 blast vsearch
 
       - name: Run the pytest suite
         shell: bash -l {0}

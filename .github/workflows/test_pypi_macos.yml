@@ -1,9 +1,8 @@
 name: Test PyPI release on macOS
 
 # This workflow will install the latest PyPI release of the package (not the
-# master branch of the repository) and will run pytest on the two latest
-# python versions. It will search both in the real PyPI index as well as the
-# test PyPI.
+# master branch of the repository) and will run pytest on two python versions.
+# It will search both in the real PyPI index as well as the test PyPI.
 
 on: workflow_dispatch
 
@@ -12,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ['3.8', '3.9']
+        python-version: ['3.12', '3.13']
         os: [macos-latest]
 
     steps:
@@ -25,7 +24,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install the package from PyPI
-        run: python -m pip install --extra-index-url https://test.pypi.org/simple/ crest4
+        run: python -m pip install --extra-index-url https://test.pypi.org/simple/ crest4[test]
 
       - name: Install BLAST and VSEARCH
         run: brew install blast vsearch
