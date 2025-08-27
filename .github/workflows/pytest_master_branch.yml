@@ -26,6 +26,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+
       - name: Set up Python 3.13
         uses: actions/setup-python@v2
         with:
@@ -35,7 +36,7 @@ jobs:
         run: python -m pip install --upgrade pip
 
       - name: Install the package from the git repo
-        run: pip install .[test]
+        run: pip install ".[test]"
 
       - name: Install BLAST and VSEARCH
         run: sudo apt-get install -y ncbi-blast+ vsearch
