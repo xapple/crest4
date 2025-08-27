@@ -257,7 +257,7 @@ class CrestDatabase:
         1 and 32477.
         """
         # Load the tree with ete3 #
-        from ete3 import Tree
+        from ete4 import Tree
         return Tree(self.path.replace_extension('tre'), format=8)
 
     @property_cached
