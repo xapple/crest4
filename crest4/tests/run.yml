@@ -1,0 +1,57 @@
+name: Test master branch locally
+
+# You can run it locally with these commands on macOS:
+#
+# brew install act
+# act workflow_dispatch \
+#  --container-architecture linux/amd64 \
+#  -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-22.04 \
+#  -W crest4/tests/run.yml \
+#  -j build
+
+on: workflow_dispatch
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+
+      # Clone *from the mounted local repo* into a fresh dir inside the container #
+      - name: Make clean copy from local repo
+        run: |
+          SRC=/github/workspace
+          DEST=/repo
+
+          # Ensure git trusts the mounted path (act mount) #
+          git config --global --add safe.directory "$SRC"
+
+          # Capture the exact commit of your local HEAD #
+          SHA="$(git -C "$SRC" rev-parse --verify HEAD)"
+
+          # Clone from local filesystem into container-only path #
+          git clone --no-hardlinks "file://$SRC" "$DEST"
+          cd "$DEST"
+
+          # Checkout the captured commit in detached HEAD (clean tree) #
+          git checkout --detach "$SHA"
+          echo "Checked out $SHA to $DEST"
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install the package from the git repo
+        working-directory: /repo
+        run: pip install ".[test]"
+
+      - name: Install BLAST and VSEARCH
+        run: sudo apt-get install -y ncbi-blast+ vsearch
+
+      - name: Test with pytest
+        working-directory: /repo
+        run: crest4 --pytest
