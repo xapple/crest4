@@ -1,10 +1,11 @@
-global-include README.md
-global-include pytest.ini
+# Always include top-level docs/config #
+include README.md
+include pytest.ini
+
+# Include all FASTA files anywhere #
 global-include *.fasta
-global-exclude .pytest_cache/README.md
-exclude crest4/tests/gio_hundred_seqs/*
-exclude crest4/tests/hmp_mock_dataset/*
-exclude crest4/tests/long_otus_confident/*
+
+# Keep specific test assets #
 include crest4/tests/precomputed_hits/precomputed.hits
 include crest4/tests/with_otu_table/otu_table_bad.tsv
 include crest4/tests/with_otu_table/otu_table_good.tsv
@@ -16,3 +17,11 @@ include crest4/tests/custom_database/other_database/custom.fasta
 include crest4/tests/custom_database/other_database/custom.map
 include crest4/tests/custom_database/other_database/custom.names
 include crest4/tests/custom_database/other_database/custom.tre
+
+# Exclude bulky test datasets from the sdist #
+exclude crest4/tests/gio_hundred_seqs/*
+exclude crest4/tests/hmp_mock_dataset/*
+exclude crest4/tests/long_otus_confident/*
+
+# Clean up caches #
+prune .pytest_cache
