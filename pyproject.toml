@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crest4"
+version = "4.3.8"
+
+description = "The `crest4` python package can automatically assign taxonomic names to DNA sequences obtained from environmental sequencing."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+
+authors = [
+  { name = "Anders Lanzén", email = "anders.lanzen@gmail.com" },
+  { name = "Lucas Sinclair" }
+]
+
+urls = { Homepage = "https://github.com/xapple/crest4/" }
+
+dependencies = [
+  "autopaths==1.5.0",
+  "optmagic==1.1.0",
+  "plumbing==2.10.4",
+  "fasta==2.2.11",
+  "seqsearch==2.2.1",
+  "biopython==1.83",
+  "rich==13.7.0",
+  "ete4==4.3.0",
+  "pandas==2.2.0"
+]
+
+classifiers = [
+  "Topic :: Scientific/Engineering :: Bio-Informatics"
+]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-asyncio"]
+
+[project.scripts]
+crest4 = "crest4.__main__:main"
+
+# Tell setuptools to include package data and use MANIFEST.in #
+[tool.setuptools]
+include-package-data = true
+
+# Package discovery (equivalent to find_namespace_packages()) #
+[tool.setuptools.packages.find]
+
+# If crest4 is a (implicit) namespace package, this finds it and its subpackages.
+# If you know the top package, you can be explicit:
+include = ["crest4*"]
