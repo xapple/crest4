@@ -5,9 +5,6 @@
 Written by Lucas Sinclair.
 GNUv3 Licensed.
 Contact at www.sinclair.bio
-
-Created in May 2021.
-Last updated in September 2023.
 """
 
 # Built-in modules #
@@ -20,7 +17,7 @@ from crest4.query import Query
 from crest4.databases import CrestDatabase
 
 # First party modules #
-from plumbing.cache      import property_cached
+from functools import cached_property
 from autopaths.file_path import FilePath
 from autopaths.dir_path  import DirectoryPath
 
@@ -236,7 +233,7 @@ class Classify:
         """A simple representation of this object to avoid memory addresses."""
         return "<%s object on '%s'>" % (self.__class__.__name__, self.fasta)
 
-    @property_cached
+    @cached_property
     def database(self):
         """
         Retrieve the database object that the user has selected.
@@ -252,7 +249,7 @@ class Classify:
             return getattr(crest4.databases, self.search_db)
 
     #------------------------------ Searching --------------------------------#
-    @property_cached
+    @cached_property
     def seqsearch(self):
         """
         An object representing the sequence similarity search.
@@ -289,7 +286,7 @@ class Classify:
         return self.seqsearch.run()
 
     #----------------------------- Assigning ---------------------------------#
-    @property_cached
+    @cached_property
     def score_frac(self):
         """
         Using the parameter `self.score_drop` which is a percentage (e.g. 2)
@@ -298,7 +295,7 @@ class Classify:
         """
         return 1 - (self.score_drop / 100)
 
-    @property_cached
+    @cached_property
     def queries(self):
         """
         Parses the output of the sequence search program used which returns
@@ -322,7 +319,7 @@ class Classify:
         # Return #
         return result
 
-    @property_cached
+    @cached_property
     def queries_by_id(self):
         """
         References the same Query objects as the `queries` property above,
@@ -332,7 +329,7 @@ class Classify:
         return {query.name: query for query in self.queries}
 
     #------------------------------- Outputs ---------------------------------#
-    @property_cached
+    @cached_property
     def out_file(self):
         """
         The path to the file that will contain the taxonomic assignments
@@ -343,7 +340,7 @@ class Classify:
         # Return #
         return self.output_dir + "assignments.txt"
 
-    @property_cached
+    @cached_property
     def otu_info(self):
         """An object giving access to the OTU table information and methods."""
         from crest4.otu_tables import InfoFromTableOTUs
