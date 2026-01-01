@@ -34,6 +34,8 @@ If you use CREST in your research, please cite [this publication](https://dx.plo
     CREST - Classification Resources for Environmental Sequence Tags, PLoS ONE, 7:e49334
     Lanzén A, Jørgensen SL, Huson D, Gorfer M, Grindhaug SH, Jonassen I, Øvreås L, Urich T (2012)
 
+The publication references the prior versions of `crest3` starting from 2012, while the current `crest4` was re-written in 2021.
+
 ## Installing
 
 Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply choose one of the two following methods to install, depending on which package manager you prefer to use.
@@ -245,17 +247,17 @@ The `silvamod128` database was derived by manual curation of the [SILVA NR SSU R
 
 ### Classification algorithm
 
-The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the "bit-score" of the best alignment, provided the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant `silvamod128` database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
+The classification is carried out based on a subset of the best matching alignments using the [Lowest Common Ancestor](http://en.wikipedia.org/wiki/Lowest_common_ancestor) strategy. Briefly, the subset includes sequences that score within x% of the best alignment "bit-score", provided the best score is above a minimum value. Default values are `155` for the minimum bit-score and `2%` for the score drop threshold. Based on cross-validation testing using the non-redundant `silvamod128` database, this results in relatively few false positives for most datasets. However, the score drop range can be turned up to about `10%`, to increase accuracy with short reads and for datasets with many novel sequences.
 
 In addition to the lowest common ancestor classification, a minimum similarity filter is used, based on a set of taxon-specific requirements, by default depending on their taxonomic rank. By default, a sequence must be aligned with at least 99% nucleotide similarity to the best reference sequence in order to be classified to the species rank. For the genus, family, order, class and phylum ranks the respective default cut-offs are 97%, 95%, 90%, 85% and 80%. These cutoffs can be changed manually by editing the `.names` file of the respective reference database. This filter ensures that classification is made to the taxon of the lowest allowed rank, effectively re-assigning sequences to parent taxa until allowed.
 
 When using amplicon sequences, we strongly recommend preparing the sequences by performing a noise reduction step as well as applying chimera removal. This can be achieved with various third party software such as: VSEARCH, UPARSE, DADA2, SWARM, etc.
 
-For amplicon sequencing experiments with many replicates or similar samples (>~10), the unique noise-reduced sequences may be further clustered using a similarity threshold (often 97% although larger thresholds are probably preferable) into operational taxonomic units (OTUs), prior to classification.
+For amplicon sequencing experiments with many replicates or similar samples (>~10), the unique noise-reduced sequences may be further clustered using a similarity threshold (often 97%, although larger thresholds are probably preferable) into operational taxonomic units (OTUs), prior to classification.
 
 ### Custom databases
 
-It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation is available in this other git repository:
+It is possible to construct a custom reference database for use with `crest4`. The scripts necessary to do this along with some documentation are available in this other git repository:
 
 https://github.com/xapple/crest4_utils
 
@@ -263,11 +265,11 @@ https://github.com/xapple/crest4_utils
 
 The repository for `crest4` comes along with five different GitHub actions for CI/CD which are:
 
-* Pytest master branch - ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
-* Test PyPI release on Ubuntu - ![PyPI Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_pypi_ubuntu.yml/badge.svg)
-* Test PyPI release on macOS - ![PyPI macOS](https://github.com/xapple/crest4/actions/workflows/test_pypi_macos.yml/badge.svg)
-* Test conda release on Ubuntu - ![conda Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
-* Test conda release on macOS - ![conda macOS](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
+* Pytest master branch: ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
+* Test PyPI release on Ubuntu: ![PyPI Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_pypi_ubuntu.yml/badge.svg)
+* Test PyPI release on macOS: ![PyPI macOS](https://github.com/xapple/crest4/actions/workflows/test_pypi_macos.yml/badge.svg)
+* Test conda release on Ubuntu: ![conda Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
+* Test conda release on macOS: ![conda macOS](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
 
 Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite for both python 3.8 and python 3.9 on different operating systems.
 
