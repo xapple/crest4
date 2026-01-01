@@ -8,7 +8,7 @@ version = "4.3.8"
 
 description = "The `crest4` python package can automatically assign taxonomic names to DNA sequences obtained from environmental sequencing."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = { file = "LICENSE" }
 
 authors = [
