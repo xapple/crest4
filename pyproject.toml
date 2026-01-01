@@ -13,7 +13,7 @@ license = { file = "LICENSE" }
 
 authors = [
   { name = "Anders Lanzén", email = "anders.lanzen@gmail.com" },
-  { name = "Lucas Sinclair" }
+  { name = "Lucas Sinclair", email = "lucas.sinclair@me.com" }
 ]
 
 urls = { Homepage = "https://github.com/xapple/crest4/" }
