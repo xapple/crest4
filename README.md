@@ -38,7 +38,7 @@ The publication references the prior versions of `crest3` starting from 2012, wh
 
 ## Installing
 
-Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above, which is often installed by default. Simply choose one of the two following methods to install, depending on which package manager you prefer to use.
+Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.10 or above, which is often installed by default. Simply choose one of the two following methods to install, depending on which package manager you prefer to use.
 
 ### Installing via `conda`
 
@@ -82,7 +82,7 @@ If you wish to install `crest4` from the repository source code you can follow [
 * If you do not have `pip3` on your system you can refer to [this section](docs/installing_tips.md#obtaining-pip3).
 * If you do not have `python3` on your system or have an outdated version, you can refer to [this other section](docs/installing_tips.md#obtaining-python3).
 * If you can't run the `crest4` command after a successful installation, make sure that the python bin directory is in your path. This is usually `$HOME/.local/bin/` for Ubuntu.
-* If none of the above has enabled you to install `crest4`, please open an issue on [the bug tracker](https://github.com/xapple/crest4/issues) and we will get back to you shortly.
+* If none of the above has enabled you to install `crest4`, please open an issue on [the bug tracker,](https://github.com/xapple/crest4/issues) and we will get back to you shortly.
 
 ### Database location
 
@@ -276,7 +276,6 @@ The repository for `crest4` comes along with five different GitHub actions for C
 * Test PyPI release on Ubuntu: ![PyPI Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_pypi_ubuntu.yml/badge.svg)
 * Test PyPI release on macOS: ![PyPI macOS](https://github.com/xapple/crest4/actions/workflows/test_pypi_macos.yml/badge.svg)
 * Test conda release on Ubuntu: ![conda Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
-* Test conda release on macOS: ![conda macOS](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
 
 Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite on different operating systems. The tests all run on python 3.14 by default, except `test_pypi_ubuntu` which also includes many old python versions.
 
