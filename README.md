@@ -106,6 +106,11 @@ Silvamod138pr2 is the default reference database. To use another database, e.g.,
 
     crest4 -f sequences.fasta -d silvamod138pr2
 
+A typical output on your terminal will look like this:
+
+    Running crest4 version 4.4.0
+    Classification ran successfully. Results are placed in '/myproject/results/assignments.txt'.
+
 ### All options
 
 The full list of options is as follows:
@@ -128,18 +133,18 @@ Optional arguments:
   --num_threads NUM, -t NUM
                         The number of processors to use for the sequence
                         similarity search. By default, parallelism is turned
-                        off and this value is 1. If you pass the value `True`
-                        we will run as many processes as there are CPUs but
-                        no more than 32.
+                        off, and this value is 1. If you pass the value
+                        `True,` we will run as many processes as there are
+                        CPUs but no more than 32.
 
   --search_db DATABASE, -d DATABASE
                         The database used for the sequence similarity search.
-                        Either `midori253darn`, `silvamod138pr2`, 'mitofish' or
-                        `silvamod128`.
-                        By default, `silvamod138pr2`. Optionally, the user can
-                        provide a custom database by specifying the full path
-                        to a directory containing all required files under
-                        `search_db`. See the README for more information.
+                        Either `ssuome`, `silvamod138pr2`, 'mitofish',
+                        or `midori253darn`. By default, `ssuome`.
+                        Optionally, the user can provide a custom database by
+                        specifying the full path to a directory containing all
+                        required files under `search_db`.
+                        See the README for more information.
 
   --output_dir DIR, -o DIR
                         The directory into which all the classification
@@ -170,14 +175,14 @@ Optional arguments:
                         to discard based on a drop in percentage from the score
                         of the best hit. Any hit below the following value:
                         "(100 - score_drop)/100 * best_hit_score" is ignored.
-                        By default `2.0`.
+                        By default, `2.0`.
 
   --min_smlrty MIN_SMLRTY, -i MIN_SMLRTY
                         Determines if the minimum similarity filter is turned
                         on or off. Pass any value like `False` to turn it off.
                         The minimum similarity filter prevents classification
-                        to higher ranks when a minimum rank-identity is not met.
-                        The default is `True`.
+                        to higher ranks when a minimum rank-identity is not
+                        met. The default is `True`.
 
   --otu_table OTU_TABLE, -u OTU_TABLE
                         Optionally, one can specify the path to an existing OTU
