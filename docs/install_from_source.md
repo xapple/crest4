@@ -62,16 +62,17 @@ You should now be using the latest version of python.
 
 `crest4` uses several extra python libraries. You can get them by running these commands:
 
-    $ python3 -m pip install biopython
-    $ python3 -m pip install ete3
-    $ python3 -m pip install pytest
-    $ python3 -m pip install rich
-    $ python3 -m pip install setuptools
     $ python3 -m pip install autopaths
     $ python3 -m pip install optmagic
     $ python3 -m pip install plumbing
     $ python3 -m pip install seqsearch
     $ python3 -m pip install fasta
+    $ python3 -m pip install biopython
+    $ python3 -m pip install ete4
+    $ python3 -m pip install rich
+    $ python3 -m pip install pandas
+    $ python3 -m pip install pytest
+    $ python3 -m pip install pytest-asyncio
 
 ### Step 5: Obtaining extra dependencies
 
