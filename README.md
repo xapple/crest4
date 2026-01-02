@@ -23,9 +23,9 @@ Simply put, given the following fragment of an rRNA 16S sequence from an uncultu
 
     Bacteria; Terrabacteria; Cyanobacteria; Cyanobacteriia; Phormidesmiales; Nodosilineaceae; Nodosilinea
 
-To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identify threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification. Simply put, if for instance all hits for a given sequence only agree at the order level, the assignment stops at the order level.
+To produce this result, the input sequence is compared against a built-in reference database of marker genes (such as the SSU rRNA), using the BLAST or VSEARCH algorithms. All high similarity hits are recorded and filtered for both a minimum score threshold, and a minimum identity threshold. Next, for every surviving hit, the exact position in the phylogenetic tree of life is recorded. Finally, the full name of the lowest common ancestor (given this collection of nodes in the tree) is determined and reported as a confident taxonomic classification. Simply put, if, for instance, all hits for a given sequence only agree at the order level, the assignment stops at the order level.
 
-This strategy contrasts with the other tools that instead use a naive bayesian classifier for taxonomic assignment. Often referred to as the Wang method and used for example in the RDP software, it consists of the following steps: calculate the probability that the query sequence would be part of any given reference taxonomy sequence based on the decomposed *kmer* content and pick the taxonomy with the highest probability while considering a confidence limit computed by a bootstrapping algorithm.
+This strategy contrasts with the other tools that instead use a naive bayesian classifier for taxonomic assignment. Often referred to as the Wang method and used, for example, in the RDP software, it consists of the following steps: calculate the probability that the query sequence would be part of any given reference taxonomy sequence based on the decomposed *kmer* content and pick the taxonomy with the highest probability while considering a confidence limit computed by a bootstrapping algorithm.
 
 ### Citation
 
@@ -38,7 +38,7 @@ The publication references the prior versions of `crest3` starting from 2012, wh
 
 ## Installing
 
-Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above which is often installed by default. Simply choose one of the two following methods to install, depending on which package manager you prefer to use.
+Since `crest4` is written in python it is compatible with all operating systems: Linux, macOS and Windows. The only prerequisite is python version 3.8 or above, which is often installed by default. Simply choose one of the two following methods to install, depending on which package manager you prefer to use.
 
 ### Installing via `conda`
 
@@ -54,7 +54,7 @@ Or to create a custom environment named `crest` which you activate later:
 
 ### Notes and extras
 
-Once the installation completes you are ready to use the `crest4` executable command from the shell. Please note that the reference databases are downloaded automatically during first run, so this might take some time depending on your internet connection.
+Once the installation completes you are ready to use the `crest4` executable command from the shell. Please note that the reference databases are downloaded automatically during the first run, so this might take some time depending on your internet connection.
 
 In order to search the reference databases, you will also need either BLAST or VSEARCH installed. These can be installed automatically with the `conda` package manager.
 
@@ -98,7 +98,7 @@ To change the output directory, specify the following option:
 
     crest4 -f sequences.fasta -o ~/data/results/crest_test/
 
-To parallelize the sequence similarity search with 32 threads use this option:
+To parallelize the sequence similarity search with 32 threads, use this option:
 
     crest4 -f sequences.fasta -t 32
 
@@ -215,13 +215,13 @@ The specific arguments accepted are the same as the command line version as spec
 
 ### Test suite
 
-To test that the installation was successful you can launch the test suite by executing:
+To test that the installation was successful, you can launch the test suite by executing:
 
     crest4 --pytest
 
 ### Splitting computation
 
-It is possible to run the sequence similarity search yourself without passing through the `crest4` executable. This is useful for instance if you want to run BLAST on a dedicated server for increased speed and only want to perform the taxonomic assignment on your local computer.
+It is possible to run the sequence similarity search yourself without passing through the `crest4` executable. This is useful, for instance, if you want to run BLAST on a dedicated server for increased speed and only want to perform the taxonomic assignment on your local computer.
 
 In such a case you just need to copy the hits file that was generated back to your local computer and specify its location with the following parameter:
 
@@ -271,7 +271,7 @@ The repository for `crest4` comes along with five different GitHub actions for C
 * Test conda release on Ubuntu: ![conda Ubuntu](https://github.com/xapple/crest4/actions/workflows/test_conda_ubuntu.yml/badge.svg)
 * Test conda release on macOS: ![conda macOS](https://github.com/xapple/crest4/actions/workflows/test_conda_macos.yml/badge.svg)
 
-Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite for both python 3.8 and python 3.9 on different operating systems.
+Only the first action is set to be run automatically on each commit to the master branch. The four other actions can be manually launched and will run the pytest suite on different operating systems. The tests all run on python 3.14 by default, except `test_pypi_ubuntu` which also includes many old python versions.
 
 ### Distributing the package
 
