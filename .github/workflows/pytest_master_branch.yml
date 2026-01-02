@@ -2,7 +2,7 @@ name: Pytest master branch
 
 # This workflow will run `pytest` on the latest commit of the master
 # branch on GitHub, after having installed the package with pip.
-# It will run on the latest Ubuntu. If you want to run this locally
+# It will run on the latest Ubuntu. If you want to run this locally,
 # look at the file crest4/crest4/tests/run.yml` for instructions.
 
 on:
@@ -28,10 +28,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Set up Python 3.13
+      - name: Set up Python 3.14
         uses: actions/setup-python@v2
         with:
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Upgrade pip itself
         run: python -m pip install --upgrade pip
