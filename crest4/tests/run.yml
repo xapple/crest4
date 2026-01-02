@@ -1,4 +1,4 @@
-name: Test master branch locally
+name: Test master branch locally (with Ubuntu)
 
 # You can run it locally with these commands on macOS:
 #
@@ -7,7 +7,8 @@ name: Test master branch locally
 #  --container-architecture linux/amd64 \
 #  -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-22.04 \
 #  -W crest4/tests/run.yml \
-#  -j build
+#  -j build \
+#  -C "$(pwd)"
 
 on: workflow_dispatch
 
@@ -20,8 +21,18 @@ jobs:
       # Clone *from the mounted local repo* into a fresh dir inside the container #
       - name: Make clean copy from local repo
         run: |
-          SRC=/github/workspace
+          set -euo pipefail
+
+          SRC="${{ github.workspace }}"
           DEST=/repo
+
+          echo "Workspace is: $SRC"
+          if [ ! -d "$SRC/.git" ]; then
+            echo "ERROR: GITHUB_WORKSPACE not a repository" >&2
+            pwd
+            ls -halt $SRC
+            exit 1
+          fi
 
           # Ensure git trusts the mounted path (act mount) #
           git config --global --add safe.directory "$SRC"
@@ -42,12 +53,15 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: Upgrade pip
+      - name: Upgrade pip itself
         run: python -m pip install --upgrade pip
 
       - name: Install the package from the git repo
         working-directory: /repo
         run: pip install ".[test]"
+
+      - name: Update the APT package lists
+        run: sudo apt-get update
 
       - name: Install BLAST and VSEARCH
         run: sudo apt-get install -y ncbi-blast+ vsearch
