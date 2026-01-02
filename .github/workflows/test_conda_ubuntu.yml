@@ -11,6 +11,8 @@ name: Test conda release on Ubuntu
 #  -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-22.04 \
 #  -W .github/workflows/test_conda_ubuntu.yml \
 #  -j build
+#  --matrix python-version:3.12 \
+#  --matrix os:ubuntu-latest \
 
 on: workflow_dispatch
 

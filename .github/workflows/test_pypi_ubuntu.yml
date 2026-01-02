@@ -11,7 +11,9 @@ name: Test PyPI release on Ubuntu
 #  --container-architecture linux/amd64 \
 #  -P ubuntu-latest=ghcr.io/catthehacker/ubuntu:act-22.04 \
 #  -W .github/workflows/test_pypi_ubuntu.yml \
-#  -j build
+#  -j build \
+#  --matrix python-version:3.12 \
+#  --matrix os:ubuntu-latest \
 
 on: workflow_dispatch
 
