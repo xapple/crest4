@@ -48,6 +48,8 @@ Or to create a custom environment named `crest` which you activate later:
 
     $ conda create -n crest -c bioconda -c conda-forge -c xapple crest4
 
+Please note that on arm64 architectures (Apple Silicon), you have to use the pip method for installation.
+
 ### Installing via `pip`
 
     $ pip3 install crest4
