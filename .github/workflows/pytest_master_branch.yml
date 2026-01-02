@@ -1,4 +1,7 @@
 name: Pytest master branch
+permissions:
+  contents: read
+  actions: write
 
 # This workflow will run `pytest` on the latest commit of the master
 # branch on GitHub, after having installed the package with pip.

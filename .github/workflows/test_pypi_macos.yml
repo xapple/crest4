@@ -1,4 +1,7 @@
 name: Test PyPI release on macOS
+permissions:
+  contents: read
+  actions: write
 
 # This workflow will install the latest PyPI release of the package (not the
 # master branch of the repository) and will run pytest on two python versions.
