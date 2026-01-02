@@ -42,6 +42,12 @@ jobs:
       - name: Install the package from the git repo
         run: pip install ".[test]"
 
+      - name: Cache CREST4 databases
+        uses: actions/cache@v4
+        with:
+          path: ~/.crest4
+          key: crest4-db-all
+
       - name: Install BLAST and VSEARCH
         run: sudo apt-get install -y ncbi-blast+ vsearch
 

@@ -29,6 +29,12 @@ jobs:
         shell: bash -l {0}
         run: conda install -y -c bioconda -c conda-forge -c xapple crest4 blast vsearch
 
+      - name: Cache CREST4 databases
+        uses: actions/cache@v4
+        with:
+          path: ~/.crest4
+          key: crest4-db-all
+
       - name: Run the pytest suite
         shell: bash -l {0}
         run: crest4 --pytest
