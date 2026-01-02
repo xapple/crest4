@@ -135,8 +135,8 @@ class Query:
         # The taxonomic name of the current node #
         name = get_tax(self.assigned_node)
         # Traverse the tree up to the root #
-        tree_path = self.assigned_node.iter_ancestors()
-        # Get name of every parent along the way #
+        tree_path = self.assigned_node.ancestors()
+        # Get the name of every parent along the way #
         return [name] + [get_tax(parent) for parent in tree_path]
 
     @property_cached
