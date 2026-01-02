@@ -108,7 +108,7 @@ class Query:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
             # Check if we already got all the way up to the root #
-            if node.is_root(): break
+            if node.is_root: break
             # Get the minimum value associated for this level #
             smlrty_min = float(self.db.node_to_name[node.name][1])
             # Check if we are finally above that minimum #
