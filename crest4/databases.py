@@ -257,7 +257,7 @@ class CrestDatabase:
         No other information is present in the nodes.
         """
         from ete4 import Tree
-        return Tree(str(self.path.replace_extension('tre')))
+        return Tree(str(self.path.replace_extension('tre')), parser=8)
 
     @property_cached
     def node_to_name(self):
@@ -302,6 +302,7 @@ class CrestDatabase:
         with open(path, 'rt') as handle: return dict(parse_lines(handle))
 
     #----------------------------- Sanity checks -----------------------------#
+    # See file `analyze_tre_files.py` in the `crest4_utils` repository.
     pass
 
     #--------------------------- Extra information ---------------------------#
