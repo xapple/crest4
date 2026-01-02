@@ -302,6 +302,8 @@ class CrestDatabase:
         # Create a dictionary #
         with open(path, 'rt') as handle: return dict(parse_lines(handle))
 
+    #----------------------------- Sanity checks -----------------------------#
+
     #--------------------------- Extra information ---------------------------#
     @property
     def rank_names(self):
@@ -322,9 +324,6 @@ class CrestDatabase:
 # As our databases should only be stored on disk once, so we have singletons #
 midori253darn = CrestDatabase(name = 'midori253darn',
                               desc = 'The midori253darn database for crest4')
-
-silvamod128 = CrestDatabase(name = 'silvamod128',
-                            desc = 'Silva version 128 modified for crest4')
 
 mitofish = CrestDatabase(name = 'mitofish',
                          desc = 'MitoFish')
