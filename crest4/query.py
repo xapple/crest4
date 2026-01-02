@@ -81,7 +81,7 @@ class Query:
         """
         This function will return the node in the tree at which the
         sequence was assigned. This could be the root of the tree or any
-        other node.
+        other node. For example: <Tree at 0x15194b8d>
         This function can also return `False` when there are no results.
         """
         # If there are no hits #
@@ -121,6 +121,13 @@ class Query:
         # Return #
         return node
 
+    def get_tax(self, node):
+        """Function to get the taxonomy name of a node"""
+        # Sanity check that the node has a name #
+        msg = f"Node {node!r} doesn't have an ID associated."
+        if not node.name: raise LookupError(msg)
+        return self.db.node_to_name[node.name][0]
+
     @property_cached
     def taxonomy(self):
         """
@@ -133,14 +140,12 @@ class Query:
         """
         # Check if there were no hits #
         if self.assigned_node is False: return ["No hits"]
-        # Function to get the taxonomy name of a node
-        def get_tax(node): return self.db.node_to_name[node.name][0]
         # The taxonomic name of the current node #
-        name = get_tax(self.assigned_node)
+        name = self.get_tax(self.assigned_node)
         # Traverse the tree up to the root #
         tree_path = self.assigned_node.ancestors()
         # Get the name of every parent along the way #
-        return [name] + [get_tax(parent) for parent in tree_path]
+        return [name] + [self.get_tax(parent) for parent in tree_path]
 
     @property_cached
     def tax_string(self):
