@@ -27,15 +27,14 @@ dependencies = [
   "biopython==1.86",
   "rich==14.2.0",
   "ete4==4.4.0",
-  "pandas==2.3.3"
+  "pandas==2.3.3",
+  "pytest==9.0.2",
+  "pytest-asyncio==1.3.0",
 ]
 
 classifiers = [
   "Topic :: Scientific/Engineering :: Bio-Informatics"
 ]
-
-[project.optional-dependencies]
-test = ["pytest", "pytest-asyncio"]
 
 [project.scripts]
 crest4 = "crest4.__main__:main"
