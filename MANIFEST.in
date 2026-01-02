@@ -1,6 +1,8 @@
 # Always include top-level docs/config #
 include README.md
-include pytest.ini
+
+# Keep the pytest rules #
+include crest4/tests/pytest.ini
 
 # Include all FASTA files anywhere #
 global-include *.fasta
@@ -18,7 +20,7 @@ include crest4/tests/custom_database/other_database/custom.map
 include crest4/tests/custom_database/other_database/custom.names
 include crest4/tests/custom_database/other_database/custom.tre
 
-# Exclude bulky test datasets from the sdist #
+# Exclude bulky test datasets from the distribution #
 exclude crest4/tests/gio_hundred_seqs/*
 exclude crest4/tests/hmp_mock_dataset/*
 exclude crest4/tests/long_otus_confident/*
