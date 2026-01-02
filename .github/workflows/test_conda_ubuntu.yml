@@ -33,7 +33,7 @@ jobs:
         with:
           miniconda-version: "latest"
           auto-update-conda: true
-          auto-activate-base: true
+          auto-activate: true
           python-version: ${{ matrix.python-version }}
 
       - name: Install the package from anaconda
