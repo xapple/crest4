@@ -112,9 +112,9 @@ class Query:
             if not self.classify.min_smlrty: break
             # Check if we already got all the way up to the root #
             if node.is_root: break
-            # Get the minimum value associated for this level #
+            # Get the minimum value associated with this level #
             smlrty_min = float(self.db.node_to_name[node.name][1])
-            # Check if we are finally above that minimum #
+            # Check if we are above that minimum #
             if similarity > smlrty_min: break
             # Otherwise, go up one level for our classification #
             node = node.up
@@ -134,7 +134,7 @@ class Query:
         # Check if there were no hits #
         if self.assigned_node is False: return ["No hits"]
         # Function to get the taxonomy name of a node
-        get_tax = lambda node: self.db.node_to_name[node.name][0]
+        def get_tax(node): return self.db.node_to_name[node.name][0]
         # The taxonomic name of the current node #
         name = get_tax(self.assigned_node)
         # Traverse the tree up to the root #

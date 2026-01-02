@@ -256,7 +256,6 @@ class CrestDatabase:
         A number characterizes every node. For instance, between 1 and 32'477.
         No other information is present in the nodes.
         """
-        # Load the tree with ete3 #
         from ete4 import Tree
         return Tree(str(self.path.replace_extension('tre')))
 
@@ -281,8 +280,8 @@ class CrestDatabase:
     @property_cached
     def acc_to_node(self):
         """
-        Using the `.map` file, we return a dictionary linking accession strings
-        to node numbers.
+        Using the `.map` file, we return a dictionary linking accession
+        strings (found in the `.fasta` file for each sequence) to node numbers.
         Example: HQ191339 -> 28386
         """
         # Get the path of the file #
@@ -303,6 +302,7 @@ class CrestDatabase:
         with open(path, 'rt') as handle: return dict(parse_lines(handle))
 
     #----------------------------- Sanity checks -----------------------------#
+    pass
 
     #--------------------------- Extra information ---------------------------#
     @property
