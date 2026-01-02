@@ -104,7 +104,7 @@ To parallelize the sequence similarity search with 32 threads, use this option:
 
 Silvamod138pr2 is the default reference database. To use another database, e.g., midori, the `-d` option must be specified followed by the database name:
 
-    crest4 -f sequences.fasta -d midori248
+    crest4 -f sequences.fasta -d silvamod138pr2
 
 ### All options
 
