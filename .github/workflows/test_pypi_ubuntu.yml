@@ -2,7 +2,7 @@ name: Test PyPI release on Ubuntu
 
 # This workflow will install the latest PyPI release of the package (not the
 # master branch of the repository) and will run pytest on two python versions.
-# It will search both in the real PyPI index as well as the test PyPI.
+# It will search both in the real PyPI index and the test PyPI index.
 
 # You can also run it locally with these commands on macOS:
 #
@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Upgrade pip
+      - name: Upgrade pip itself
         run: python -m pip install --upgrade pip
 
       - name: Install the package from PyPI
