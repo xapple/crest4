@@ -34,7 +34,7 @@ class Classify:
 
     After creating a new instance of a `Classify` object, you can simply call
     it to get your input data processed and the assignments output file
-    generated. Examples are included in the `README.md` file of this package
+    generated. Examples are included in the `README.md` file of this package,
     which can directly be seen on the GitHub page at:
 
     https://github.com/xapple/crest4/
@@ -67,17 +67,17 @@ class Classify:
 
             num_threads: The number of processors to use for the sequence
                          similarity search. By default, parallelism is turned
-                         off and this value is 1. If you pass the value `True`
-                         we will run as many processes as there are CPUs but
-                         no more than 32.
+                         off, and this value is 1. If you pass the value
+                         `True,` we will run as many processes as there are
+                         CPUs but no more than 32.
 
             search_db: The database used for the sequence similarity search.
-                       Either `midori253darn`, `silvamod138pr2`, 'mitofish',
-                       `silvamod128` or `ssuome`.
-                       By default, `ssuome`. Optionally, the user can
-                       provide a custom database by specifying the full path
-                       to a directory containing all required files under
-                       `search_db`. See the README for more information.
+                       Either `ssuome`, `silvamod138pr2`, 'mitofish',
+                       or `midori253darn`. By default, `ssuome`.
+                       Optionally, the user can provide a custom database by
+                       specifying the full path to a directory containing all
+                       required files under `search_db`.
+                       See the README for more information.
 
             output_dir: The directory into which all the classification
                         results will be written to. This defaults to a
@@ -198,8 +198,8 @@ class Classify:
             self.fasta.must_exist()
         # Either the FASTA file or the hits file has to contain something #
         if not self.fasta and not self.search_hits:
-            msg = "Neither the FASTA file at '%s' nor the search hits file at" \
-                  " '%s' contain any data. Cannot proceed."
+            msg = "Neither the FASTA file at '%s' nor the search hits file" \
+                  " at '%s' contain any data. Cannot proceed."
             raise Exception(msg % (self.fasta, self.search_hits))
         # Check the search algorithm #
         if self.search_algo not in ('blast', 'vsearch'):
@@ -237,8 +237,7 @@ class Classify:
     def database(self):
         """
         Retrieve the database object that the user has selected.
-        This can be either one of the standard databases, or a custom
-        specified path.
+        This can be either a standard database or a custom-specified path.
         """
         if self.search_db not in all_db_choices:
             # Take the absolute path #
@@ -264,7 +263,7 @@ class Classify:
         # If the user chose BLAST then we have to specify tabular output #
         if self.search_algo == 'blast':
             params = {'-outfmt': '7 qseqid sseqid bitscore length nident'}
-        # In case the user chose VSEARCH we specify the minimum identify
+        # In case the user chose VSEARCH we specify the minimum identity
         # and the minimum sequence match length
         if self.search_algo == 'vsearch':
             params = {'--id':      self.min_score,
@@ -289,9 +288,9 @@ class Classify:
     @cached_property
     def score_frac(self):
         """
-        Using the parameter `self.score_drop` which is a percentage (e.g. 2)
+        Using the parameter `self.score_drop`, which is a percentage (e.g., 2)
         indicating a drop, we compute the minimum remaining amount of score
-        allowed, as a fraction (e.g. 0.98).
+        allowed, as a fraction (e.g., 0.98).
         """
         return 1 - (self.score_drop / 100)
 
@@ -324,7 +323,7 @@ class Classify:
         """
         References the same Query objects as the `queries` property above,
         except that this time they are in a dictionary with the query ids
-        (i.e. the original fasta ids) as keys instead of in a list.
+        (i.e., the original fasta ids) as keys instead of in a list.
         """
         return {query.name: query for query in self.queries}
 
@@ -335,7 +334,7 @@ class Classify:
         The path to the file that will contain the taxonomic assignments
         for every sequence.
         """
-        # Make sure that output directory exists #
+        # Make sure that the output directory exists #
         self.output_dir.create_if_not_exists()
         # Return #
         return self.output_dir + "assignments.txt"

@@ -85,13 +85,13 @@ class InfoFromTableOTUs:
         # An empty pandas Series with each sample name and just zeros #
         import pandas
         empty_samples = pandas.Series(0, index=self.otus_df.columns)
-        # Build a empty new dataframe from a dictionary of empty series #
+        # Build an empty new dataframe from a dictionary of empty series #
         result = defaultdict(lambda: empty_samples.copy())
         # Loop over every OTU in the user supplied table #
         for i, otu_counts in self.otus_df.iterrows():
             # The name or id of the current OTU #
             otu_name = otu_counts.name
-            # Get the assignment of current OTU from our classification #
+            # Get the assignment of the current OTU from our classification #
             tax = self.classify.queries_by_id[otu_name].taxonomy
             # By default, the root is at the end #
             tax = list(reversed(tax))
@@ -99,7 +99,7 @@ class InfoFromTableOTUs:
             tax_name = '; '.join(tax)
             # Add the current counts to that particular taxonomy #
             result[tax_name] += otu_counts
-            # If we have the cumulative option then propagate up the tree #
+            # If we have the cumulative option, then propagate up the tree #
             if cumulative:
                 for step in range(1, len(tax)):
                     tax_name = '; '.join(tax[0:-step])

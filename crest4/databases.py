@@ -26,12 +26,12 @@ class CrestMetadata:
     with the source tarball on PyPI. Therefore, we host them on a separate
     server. Currently, this is S3 on AWS.
 
-    Over the course of years however these servers might be shutdown.
+    Over the course of years, however, these servers might be shutdown.
     To avoid this inconvenience, instead of hard-coding the server address here
     in the source file, we instead maintain a metadata file.
 
     This metadata file contains the up-to-date URLs of the databases
-    to download. It is placed in the GitHub repository and only the location
+    to download. It is placed in the GitHub repository, and only the location
     of the metadata file is hardcoded into the source code.
 
     This enables updating the URLs without having to issue a new release of
@@ -49,7 +49,7 @@ class CrestMetadata:
     # This will always retrieve the raw content of the latest version #
     metadata_url = base_url + repo_path
 
-    # To see the HTML version on GitHub simply head to this address instead:
+    # To see the HTML version on GitHub, simply head to this address instead:
     # https://github.com/xapple/crest4/blob/master/crest4/crest4_db_urls.json
 
     @property_cached
@@ -67,7 +67,7 @@ class CrestMetadata:
         # Return it #
         return data['crest4_databases']
 
-# The metadata should be very rarely updated -- we create a singleton #
+# The metadata should very rarely be updated -- we create a singleton #
 metadata = CrestMetadata()
 
 ###############################################################################
@@ -86,7 +86,7 @@ class CrestDatabase:
 
     def __init__(self, *args, **kwargs):
         """
-        Either take one of the built in databases by specifying:
+        Either take one of the built-in databases by specifying:
         * name
         * desc
 
@@ -253,8 +253,8 @@ class CrestDatabase:
     def tree(self):
         """
         Using the `.tre` file, we return an N-ary tree in memory.
-        Every node is characterized by a number. For instance between
-        1 and 32477.
+        A number characterizes every node. For instance, between 1 and 32'477.
+        No other information is present in the nodes.
         """
         # Load the tree with ete3 #
         from ete4 import Tree

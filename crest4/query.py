@@ -43,10 +43,10 @@ class Query:
     @property_cached
     def nodes(self):
         """
-        This function will return the nodes in the tree for which this
-        sequence got at least one hit in a set.
+        This function will return the nodes numbers in the tree for which this
+        sequence got at least one hit in a set. For example: {'1494'}
         """
-        # Initialize the set that will hold all the nodes we find #
+        # Initialize the set that will hold all the nodes numbers we find #
         nodes = set()
         # Check there was at least one hit #
         if len(self.query.hits) == 0: return nodes
@@ -63,15 +63,14 @@ class Query:
             if self.algo == 'blast':   score = hsp.bitscore
             if self.algo == 'vsearch': score = hsp.ident_pct/100
             if score < threshold: break
-            # Get the name (or ID) of the current hit #
-            name = hsp.hit_id
-            # Get the corresponding node name in the tree #
-            node = self.db.acc_to_node.get(name)
+            # Get the name (or ID) of the current hit e.g. 'DQ448783' #
+            hit_id = hsp.hit_id
+            # Get the corresponding node number in the tree e.g. '1494' #
+            node = self.db.acc_to_node.get(hit_id, False)
             # Check that it was found #
-            if node is None:
-                msg = "The search hit '%s' was not found in the tree." \
-                      " The database '%s' is probably corrupted."
-                raise Exception(msg % (name, self.db.dir_name))
+            msg = f"The search hit '{hit_id}' was not found in the tree." \
+                  f" The database '{self.db.dir_name}' is probably corrupted."
+            if node is False: raise LookupError(msg)
             # Add it to the list #
             nodes.add(node)
         # Return #
