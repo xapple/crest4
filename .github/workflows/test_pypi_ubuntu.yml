@@ -37,6 +37,9 @@ jobs:
       - name: Install the package from PyPI
         run: python -m pip install --extra-index-url https://test.pypi.org/simple/ crest4[test]
 
+      - name: Update the APT package lists
+        run: sudo apt-get update
+
       - name: Install BLAST and VSEARCH
         run: sudo apt-get install -y ncbi-blast+ vsearch
 
