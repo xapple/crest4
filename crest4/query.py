@@ -93,7 +93,7 @@ class Query:
             node = next(self.db.tree.search_nodes(name=node_num))
         # Retrieve the lowest common node if more than one hit #
         else:
-            node = self.db.tree.get_common_ancestor(self.nodes)
+            node = self.db.tree.common_ancestor(self.nodes)
         # Calculate the similarity fraction of the best alignment #
         if self.algo == 'blast':
             ident_num = self.query.hsps[0].ident_num
