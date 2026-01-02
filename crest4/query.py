@@ -102,8 +102,8 @@ class Query:
         if self.algo == 'vsearch':
             similarity = self.query.hsps[0].ident_pct/100
         # Check the minimum similarity criteria for assigning at a given
-        # level and proceed ascending the tree until the similarity is
-        # satisfactory.
+        # level and proceed in an ascending fashion up
+        # the tree until the similarity is satisfactory.
         while True:
             # Check that the similarity filter is activated #
             if not self.classify.min_smlrty: break
