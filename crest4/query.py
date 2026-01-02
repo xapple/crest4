@@ -89,7 +89,11 @@ class Query:
         # If there is only one hit, then get that node in the tree #
         if len(self.nodes) == 1:
             node_num, = self.nodes
-            node = next(self.db.tree.search_nodes(name=node_num))
+            gen = self.db.tree.search_nodes(name=node_num)
+            # Sanity check that the node was found #
+            node = next(gen, False)
+            msg = f"Node {node_num!r} not found in the tree."
+            if node is False: raise LookupError(msg)
         # Retrieve the lowest common node if more than one hit #
         else:
             node = self.db.tree.common_ancestor(self.nodes)
