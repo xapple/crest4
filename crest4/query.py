@@ -89,8 +89,8 @@ class Query:
         if len(self.nodes) == 0: return False
         # If there is only one hit, then get that node in the tree #
         if len(self.nodes) == 1:
-            name, = self.nodes
-            node = self.db.tree.search_nodes(name=name)[0]
+            node_num, = self.nodes
+            node = next(self.db.tree.search_nodes(name=node_num))
         # Retrieve the lowest common node if more than one hit #
         else:
             node = self.db.tree.get_common_ancestor(self.nodes)
