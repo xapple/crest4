@@ -48,10 +48,10 @@ jobs:
           git checkout --detach "$SHA"
           echo "Checked out $SHA to $DEST"
 
-      - name: Set up Python 3.13
+      - name: Set up Python 3.14
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13
+          python-version: 3.14
 
       - name: Upgrade pip itself
         run: python -m pip install --upgrade pip
