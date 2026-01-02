@@ -6,12 +6,13 @@ Script to run the `mitofish` database test.
 """
 
 # Built-in modules #
-import inspect
+import inspect, os
 
 # First party modules #
 from autopaths import Path
 
 # Third party modules #
+import pytest
 
 # Internal modules #
 from crest4 import Classify
@@ -21,6 +22,10 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
+@pytest.mark.skipif(
+    os.getenv("GITHUB_ACTIONS") == "true",
+    reason="GitHub limits cache to 10GB, this DB is too big.",
+)
 def test_db_mitofish():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
