@@ -1,7 +1,7 @@
 [![PyPI version](https://badge.fury.io/py/crest4.svg)](https://badge.fury.io/py/crest4)
 ![Pytest passing](https://github.com/xapple/crest4/actions/workflows/pytest_master_branch.yml/badge.svg)
 
-# CREST version 4.4.1
+# CREST version 4.4.2
 
 `crest4` is a python package for automatically assigning taxonomic names to DNA sequences obtained from environmental sequencing.
 
@@ -108,7 +108,7 @@ Silvamod138pr2 is the default reference database. To use another database, e.g.,
 
 A typical output on your terminal will look like this:
 
-    Running crest4 version 4.4.1
+    Running crest4 version 4.4.2
     Classification ran successfully. Results are placed in '/myproject/results/assignments.txt'.
 
 ### All options
