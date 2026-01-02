@@ -258,7 +258,7 @@ class CrestDatabase:
         """
         # Load the tree with ete3 #
         from ete4 import Tree
-        return Tree(self.path.replace_extension('tre'))
+        return Tree(str(self.path.replace_extension('tre')))
 
     @property_cached
     def node_to_name(self):
