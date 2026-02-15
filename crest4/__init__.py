@@ -19,8 +19,3 @@ project_url = 'https://github.com/xapple/crest4'
 # Expose our main object at the module level
 # So that you can just do `from crest4 import Classify` later
 from .classify import Classify
-
-# After sh==1.14.3 the object returned changed #
-import sh
-sh_version = int(sh.__version__.split('.')[0])
-if sh_version > 1: sh = sh.bake(_return_cmd=True)

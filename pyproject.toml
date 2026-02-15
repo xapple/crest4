@@ -29,7 +29,6 @@ dependencies = [
   "ete4==4.3.0",
   "pandas==2.3.3",
   "pytest==9.0.2",
-  "pytest-asyncio==1.3.0",
 ]
 
 classifiers = [

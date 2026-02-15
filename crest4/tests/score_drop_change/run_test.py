@@ -6,13 +6,10 @@ Script to run the `score_drop_change` integration test.
 """
 
 # Built-in modules #
-import inspect, sys
+import inspect, subprocess, sys
 
 # First party modules #
 from autopaths import Path
-
-# Third party modules #
-import pytest
 
 # Internal modules #
 
@@ -21,21 +18,19 @@ this_file = Path((inspect.stack()[0])[1])
 this_dir  = this_file.directory
 
 ###############################################################################
-@pytest.mark.asyncio
-async def test_score_drop_change():
+def test_score_drop_change():
     # The input fasta #
     fasta = this_dir.find('*.fasta')
     # The output directory #
     output_dir = this_dir + 'results/'
     output_dir.remove()
-    # Get the path of the current python executable #
-    from crest4 import sh
-    this_python = sh.Command(sys.executable)
     # Call via the command line tool #
-    result = await this_python('-m',            'crest4',
-                               '--fasta',       fasta,
-                               '--output_dir',  output_dir,
-                               '--score_drop',  '1')
+    result = subprocess.run([sys.executable,
+                             '-m',            'crest4',
+                             '--fasta',       str(fasta),
+                             '--output_dir',  str(output_dir),
+                             '--score_drop',  '1'],
+                            check=True)
     # Check that the results were created #
     created_file = output_dir + 'assignments.txt'
     assert created_file
@@ -44,6 +39,4 @@ async def test_score_drop_change():
 
 ###############################################################################
 if __name__ == '__main__':
-    command = test_score_drop_change()
-    import asyncio
-    asyncio.run(command)
+    test_score_drop_change()
