@@ -129,7 +129,7 @@ class Classify:
         self.search_db   = search_db
         self.output_dir  = output_dir
         self.search_hits = search_hits
-        self.min_score   = min_score
+        self.min_score   = float(min_score) if min_score is not None else None
         self.score_drop  = score_drop
         self.min_smlrty  = min_smlrty
         self.otu_table   = otu_table
