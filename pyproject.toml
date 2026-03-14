@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crest4"
-version = "4.4.2"
+version = "4.4.3"
 
 description = """The `crest4` python package can automatically assign \
 taxonomic names to DNA sequences obtained from environmental sequencing."""
@@ -22,8 +22,8 @@ urls = { Homepage = "https://github.com/xapple/crest4/" }
 dependencies = [
   "autopaths==1.6.2",
   "plumbing==2.11.3",
-  "fasta==2.3.3",
-  "seqsearch==2.2.2",
+  "fasta==2.3.6",
+  "seqsearch==2.2.4",
   "optmagic==1.1.1",
   "biopython==1.86",
   "rich==14.2.0",
