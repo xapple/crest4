@@ -1,0 +1,1 @@
+This test checks that the `--min-score` argument gets correctly converted to a float.
