@@ -174,10 +174,16 @@ class Classify:
                 self.min_score = 155
             if self.search_algo == 'vsearch':
                 self.min_score = 0.75
-        # The score drop has to be a float not a string #
+        # The minimum score has to be a number, not a string #
+        try:
+            self.min_score = float(self.min_score)
+        except (ValueError, TypeError):
+            msg = "The minimum score value must be numerical (not '%s')."
+            raise ValueError(msg % self.min_score)
+        # The score drop has to be a float, not a string #
         try:
             self.score_drop = float(self.score_drop)
-        except ValueError:
+        except (ValueError, TypeError):
             msg = "The score drop value must be numerical (not '%s')."
             raise ValueError(msg % self.score_drop)
         # Turn off the minimum similarity filter if the user passed any value #
