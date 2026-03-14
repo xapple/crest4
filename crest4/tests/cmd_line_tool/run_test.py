@@ -50,5 +50,5 @@ async def test_cmd_line_tool():
 
 ###############################################################################
 if __name__ == '__main__':
-    process = test_cmd_line_tool()
-    asyncio.run(process)
+    proc = test_cmd_line_tool()
+    asyncio.run(proc)
