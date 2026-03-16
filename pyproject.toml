@@ -20,8 +20,8 @@ authors = [
 urls = { Homepage = "https://github.com/xapple/crest4/" }
 
 dependencies = [
-  "autopaths==1.6.2",
-  "plumbing==2.11.3",
+  "autopaths==1.6.3",
+  "plumbing==2.11.4",
   "fasta==2.3.6",
   "seqsearch==2.2.4",
   "optmagic==1.1.1",
